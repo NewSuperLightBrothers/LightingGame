@@ -114,7 +114,6 @@ public class InputManager : MonoBehaviour
 
     private void Update() {
         _inputData.swipeIS = GetTouchDelta();
-        Debug.Log(_inputData.swipeIS);
     }
 
     private Vector2 GetTouchDelta() {
