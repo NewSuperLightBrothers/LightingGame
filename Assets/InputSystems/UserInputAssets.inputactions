@@ -175,14 +175,14 @@
             ]
         },
         {
-            "name": "Touchscreen",
+            "name": "PrimaryTouch",
             "id": "1e310dd9-778b-4b84-afec-19dc9645bfe6",
             "actions": [
                 {
-                    "name": "Touchscreen",
+                    "name": "Delta",
                     "type": "Value",
-                    "id": "e66d08e3-199f-4502-9279-df739e448a85",
-                    "expectedControlType": "Touch",
+                    "id": "3723505c-38d9-461a-8a43-258e453d7257",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -191,12 +191,12 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "41bb9f6d-d19e-4e68-913b-392aeb6062ff",
-                    "path": "<Touchscreen>/primaryTouch",
+                    "id": "e2374993-c1ee-4093-b5df-c16e3a62fa45",
+                    "path": "<Touchscreen>/primaryTouch/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Touchscreen",
+                    "action": "Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

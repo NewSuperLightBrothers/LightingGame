@@ -197,14 +197,14 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Touchscreen"",
+            ""name"": ""PrimaryTouch"",
             ""id"": ""1e310dd9-778b-4b84-afec-19dc9645bfe6"",
             ""actions"": [
                 {
-                    ""name"": ""Touchscreen"",
+                    ""name"": ""Delta"",
                     ""type"": ""Value"",
-                    ""id"": ""e66d08e3-199f-4502-9279-df739e448a85"",
-                    ""expectedControlType"": ""Touch"",
+                    ""id"": ""3723505c-38d9-461a-8a43-258e453d7257"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -213,12 +213,12 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""41bb9f6d-d19e-4e68-913b-392aeb6062ff"",
-                    ""path"": ""<Touchscreen>/primaryTouch"",
+                    ""id"": ""e2374993-c1ee-4093-b5df-c16e3a62fa45"",
+                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Touchscreen"",
+                    ""action"": ""Delta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -235,9 +235,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         // Interaction
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Fire = m_Interaction.FindAction("Fire", throwIfNotFound: true);
-        // Touchscreen
-        m_Touchscreen = asset.FindActionMap("Touchscreen", throwIfNotFound: true);
-        m_Touchscreen_Touchscreen = m_Touchscreen.FindAction("Touchscreen", throwIfNotFound: true);
+        // PrimaryTouch
+        m_PrimaryTouch = asset.FindActionMap("PrimaryTouch", throwIfNotFound: true);
+        m_PrimaryTouch_Delta = m_PrimaryTouch.FindAction("Delta", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -404,51 +404,51 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     }
     public InteractionActions @Interaction => new InteractionActions(this);
 
-    // Touchscreen
-    private readonly InputActionMap m_Touchscreen;
-    private List<ITouchscreenActions> m_TouchscreenActionsCallbackInterfaces = new List<ITouchscreenActions>();
-    private readonly InputAction m_Touchscreen_Touchscreen;
-    public struct TouchscreenActions
+    // PrimaryTouch
+    private readonly InputActionMap m_PrimaryTouch;
+    private List<IPrimaryTouchActions> m_PrimaryTouchActionsCallbackInterfaces = new List<IPrimaryTouchActions>();
+    private readonly InputAction m_PrimaryTouch_Delta;
+    public struct PrimaryTouchActions
     {
         private @UserInputAssets m_Wrapper;
-        public TouchscreenActions(@UserInputAssets wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Touchscreen => m_Wrapper.m_Touchscreen_Touchscreen;
-        public InputActionMap Get() { return m_Wrapper.m_Touchscreen; }
+        public PrimaryTouchActions(@UserInputAssets wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Delta => m_Wrapper.m_PrimaryTouch_Delta;
+        public InputActionMap Get() { return m_Wrapper.m_PrimaryTouch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TouchscreenActions set) { return set.Get(); }
-        public void AddCallbacks(ITouchscreenActions instance)
+        public static implicit operator InputActionMap(PrimaryTouchActions set) { return set.Get(); }
+        public void AddCallbacks(IPrimaryTouchActions instance)
         {
-            if (instance == null || m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Add(instance);
-            @Touchscreen.started += instance.OnTouchscreen;
-            @Touchscreen.performed += instance.OnTouchscreen;
-            @Touchscreen.canceled += instance.OnTouchscreen;
+            if (instance == null || m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Add(instance);
+            @Delta.started += instance.OnDelta;
+            @Delta.performed += instance.OnDelta;
+            @Delta.canceled += instance.OnDelta;
         }
 
-        private void UnregisterCallbacks(ITouchscreenActions instance)
+        private void UnregisterCallbacks(IPrimaryTouchActions instance)
         {
-            @Touchscreen.started -= instance.OnTouchscreen;
-            @Touchscreen.performed -= instance.OnTouchscreen;
-            @Touchscreen.canceled -= instance.OnTouchscreen;
+            @Delta.started -= instance.OnDelta;
+            @Delta.performed -= instance.OnDelta;
+            @Delta.canceled -= instance.OnDelta;
         }
 
-        public void RemoveCallbacks(ITouchscreenActions instance)
+        public void RemoveCallbacks(IPrimaryTouchActions instance)
         {
-            if (m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITouchscreenActions instance)
+        public void SetCallbacks(IPrimaryTouchActions instance)
         {
-            foreach (var item in m_Wrapper.m_TouchscreenActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public TouchscreenActions @Touchscreen => new TouchscreenActions(this);
+    public PrimaryTouchActions @PrimaryTouch => new PrimaryTouchActions(this);
     public interface ILocomotionActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -459,8 +459,8 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     {
         void OnFire(InputAction.CallbackContext context);
     }
-    public interface ITouchscreenActions
+    public interface IPrimaryTouchActions
     {
-        void OnTouchscreen(InputAction.CallbackContext context);
+        void OnDelta(InputAction.CallbackContext context);
     }
 }

@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
     private Image _image;
+    private Vector2 touchBefore;
 
     private Vector2 mouseDelta = Vector2.zero;
 
@@ -32,7 +33,6 @@ public class InputManager : MonoBehaviour
         _userInputAssets = new();
 
         _userInputAssets.Enable();
-        _userInputAssets.Touchscreen.Touchscreen.Enable();
 
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
@@ -65,10 +65,12 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.started += OnFire;
         _userInputAssets.Interaction.Fire.performed += OnFire;
         _userInputAssets.Interaction.Fire.canceled += OnFire;
+
+        //_userInputAssets.PrimaryTouch.Delta.started += OnTouchStart;
+        _userInputAssets.PrimaryTouch.Delta.performed += OnTouch;
+        _userInputAssets.PrimaryTouch.Delta.canceled += OnTouch;
     }
-    private void OnEnable() {
-        
-    }
+    
     private void OnDisable() {
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
@@ -85,9 +87,12 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.started -= OnFire;
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
+
+        //_userInputAssets.PrimaryTouch.Delta.started -= OnTouchStart;
+        _userInputAssets.PrimaryTouch.Delta.performed -= OnTouch;
+        _userInputAssets.PrimaryTouch.Delta.canceled -= OnTouch;
         
         _userInputAssets.Disable();
-        _userInputAssets.Touchscreen.Touchscreen.Disable();
     }
     private void OnMove(InputAction.CallbackContext c) {
         _inputData.velocityIS = c.ReadValue<Vector2>();
@@ -105,6 +110,22 @@ public class InputManager : MonoBehaviour
         _inputData.isFire = c.ReadValue<float>() == 1f;
     }
 
+    private void OnTouchStart(InputAction.CallbackContext c) {
+        Vector2 touchPos = c.ReadValue<Vector2>();
+        _inputData.swipeIS = Vector2.zero;
+        touchBefore = touchPos;
+    }
+    private void OnTouch(InputAction.CallbackContext c) {
+        Vector2 touchPos = c.ReadValue<Vector2>();
+        _inputData.swipeIS = touchPos - touchBefore;
+        touchBefore = touchPos;
+    }
+    private void OnTouchCancel(InputAction.CallbackContext c) {
+        Vector2 touchPos = c.ReadValue<Vector2>();
+        _inputData.swipeIS = Vector2.zero;
+        touchBefore = touchPos;
+    }
+
     private void Start() {
         _rect = new Rect(_joystickForeground.rect);
         _image = _joystickForeground.gameObject.GetComponent<Image>();
@@ -113,33 +134,28 @@ public class InputManager : MonoBehaviour
     }
 
     private void Update() {
-        _inputData.swipeIS = GetTouchDelta();
+        Debug.Log(Touchscreen.current.primaryTouch.delta.value);
+        //Vector2 a = GetTouchDelta();
+        //_inputData.swipeIS = a * 2f;
     }
 
-    private Vector2 GetTouchDelta() {
-        if (Touchscreen.current == null) return Vector2.zero;
-        if (Touchscreen.current.touches.Count <= 0) return Vector2.zero;
-
-        /*
-        return Touchscreen.current.touches
-            .Where(v => !EventSystem.current.IsPointerOverGameObject(v.touchId.ReadValue()) && v.isInProgress && !_rect.Contains(v.startPosition.value))
-            .Select(v => v.delta.value).FirstOrDefault();
-        */
-        foreach (var v in Touchscreen.current.touches) {
-            if (!EventSystem.current.IsPointerOverGameObject(v.touchId.ReadValue()) && v.isInProgress && !_rect.Contains(v.startPosition.value)) {
-                return v.delta.value;
-            }
-        }
-        return Vector2.zero;
+    private Vector2 GetTouchDelta()
+    {
+        // Get the first touch that meets the conditions
+        return Touchscreen.current.primaryTouch.delta.value;
     }
 
     private Vector2 GetTouchDeltaInput() {
         if (Input.touchCount <= 0) return Vector2.zero;
 
-        if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Moved) {
-            return Input.GetTouch(0).deltaPosition;
+        for (int i = 0; i < Input.touchCount; i++) {
+            Touch touch = Input.GetTouch(i);
+            if (touch.phase == UnityEngine.TouchPhase.Moved && !_rect.Contains(touch.position)) {
+                return Input.GetTouch(i).deltaPosition;
+            }
         }
         return Vector2.zero;
     }
 
 }
+//!_rect.Contains(touch.startPosition.value)
