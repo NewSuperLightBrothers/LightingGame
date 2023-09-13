@@ -869,7 +869,12 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -884,11 +889,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: ffdbe6b6-2b2c-4dfa-b448-46ec713d2d3c
+  cloudProjectId: fe3964b8-7412-4740-b57e-a61f6a04e431
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: LightingGame
-  organizationId: zipsar5
+  organizationId: tedxpem
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
