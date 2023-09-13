@@ -8,6 +8,8 @@ public class NetworkUIManager : MonoBehaviour
     {
         [SerializeField] private Button _hostBtn;
         [SerializeField] private Button _clientBtn;
+        [SerializeField] private Button _spawnBtn;
+
         [SerializeField] private TMP_InputField _joinCodeInput;
         
         // [SerializeField] private TMP_Text _playersInGameText;
@@ -58,6 +60,12 @@ public class NetworkUIManager : MonoBehaviour
                 {
                     Logger.Log("Client failed to start");
                 }
+            });
+            
+            // Spawn object
+            _spawnBtn.onClick.AddListener(() =>
+            {
+                Spawner.Instance.SpawnObjects();
             });
             
             NetworkManager.Singleton.OnServerStarted += () =>
