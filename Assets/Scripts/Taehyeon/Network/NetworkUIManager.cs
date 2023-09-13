@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = Utils.Logger;
 
 public class NetworkUIManager : MonoBehaviour
     {
@@ -30,11 +31,11 @@ public class NetworkUIManager : MonoBehaviour
                 
                 if (NetworkManager.Singleton.StartHost())
                 {
-                    Debug.Log("Host started");
+                    Logger.Log("Host started");
                 }
                 else
                 {
-                    Debug.Log("Host failed to start");
+                    Logger.Log("Host failed to start");
                 }
             });
 
@@ -51,11 +52,11 @@ public class NetworkUIManager : MonoBehaviour
 
                 if(NetworkManager.Singleton.StartClient()) 
                 {
-                    Debug.Log("Client started");   
+                    Logger.Log("Client started");   
                 }
                 else
                 {
-                    Debug.Log("Client failed to start");
+                    Logger.Log("Client failed to start");
                 }
             });
             

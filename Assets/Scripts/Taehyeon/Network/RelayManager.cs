@@ -6,7 +6,7 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
-using UnityEngine;
+using Logger = Utils.Logger;
 
 public class RelayManager : Singleton<RelayManager>
 {
@@ -21,7 +21,7 @@ public class RelayManager : Singleton<RelayManager>
 
     public async Task<RelayHostData> SetupRelay()
     {
-        Debug.Log($"Relay server starting with max connections {MaxConnections}");
+        Logger.Log($"Relay server starting with max connections {MaxConnections}");
         InitializationOptions options = new InitializationOptions()
             .SetEnvironmentName(EnvironmentName);
         
@@ -49,7 +49,7 @@ public class RelayManager : Singleton<RelayManager>
         Transport.SetRelayServerData(relayHostData.IPv4Address, relayHostData.Port, relayHostData.AllocationIDBytes,
             relayHostData.Key, relayHostData.ConnectionData);
         
-        Debug.Log($"Relay server generated a join code {relayHostData.JoinCode}");
+        Logger.Log($"Relay server generated a join code {relayHostData.JoinCode}");
 
         return relayHostData;
     }
@@ -83,7 +83,7 @@ public class RelayManager : Singleton<RelayManager>
         Transport.SetRelayServerData(relayJoinData.IPv4Address, relayJoinData.Port, relayJoinData.AllocationIDBytes,
             relayJoinData.Key, relayJoinData.ConnectionData, relayJoinData.HostConnectionData);
 
-        Debug.Log("Client joined game with join code " + joinCode);
+        Logger.Log("Client joined game with join code " + joinCode);
         return relayJoinData;
     }
 }
