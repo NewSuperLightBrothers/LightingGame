@@ -186,7 +186,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d91da170-d839-4c39-aa1f-93dc7fa0f920"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -197,28 +197,48 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""PrimaryTouch"",
+            ""name"": ""TouchFallback"",
             ""id"": ""1e310dd9-778b-4b84-afec-19dc9645bfe6"",
             ""actions"": [
                 {
-                    ""name"": ""Delta"",
+                    ""name"": ""Position"",
                     ""type"": ""Value"",
                     ""id"": ""3723505c-38d9-461a-8a43-258e453d7257"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""630e7030-02f2-45a7-bbcd-04b055aa7ca8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""e2374993-c1ee-4093-b5df-c16e3a62fa45"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                    ""id"": ""30dd69fe-175b-45f3-acdf-12c5de5274c7"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Delta"",
+                    ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9cd46b5a-0c2f-45bb-bf31-6199058e8e1d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -235,9 +255,10 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         // Interaction
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Fire = m_Interaction.FindAction("Fire", throwIfNotFound: true);
-        // PrimaryTouch
-        m_PrimaryTouch = asset.FindActionMap("PrimaryTouch", throwIfNotFound: true);
-        m_PrimaryTouch_Delta = m_PrimaryTouch.FindAction("Delta", throwIfNotFound: true);
+        // TouchFallback
+        m_TouchFallback = asset.FindActionMap("TouchFallback", throwIfNotFound: true);
+        m_TouchFallback_Position = m_TouchFallback.FindAction("Position", throwIfNotFound: true);
+        m_TouchFallback_LeftButton = m_TouchFallback.FindAction("LeftButton", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -404,51 +425,59 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     }
     public InteractionActions @Interaction => new InteractionActions(this);
 
-    // PrimaryTouch
-    private readonly InputActionMap m_PrimaryTouch;
-    private List<IPrimaryTouchActions> m_PrimaryTouchActionsCallbackInterfaces = new List<IPrimaryTouchActions>();
-    private readonly InputAction m_PrimaryTouch_Delta;
-    public struct PrimaryTouchActions
+    // TouchFallback
+    private readonly InputActionMap m_TouchFallback;
+    private List<ITouchFallbackActions> m_TouchFallbackActionsCallbackInterfaces = new List<ITouchFallbackActions>();
+    private readonly InputAction m_TouchFallback_Position;
+    private readonly InputAction m_TouchFallback_LeftButton;
+    public struct TouchFallbackActions
     {
         private @UserInputAssets m_Wrapper;
-        public PrimaryTouchActions(@UserInputAssets wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Delta => m_Wrapper.m_PrimaryTouch_Delta;
-        public InputActionMap Get() { return m_Wrapper.m_PrimaryTouch; }
+        public TouchFallbackActions(@UserInputAssets wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Position => m_Wrapper.m_TouchFallback_Position;
+        public InputAction @LeftButton => m_Wrapper.m_TouchFallback_LeftButton;
+        public InputActionMap Get() { return m_Wrapper.m_TouchFallback; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PrimaryTouchActions set) { return set.Get(); }
-        public void AddCallbacks(IPrimaryTouchActions instance)
+        public static implicit operator InputActionMap(TouchFallbackActions set) { return set.Get(); }
+        public void AddCallbacks(ITouchFallbackActions instance)
         {
-            if (instance == null || m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Add(instance);
-            @Delta.started += instance.OnDelta;
-            @Delta.performed += instance.OnDelta;
-            @Delta.canceled += instance.OnDelta;
+            if (instance == null || m_Wrapper.m_TouchFallbackActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TouchFallbackActionsCallbackInterfaces.Add(instance);
+            @Position.started += instance.OnPosition;
+            @Position.performed += instance.OnPosition;
+            @Position.canceled += instance.OnPosition;
+            @LeftButton.started += instance.OnLeftButton;
+            @LeftButton.performed += instance.OnLeftButton;
+            @LeftButton.canceled += instance.OnLeftButton;
         }
 
-        private void UnregisterCallbacks(IPrimaryTouchActions instance)
+        private void UnregisterCallbacks(ITouchFallbackActions instance)
         {
-            @Delta.started -= instance.OnDelta;
-            @Delta.performed -= instance.OnDelta;
-            @Delta.canceled -= instance.OnDelta;
+            @Position.started -= instance.OnPosition;
+            @Position.performed -= instance.OnPosition;
+            @Position.canceled -= instance.OnPosition;
+            @LeftButton.started -= instance.OnLeftButton;
+            @LeftButton.performed -= instance.OnLeftButton;
+            @LeftButton.canceled -= instance.OnLeftButton;
         }
 
-        public void RemoveCallbacks(IPrimaryTouchActions instance)
+        public void RemoveCallbacks(ITouchFallbackActions instance)
         {
-            if (m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_TouchFallbackActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPrimaryTouchActions instance)
+        public void SetCallbacks(ITouchFallbackActions instance)
         {
-            foreach (var item in m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_TouchFallbackActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PrimaryTouchActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_TouchFallbackActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PrimaryTouchActions @PrimaryTouch => new PrimaryTouchActions(this);
+    public TouchFallbackActions @TouchFallback => new TouchFallbackActions(this);
     public interface ILocomotionActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -459,8 +488,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     {
         void OnFire(InputAction.CallbackContext context);
     }
-    public interface IPrimaryTouchActions
+    public interface ITouchFallbackActions
     {
-        void OnDelta(InputAction.CallbackContext context);
+        void OnPosition(InputAction.CallbackContext context);
+        void OnLeftButton(InputAction.CallbackContext context);
     }
 }

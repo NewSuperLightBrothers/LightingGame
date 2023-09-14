@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 
 [System.Serializable]
@@ -25,14 +26,25 @@ public class InputManager : MonoBehaviour
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
     private Image _image;
-    private Vector2 touchBefore;
 
     private Vector2 mouseDelta = Vector2.zero;
+
+    public bool b, oldB, value;
+    private Vector2 touchBefore;
+
+    [System.Serializable]
+    private enum FingerData
+    {
+        None, ThumbStick, Screen, Fire
+    }
+    [SerializeField] private FingerData[] _fingerData = new FingerData[10];
 
     private void Awake() {
         _userInputAssets = new();
 
         _userInputAssets.Enable();
+        EnhancedTouch.EnhancedTouchSupport.Enable();
+        EnhancedTouch.TouchSimulation.Enable();
 
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
@@ -66,9 +78,13 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.performed += OnFire;
         _userInputAssets.Interaction.Fire.canceled += OnFire;
 
-        //_userInputAssets.PrimaryTouch.Delta.started += OnTouchStart;
-        _userInputAssets.PrimaryTouch.Delta.performed += OnTouch;
-        _userInputAssets.PrimaryTouch.Delta.canceled += OnTouch;
+        _userInputAssets.TouchFallback.LeftButton.started += OnTouchFallbackModifier;
+        _userInputAssets.TouchFallback.LeftButton.performed += OnTouchFallbackModifier;
+        _userInputAssets.TouchFallback.LeftButton.canceled += OnTouchFallbackModifier;
+
+        _userInputAssets.TouchFallback.Position.started += OnTouchFallback;
+        _userInputAssets.TouchFallback.Position.performed += OnTouchFallback;
+        _userInputAssets.TouchFallback.Position.canceled += OnTouchFallback;
     }
     
     private void OnDisable() {
@@ -88,11 +104,12 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
 
-        //_userInputAssets.PrimaryTouch.Delta.started -= OnTouchStart;
-        _userInputAssets.PrimaryTouch.Delta.performed -= OnTouch;
-        _userInputAssets.PrimaryTouch.Delta.canceled -= OnTouch;
+        _userInputAssets.TouchFallback.Position.started -= OnTouchFallback;
+        _userInputAssets.TouchFallback.Position.performed -= OnTouchFallback;
+        _userInputAssets.TouchFallback.Position.canceled -= OnTouchFallback;
         
         _userInputAssets.Disable();
+        EnhancedTouch.EnhancedTouchSupport.Disable();
     }
     private void OnMove(InputAction.CallbackContext c) {
         _inputData.velocityIS = c.ReadValue<Vector2>();
@@ -101,7 +118,7 @@ public class InputManager : MonoBehaviour
         _inputData.velocityIS = Vector2.zero;
     }
     private void OnView(InputAction.CallbackContext c) {
-        mouseDelta = c.ReadValue<Vector2>();
+        
     }
     private void OnJump(InputAction.CallbackContext c) {
         _inputData.isJump = c.ReadValue<float>() == 1f;
@@ -109,21 +126,11 @@ public class InputManager : MonoBehaviour
     private void OnFire(InputAction.CallbackContext c) {
         _inputData.isFire = c.ReadValue<float>() == 1f;
     }
-
-    private void OnTouchStart(InputAction.CallbackContext c) {
-        Vector2 touchPos = c.ReadValue<Vector2>();
-        _inputData.swipeIS = Vector2.zero;
-        touchBefore = touchPos;
+    private void OnTouchFallbackModifier(InputAction.CallbackContext c) {
+        b = c.ReadValue<float>() == 1;
     }
-    private void OnTouch(InputAction.CallbackContext c) {
-        Vector2 touchPos = c.ReadValue<Vector2>();
-        _inputData.swipeIS = touchPos - touchBefore;
-        touchBefore = touchPos;
-    }
-    private void OnTouchCancel(InputAction.CallbackContext c) {
-        Vector2 touchPos = c.ReadValue<Vector2>();
-        _inputData.swipeIS = Vector2.zero;
-        touchBefore = touchPos;
+    private void OnTouchFallback(InputAction.CallbackContext c) {
+        mouseDelta = b? c.ReadValue<Vector2>() : Vector2.zero;
     }
 
     private void Start() {
@@ -134,15 +141,36 @@ public class InputManager : MonoBehaviour
     }
 
     private void Update() {
-        Debug.Log(Touchscreen.current.primaryTouch.delta.value);
-        //Vector2 a = GetTouchDelta();
-        //_inputData.swipeIS = a * 2f;
+        InputData.swipeIS = GetTouchDeltaEnhanced();
+
+        
     }
 
-    private Vector2 GetTouchDelta()
+    private void FixedUpdate() {
+        Debug.Log(_userInputAssets.TouchFallback.Position.ReadValue<Vector2>());
+        if ((!oldB && b) && !value && !_rect.Contains(_userInputAssets.TouchFallback.Position.ReadValue<Vector2>())) value = true;
+        if (!oldB && !b) value = false;
+
+        
+        if (value && touchBefore != Vector2.zero && mouseDelta != Vector2.zero) {
+            Vector2 touchNow = mouseDelta;
+            InputData.swipeIS += touchNow - touchBefore;
+            
+        }
+        
+
+        touchBefore = mouseDelta;
+        oldB = b;
+    }
+
+    private Vector2 GetTouchDeltaEnhanced()
     {
-        // Get the first touch that meets the conditions
-        return Touchscreen.current.primaryTouch.delta.value;
+        foreach (var touch in EnhancedTouch.Touch.activeTouches) {
+            if (!_rect.Contains(touch.startScreenPosition)) {
+                return touch.delta;
+            }
+        }
+        return Vector2.zero;
     }
 
     private Vector2 GetTouchDeltaInput() {
@@ -158,4 +186,3 @@ public class InputManager : MonoBehaviour
     }
 
 }
-//!_rect.Contains(touch.startPosition.value)
