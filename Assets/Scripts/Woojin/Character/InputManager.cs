@@ -147,7 +147,6 @@ public class InputManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        Debug.Log(_userInputAssets.TouchFallback.Position.ReadValue<Vector2>());
         if ((!oldB && b) && !value && !_rect.Contains(_userInputAssets.TouchFallback.Position.ReadValue<Vector2>())) value = true;
         if (!oldB && !b) value = false;
 
