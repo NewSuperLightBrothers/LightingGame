@@ -1,64 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ObjectEmissionUI : MonoBehaviour
 {
     [SerializeField]
-    private GameObject canvasObject;
+    private GameObject _canvasObject;
     [SerializeField]
-    private Transform _progresstransform;
+    private Transform _progressbarparent;
     [SerializeField]
-    private List<MeshRenderer> _progressmesh;
+    private Transform _progressbar;
     [SerializeField]
-    private ObjectEmissionManager _objectemission;
-   
+    private Dictionary<Color,MeshRenderer> _progressbarRenderer;
 
-    // Start is called before the first frame update
+
     private void Start()
     {
-       ObjectColorType colortype =  _objectemission.getColortype();
-       Initializecolor(colortype);
-
-
+        _canvasObject = this.gameObject;
     }
 
-    private void Initializecolor(ObjectColorType colortype)
+    public GameObject InstantiateUI(Transform parent)
     {
 
-        if (colortype == ObjectColorType.Red) _progressmesh[0].material.SetColor("_EmissionColor", Color.red);
-        else if (colortype == ObjectColorType.Green) _progressmesh[0].material.SetColor("_EmissionColor", Color.green);
-        else if (colortype == ObjectColorType.Blue) _progressmesh[0].material.SetColor("_EmissionColor", Color.blue);
-        else if (colortype == ObjectColorType.Cyan)
-        {
-            _progressmesh.Add(Instantiate(_progresstransform).GetComponentInChildren<MeshRenderer>());
-            _progressmesh[0].material.SetColor("_EmissionColor", Color.green);
-            _progressmesh[1].material.SetColor("_EmissionColor", Color.blue);
-        }
-        else if (colortype == ObjectColorType.Magenta)
-        {
-            _progressmesh.Add(Instantiate(_progresstransform).GetComponentInChildren<MeshRenderer>());
-            _progressmesh[0].material.SetColor("_EmissionColor", Color.red);
-            _progressmesh[1].material.SetColor("_EmissionColor", Color.blue);
-        }
-        else if (colortype == ObjectColorType.Yellow)
-        {
-            _progressmesh.Add(Instantiate(_progresstransform).GetComponentInChildren<MeshRenderer>());
-            _progressmesh[0].material.SetColor("_EmissionColor", Color.red);
-            _progressmesh[1].material.SetColor("_EmissionColor", Color.green);
-        }
-        else if (colortype == ObjectColorType.White)
-        {
-            _progressmesh[0].material.SetColor("_EmissionColor", Color.blue);
-        }
-
+        return Instantiate(_canvasObject, parent);
     }
 
-
-    public void setObjectEmission(ObjectEmissionManager objectemission)
+    public void AddProgressbar(Color color, float Emissionmagnitude)
     {
-        _objectemission = objectemission;
+        GameObject newprogressbar = Instantiate(_progressbar.gameObject, this.transform);
+        MeshRenderer newmeshRenderer = newprogressbar.GetComponentInChildren<MeshRenderer>();
+        newmeshRenderer.material.SetColor("_EmissionColor", color * Mathf.Pow(2, Emissionmagnitude));
+        _progressbarRenderer[color] = newmeshRenderer;
     }
 
+    public void SetProgrssbarFill(Color color, float newgauge, float entiregauge)
+    {
+        Vector3 scale = _progressbarRenderer[color].transform.localScale;
+        scale.z = (newgauge / entiregauge) * 50;
+        _progressbarRenderer[color].transform.localScale = scale;
+    }
+
+
+    public void SetProgressbarColor(Color color, float Emissionmagnitude)
+    {
+        _progressbarRenderer[color].material.SetColor("_EmissionColor", color * Mathf.Pow(2, Emissionmagnitude));
+    }
 
 }

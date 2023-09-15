@@ -1487,8 +1487,8 @@ MonoBehaviour:
   _gauge: 50
   _takeweight: 2
   _emissionstrength: 2
-  ObjectEmissionUIPrefab: {fileID: 0}
-  objectemissionuiclass: {fileID: 0}
+  _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
+    type: 3}
 --- !u!850595691 &918021007
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -2347,8 +2347,8 @@ MonoBehaviour:
   _gauge: 50
   _takeweight: 5
   _emissionstrength: 2
-  ObjectEmissionUIPrefab: {fileID: 0}
-  objectemissionuiclass: {fileID: 0}
+  _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
+    type: 3}
 --- !u!1001 &1875117117
 PrefabInstance:
   m_ObjectHideFlags: 0

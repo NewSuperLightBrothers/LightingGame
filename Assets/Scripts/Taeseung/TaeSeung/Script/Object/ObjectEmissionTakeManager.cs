@@ -61,7 +61,11 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
                 Debug.Log("롱 프레스한 오브젝트: " + hit.collider.gameObject.name);
-                hit.collider.TryGetComponent<ObjectEmissionManager>(out emissionmanager);
+            if (hit.collider.TryGetComponent<ObjectEmissionManager>(out emissionmanager))
+            {
+
+
+            }
 
             /* 클릭 오브젝트에 대한 외곽선 표시...
                 MeshRenderer renderer;

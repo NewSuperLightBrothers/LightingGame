@@ -17,11 +17,9 @@ public class ObjectEmissionManager : MonoBehaviour
     [SerializeField]
     private float _emissionstrength;
 
-    
     [SerializeField]
-    private Transform ObjectEmissionUIPrefab;
-    [SerializeField]
-    private ObjectEmissionUI objectemissionuiclass;
+    private ObjectEmissionUI _emissionUI;
+
 
 
     private Color _Initialcolor;
@@ -32,10 +30,10 @@ public class ObjectEmissionManager : MonoBehaviour
     {
         _Initialcolor = _meshrenderer.material.GetColor("_EmissionColor");
         SetColorInitialize();
+        _emissionUI.InstantiateUI(this.transform).SetActive(false);
         _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
-
+        
     }
-
 
 
     private void SetColorInitialize() {
