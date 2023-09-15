@@ -58,7 +58,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
                 Debug.Log("롱 프레스한 오브젝트: " + hit.collider.gameObject.name);
                 hit.collider.TryGetComponent<ObjectEmissionManager>(out emissionmanager);

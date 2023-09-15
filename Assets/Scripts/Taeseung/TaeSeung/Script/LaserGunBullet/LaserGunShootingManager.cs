@@ -67,6 +67,8 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
         _guninfo.shootingsound.Play(0);
 
         _currentbulletcount -= _guninfo.usinggauge;
+        SetGaugeUIBar();
+
         TestUI.testUI.setText(_currentbulletcount.ToString());
 
         _cooltimeinterval = 0;
@@ -76,9 +78,9 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
 
     protected override void SetObjectTeamColor(Color color, float emissionstrength)
     {
-        for (int i = 0; i < L_Gunmeshrenderer.Count; i++) {
-            L_Gunmeshrenderer[i].material.SetColor("_EmissionColor", color * Mathf.Pow(2, emissionstrength));
-        }
+        //for (int i = 0; i < L_Gunmeshrenderer.Count; i++) {
+            L_Gunmeshrenderer[1].material.SetColor("_EmissionColor", color * Mathf.Pow(2, emissionstrength));
+        //}
 
         FirePath.material.SetColor("_EmissionColor", color * Mathf.Pow(2, emissionstrength-1));
     }
@@ -136,11 +138,24 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
         FirePath.SetPositions(l_pathpoints.ToArray());
     }
 
+
+    private void SetGaugeUIBar()
+    {
+        Vector3 scale = L_Gunmeshrenderer[1].transform.localScale;
+        scale.z = (_currentbulletcount / _guninfo.maxgauge) * 10;
+        L_Gunmeshrenderer[1].transform.localScale = scale;
+
+    }
+
     public void SetGauge(float newval)
     {
         _currentbulletcount += newval;
+
+        SetGaugeUIBar();
+
         TestUI.testUI.setText(_currentbulletcount.ToString());
     }
+
 
     public List<Vector3> GetPathPoints()
     {

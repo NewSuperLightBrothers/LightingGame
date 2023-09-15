@@ -17,23 +17,21 @@ public class ObjectEmissionManager : MonoBehaviour
     [SerializeField]
     private float _emissionstrength;
 
+    
+    [SerializeField]
+    private Transform ObjectEmissionUIPrefab;
+    [SerializeField]
+    private ObjectEmissionUI objectemissionuiclass;
+
 
     private Color _Initialcolor;
     private Dictionary<ObjectColorType, float> _colorInitialvalue;
-
-    private float _emissionInitialvalue;
-
-
     private Dictionary<ObjectColorType, int> _check;
-
 
     void Start()
     {
         _Initialcolor = _meshrenderer.material.GetColor("_EmissionColor");
         SetColorInitialize();
-
-        _emissionInitialvalue = Mathf.Pow(2, _emissionstrength);
-
         _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
 
     }
@@ -147,7 +145,6 @@ public class ObjectEmissionManager : MonoBehaviour
     public ObjectColorType getColortype() => _colortype;
     public float getGuage() => _gauge;
     public void setGauge(float gauge) => _gauge = gauge;
-
     public float getWeight() => _takeweight;
 
 

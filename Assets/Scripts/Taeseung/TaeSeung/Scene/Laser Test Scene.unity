@@ -550,6 +550,21 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1235671896}
+    - target: {fileID: 1795872508485353729, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795872508485353729, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795872508485353729, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2002115396719098962, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -603,13 +618,18 @@ PrefabInstance:
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: L_Gunmeshrenderer.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: L_Gunmeshrenderer.Array.data[0]
       value: 
       objectReference: {fileID: 570843761}
+    - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: L_Gunmeshrenderer.Array.data[1]
+      value: 
+      objectReference: {fileID: 506062600}
     - target: {fileID: 3666025442990851036, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: m_RootOrder
@@ -760,6 +780,21 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1664186921}
+    - target: {fileID: 7741677123935927888, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741677123935927888, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7741677123935927888, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8344089154223005842, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: m_Mesh
@@ -1082,6 +1117,12 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!23 &506062600 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7919078574248938559, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 384110970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &517641071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1446,6 +1487,8 @@ MonoBehaviour:
   _gauge: 50
   _takeweight: 2
   _emissionstrength: 2
+  ObjectEmissionUIPrefab: {fileID: 0}
+  objectemissionuiclass: {fileID: 0}
 --- !u!850595691 &918021007
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1522,7 +1565,7 @@ GameObject:
   - component: {fileID: 939217509}
   - component: {fileID: 939217508}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: DebugCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2304,6 +2347,8 @@ MonoBehaviour:
   _gauge: 50
   _takeweight: 5
   _emissionstrength: 2
+  ObjectEmissionUIPrefab: {fileID: 0}
+  objectemissionuiclass: {fileID: 0}
 --- !u!1001 &1875117117
 PrefabInstance:
   m_ObjectHideFlags: 0
