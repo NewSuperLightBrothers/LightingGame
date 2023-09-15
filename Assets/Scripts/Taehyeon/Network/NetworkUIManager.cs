@@ -12,8 +12,6 @@ public class NetworkUIManager : MonoBehaviour
 
         [SerializeField] private TMP_InputField _joinCodeInput;
         
-        // [SerializeField] private TMP_Text _playersInGameText;
-
         private bool _isServerStarted;
         
         private void Awake()

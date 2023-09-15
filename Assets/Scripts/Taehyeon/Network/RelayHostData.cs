@@ -2,11 +2,11 @@ using System;
 
 public struct RelayHostData
 {
-    public string JoinCode;
-    public string IPv4Address;
-    public ushort Port;
-    public Guid AllocationID;
-    public byte[] AllocationIDBytes;
-    public byte[] ConnectionData;
-    public byte[] Key;
+    public string joinCode;
+    public string ipv4Address;
+    public ushort port;
+    public Guid allocationID;
+    public byte[] allocationIDBytes;
+    public byte[] connectionData;
+    public byte[] key;
 }
