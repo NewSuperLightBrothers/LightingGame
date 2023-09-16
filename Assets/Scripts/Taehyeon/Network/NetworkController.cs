@@ -5,7 +5,6 @@ using Logger = Utils.Logger;
 public class NetworkController : SingletonNetworkPersistent<NetworkController>
 {
     private NetworkVariable<int> _curPlayerNum = new NetworkVariable<int>(0);
-    private const int _MAX_PLAYER_NUM = 2;
 
     public override void OnNetworkSpawn()
     {
@@ -28,7 +27,7 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
         {
             _curPlayerNum.Value += 1;
             Logger.Log($"player {_curPlayerNum.Value} connected");
-            if (_curPlayerNum.Value == _MAX_PLAYER_NUM)
+            if (_curPlayerNum.Value == GameData.playerNumPerTeam * 2)
             {
                 NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
             }
