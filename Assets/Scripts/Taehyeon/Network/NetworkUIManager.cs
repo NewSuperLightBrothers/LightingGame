@@ -9,7 +9,8 @@ public class NetworkUIManager : MonoBehaviour
         [SerializeField] private Button _hostBtn;
         [SerializeField] private Button _clientBtn;
         [SerializeField] private Button _spawnBtn;
-
+        
+        [SerializeField] private TMP_Text _joinCodeText;
         [SerializeField] private TMP_InputField _joinCodeInput;
         
         private bool _isServerStarted;
@@ -70,5 +71,10 @@ public class NetworkUIManager : MonoBehaviour
             {
                 _isServerStarted = true;
             };
+        }
+
+        private void Update()
+        {
+            _joinCodeText.text = NetworkController.Instance.joinCode;
         }
     }

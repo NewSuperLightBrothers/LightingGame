@@ -4,7 +4,8 @@ using Logger = Utils.Logger;
 
 public class NetworkController : SingletonNetworkPersistent<NetworkController>
 {
-    private NetworkVariable<int> _curPlayerNum = new NetworkVariable<int>(0);
+    private NetworkVariable<int> _curPlayerNum = new(0);
+    public string joinCode;
 
     public override void OnNetworkSpawn()
     {

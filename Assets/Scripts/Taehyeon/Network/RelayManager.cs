@@ -47,6 +47,8 @@ public class RelayManager : Singleton<RelayManager>
         _transport.SetRelayServerData(relayHostData.ipv4Address, relayHostData.port, relayHostData.allocationIDBytes,
             relayHostData.key, relayHostData.connectionData);
         
+        NetworkController.Instance.joinCode = relayHostData.joinCode;
+        
         Logger.Log($"Relay server generated a join code {relayHostData.joinCode}");
 
         return relayHostData;
