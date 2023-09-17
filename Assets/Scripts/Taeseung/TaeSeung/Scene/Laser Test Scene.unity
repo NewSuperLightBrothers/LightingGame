@@ -617,6 +617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
+      propertyPath: _guninfo.maxgauge
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
       propertyPath: L_Gunmeshrenderer.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1485,7 +1490,7 @@ MonoBehaviour:
   _meshrenderer: {fileID: 637847274}
   _colortype: 4
   _gauge: 50
-  _takeweight: 2
+  _takeweight: 1
   _emissionstrength: 2
   _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
     type: 3}
@@ -2324,7 +2329,7 @@ Transform:
   m_GameObject: {fileID: 1871174402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5, y: 0, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1914146671}
@@ -2345,7 +2350,7 @@ MonoBehaviour:
   _meshrenderer: {fileID: 1871174404}
   _colortype: 1
   _gauge: 50
-  _takeweight: 5
+  _takeweight: 1
   _emissionstrength: 2
   _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
     type: 3}
@@ -2625,7 +2630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883711494}
   m_LocalRotation: {x: -0, y: 0.66163737, z: -0, w: 0.7498239}
-  m_LocalPosition: {x: -11.882753, y: 1.77, z: 6.8964863}
+  m_LocalPosition: {x: -11.882753, y: -0.45, z: 6.8964863}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -142,7 +142,7 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
     private void SetGaugeUIBar()
     {
         Vector3 scale = L_Gunmeshrenderer[1].transform.localScale;
-        scale.z = (_currentbulletcount / _guninfo.maxgauge) * 10;
+        scale.z = (_currentbulletcount / _guninfo.maxgauge);
         L_Gunmeshrenderer[1].transform.localScale = scale;
 
     }
@@ -150,9 +150,7 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
     public void SetGauge(float newval)
     {
         _currentbulletcount += newval;
-
         SetGaugeUIBar();
-
         TestUI.testUI.setText(_currentbulletcount.ToString());
     }
 

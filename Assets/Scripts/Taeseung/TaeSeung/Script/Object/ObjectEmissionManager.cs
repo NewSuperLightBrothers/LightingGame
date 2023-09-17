@@ -20,8 +20,6 @@ public class ObjectEmissionManager : MonoBehaviour
     [SerializeField]
     private ObjectEmissionUI _emissionUI;
 
-
-
     private Color _Initialcolor;
     private Dictionary<ObjectColorType, float> _colorInitialvalue;
     private Dictionary<ObjectColorType, int> _check;
@@ -29,10 +27,12 @@ public class ObjectEmissionManager : MonoBehaviour
     void Start()
     {
         _Initialcolor = _meshrenderer.material.GetColor("_EmissionColor");
+        GameObject UI = _emissionUI.InstantiateUI(this.transform);
+        _emissionUI = UI.GetComponent<ObjectEmissionUI>();
+        UI.SetActive(false);
+
         SetColorInitialize();
-        _emissionUI.InstantiateUI(this.transform).SetActive(false);
         _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
-        
     }
 
 
@@ -41,23 +41,31 @@ public class ObjectEmissionManager : MonoBehaviour
         _colorInitialvalue = new();
         _check = new();
 
+        Vector3 playerposition = Camera.main.transform.position;
+        Vector3 thisposition = this.transform.position;
+        Vector3 face =thisposition - playerposition;
+
         if (_colortype == ObjectColorType.Red)
         {
             _Initialcolor = Color.red; //* _emissionInitialvalue;
             _colorInitialvalue.Add(ObjectColorType.Red, _Initialcolor.r);
             _check.Add(ObjectColorType.Red, 0);
+            _emissionUI.AddFirseBar(Color.red, 1);
+           
         }
         else if (_colortype == ObjectColorType.Green)
         {
             _Initialcolor = Color.green; //* _emissionInitialvalue;
             _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
             _check.Add(ObjectColorType.Green, 0);
+            _emissionUI.AddFirseBar(Color.green, 1);
         }
         else if (_colortype == ObjectColorType.Blue)
         {
             _Initialcolor = Color.blue; //* _emissionInitialvalue;
             _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
             _check.Add(ObjectColorType.Blue,0) ;
+            _emissionUI.AddFirseBar(Color.blue, 1);
         }
         else if (_colortype == ObjectColorType.Magenta)
         {
@@ -66,6 +74,8 @@ public class ObjectEmissionManager : MonoBehaviour
             _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
             _check.Add(ObjectColorType.Red, 0);
             _check.Add(ObjectColorType.Blue, 0);
+            _emissionUI.AddFirseBar(Color.red, 1);
+            _emissionUI.AddProgressbar(Color.blue, 1);
         }
         else if (_colortype == ObjectColorType.Yellow)
         {
@@ -74,6 +84,9 @@ public class ObjectEmissionManager : MonoBehaviour
             _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
             _check.Add(ObjectColorType.Red, 0);
             _check.Add(ObjectColorType.Green, 0);
+
+            _emissionUI.AddFirseBar(Color.red, 1);
+            _emissionUI.AddProgressbar(Color.green, 1);
         }
         else if (_colortype == ObjectColorType.Cyan)
         {
@@ -82,6 +95,8 @@ public class ObjectEmissionManager : MonoBehaviour
             _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
             _check.Add(ObjectColorType.Green, 0);
             _check.Add(ObjectColorType.Blue, 0);
+            _emissionUI.AddFirseBar(Color.green, 1);
+            _emissionUI.AddProgressbar(Color.blue, 1);
         }
         else if (_colortype == ObjectColorType.White)
         {
@@ -92,15 +107,27 @@ public class ObjectEmissionManager : MonoBehaviour
             _check.Add(ObjectColorType.Red, 0);
             _check.Add(ObjectColorType.Green, 0);
             _check.Add(ObjectColorType.Blue, 0);
+            _emissionUI.AddFirseBar(Color.red, 1);
+            _emissionUI.AddProgressbar(Color.green, 1);
+            _emissionUI.AddProgressbar(Color.blue, 1);
         }
-        }
+
+
+        _emissionUI.PanelColor(_Initialcolor);
+        _emissionUI.SetForwardVector(face);
+     }
     
     public bool takeLightEnergy(ObjectColorType colortype)
     {
         float tempcolorval = 0;
         int tempcheck = 0;
+
+        if (!_emissionUI.gameObject.activeSelf)
+            _emissionUI.gameObject.SetActive(true);
+
+
         if (_check.TryGetValue(colortype, out tempcheck)) {
-            if (tempcheck <= (_gauge / _takeweight))
+            if (tempcheck < (_gauge / _takeweight))
             {
                 _check[colortype]++;
 
@@ -109,11 +136,15 @@ public class ObjectEmissionManager : MonoBehaviour
                     if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
                         _Initialcolor.r -= (tempcolorval / _gauge) * _takeweight;
 
+                    _emissionUI.SetProgrssbarFill(Color.red, _Initialcolor.r, 1);
+
                 }
                 else if (colortype == ObjectColorType.Green)
                 {
                     if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
                         _Initialcolor.g -= (tempcolorval / _gauge) * _takeweight;
+
+                    _emissionUI.SetProgrssbarFill(Color.green, _Initialcolor.g, 1);
                 }
 
                 else if (colortype == ObjectColorType.Blue)
@@ -121,25 +152,25 @@ public class ObjectEmissionManager : MonoBehaviour
                     if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
                         _Initialcolor.b -= (tempcolorval / _gauge) * _takeweight;
 
+                    _emissionUI.SetProgrssbarFill(Color.blue, _Initialcolor.b, 1);
+
                 }
                 _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
                 return true;
             }
             else
             {
-                print("빨거 다 빨았다 이자식아");
                 return false;
             }
         }
         else
         {
-            print("못빤다 이자식아");
             return false;
         }
     }
 
 
-
+    public void TurnOffUI() => _emissionUI.SetTurnUI(false);
     public ObjectColorType getColortype() => _colortype;
     public float getGuage() => _gauge;
     public void setGauge(float gauge) => _gauge = gauge;
