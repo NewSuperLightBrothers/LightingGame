@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using KinematicCharacterController;
+using KinematicCharacterController.Examples;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
+using Unity.Mathematics;
 
 
 [System.Serializable]
@@ -22,22 +24,19 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] private UserInputData _inputData;
     public UserInputData InputData => _inputData;
+
+    public PlayerCharacterInputs characterInputs = new();
+
     private UserInputAssets _userInputAssets;
+
+    public ExampleCharacterController character;
+    public ExampleCharacterCamera characterCamera;
+
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
-    private Image _image;
 
     private Vector2 mouseDelta = Vector2.zero;
-
-    public bool b, oldB, value;
-    private Vector2 touchBefore;
-
-    [System.Serializable]
-    private enum FingerData
-    {
-        None, ThumbStick, Screen, Fire
-    }
-    [SerializeField] private FingerData[] _fingerData = new FingerData[10];
+    private Vector2 rotationOS = Vector2.zero;
 
     private void Awake() {
         _userInputAssets = new();
@@ -49,10 +48,6 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
         _userInputAssets.Locomotion.Move.canceled -= OnMoveCancel;
-
-        _userInputAssets.Locomotion.View.started -= OnView;
-        _userInputAssets.Locomotion.View.performed -= OnView;
-        _userInputAssets.Locomotion.View.canceled -= OnView;
 
         _userInputAssets.Locomotion.Jump.started -= OnJump;
         _userInputAssets.Locomotion.Jump.performed -= OnJump;
@@ -66,10 +61,6 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Move.performed += OnMove;
         _userInputAssets.Locomotion.Move.canceled += OnMoveCancel;
 
-        _userInputAssets.Locomotion.View.started += OnView;
-        _userInputAssets.Locomotion.View.performed += OnView;
-        _userInputAssets.Locomotion.View.canceled += OnView;
-
         _userInputAssets.Locomotion.Jump.started += OnJump;
         _userInputAssets.Locomotion.Jump.performed += OnJump;
         _userInputAssets.Locomotion.Jump.canceled += OnJump;
@@ -78,23 +69,15 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.performed += OnFire;
         _userInputAssets.Interaction.Fire.canceled += OnFire;
 
-        _userInputAssets.TouchFallback.LeftButton.started += OnTouchFallbackModifier;
-        _userInputAssets.TouchFallback.LeftButton.performed += OnTouchFallbackModifier;
-        _userInputAssets.TouchFallback.LeftButton.canceled += OnTouchFallbackModifier;
-
-        _userInputAssets.TouchFallback.Position.started += OnTouchFallback;
-        _userInputAssets.TouchFallback.Position.performed += OnTouchFallback;
-        _userInputAssets.TouchFallback.Position.canceled += OnTouchFallback;
+        _userInputAssets.TouchFallback.Delta.started += OnTouchDelta;
+        _userInputAssets.TouchFallback.Delta.performed += OnTouchDelta;
+        _userInputAssets.TouchFallback.Delta.canceled += OnTouchDelta;
     }
     
     private void OnDisable() {
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
         _userInputAssets.Locomotion.Move.canceled -= OnMoveCancel;
-
-        _userInputAssets.Locomotion.View.started -= OnView;
-        _userInputAssets.Locomotion.View.performed -= OnView;
-        _userInputAssets.Locomotion.View.canceled -= OnView;
 
         _userInputAssets.Locomotion.Jump.started -= OnJump;
         _userInputAssets.Locomotion.Jump.performed -= OnJump;
@@ -104,62 +87,56 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
 
-        _userInputAssets.TouchFallback.Position.started -= OnTouchFallback;
-        _userInputAssets.TouchFallback.Position.performed -= OnTouchFallback;
-        _userInputAssets.TouchFallback.Position.canceled -= OnTouchFallback;
+        _userInputAssets.TouchFallback.Delta.started -= OnTouchDelta;
+        _userInputAssets.TouchFallback.Delta.performed -= OnTouchDelta;
+        _userInputAssets.TouchFallback.Delta.canceled -= OnTouchDelta;
         
         _userInputAssets.Disable();
         EnhancedTouch.EnhancedTouchSupport.Disable();
     }
     private void OnMove(InputAction.CallbackContext c) {
-        _inputData.velocityIS = c.ReadValue<Vector2>();
+        Vector2 velocityIS = c.ReadValue<Vector2>();
+        characterInputs.MoveAxisRight = velocityIS.x;
+        characterInputs.MoveAxisForward = velocityIS.y;
+        //character.SetInputs(ref characterInputs);
     }
     private void OnMoveCancel(InputAction.CallbackContext c) {
-        _inputData.velocityIS = Vector2.zero;
-    }
-    private void OnView(InputAction.CallbackContext c) {
-        
+        characterInputs.MoveAxisRight = 0f;
+        characterInputs.MoveAxisForward = 0f;
+        //character.SetInputs(ref characterInputs);
     }
     private void OnJump(InputAction.CallbackContext c) {
-        _inputData.isJump = c.ReadValue<float>() == 1f;
+        characterInputs.JumpDown = c.ReadValue<float>() == 1f;
     }
     private void OnFire(InputAction.CallbackContext c) {
-        _inputData.isFire = c.ReadValue<float>() == 1f;
+        //_inputData.isFire = c.ReadValue<float>() == 1f;
     }
-    private void OnTouchFallbackModifier(InputAction.CallbackContext c) {
-        b = c.ReadValue<float>() == 1;
-    }
-    private void OnTouchFallback(InputAction.CallbackContext c) {
-        mouseDelta = b? c.ReadValue<Vector2>() : Vector2.zero;
+
+    private void OnTouchDelta(InputAction.CallbackContext c) {
+        mouseDelta = c.ReadValue<Vector2>();
     }
 
     private void Start() {
         _rect = new Rect(_joystickForeground.rect);
-        _image = _joystickForeground.gameObject.GetComponent<Image>();
+        Image _image = _joystickForeground.gameObject.GetComponent<Image>();
         _rect.position = _joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);
         _rect.size -= new Vector2(_image.raycastPadding.x, _image.raycastPadding.y) * 2;
+
+        characterCamera.SetFollowTransform(character.CameraFollowPoint);
     }
 
     private void Update() {
-        InputData.swipeIS = GetTouchDeltaEnhanced();
-
         
     }
 
-    private void FixedUpdate() {
-        if ((!oldB && b) && !value && !_rect.Contains(_userInputAssets.TouchFallback.Position.ReadValue<Vector2>())) value = true;
-        if (!oldB && !b) value = false;
+    private void LateUpdate() {
+        rotationOS = GetTouchDeltaEnhanced() + mouseDelta;
+        rotationOS *= 0.1f;
+        Vector3 lookInputWS = new Vector3(rotationOS.x, rotationOS.y, 0);
 
-        
-        if (value && touchBefore != Vector2.zero && mouseDelta != Vector2.zero) {
-            Vector2 touchNow = mouseDelta;
-            InputData.swipeIS += touchNow - touchBefore;
-            
-        }
-        
-
-        touchBefore = mouseDelta;
-        oldB = b;
+        characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
+        characterInputs.CameraRotation = characterCamera.Transform.rotation;
+        character.SetInputs(ref characterInputs);
     }
 
     private Vector2 GetTouchDeltaEnhanced()
@@ -171,17 +148,4 @@ public class InputManager : MonoBehaviour
         }
         return Vector2.zero;
     }
-
-    private Vector2 GetTouchDeltaInput() {
-        if (Input.touchCount <= 0) return Vector2.zero;
-
-        for (int i = 0; i < Input.touchCount; i++) {
-            Touch touch = Input.GetTouch(i);
-            if (touch.phase == UnityEngine.TouchPhase.Moved && !_rect.Contains(touch.position)) {
-                return Input.GetTouch(i).deltaPosition;
-            }
-        }
-        return Vector2.zero;
-    }
-
 }
