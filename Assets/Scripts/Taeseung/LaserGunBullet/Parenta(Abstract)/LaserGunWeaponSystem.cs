@@ -1,8 +1,8 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//weapon°ü·Ã ÃÖ»óÀ§ Å¬·¡½º
+//weaponê´€ë ¨ ìµœìƒìœ„ í´ë˜ìŠ¤
 public abstract class LaserGunWeaponSystem : MonoBehaviour
 {
     [SerializeField]
@@ -28,7 +28,7 @@ public abstract class LaserGunWeaponSystem : MonoBehaviour
     protected abstract void SetObjectTeamColor(Color color, float emissionstrength);
 
 
-    //¼­¹ö³ª ¿ÜºÎ µ¥º£·Î ºÎÅÍ ÆÀ Á¤º¸¸¦ ¹Ş¾Æ¿Ã ¼ö ÀÖ´Â ÇÔ¼ö
+    //ì„œë²„ë‚˜ ì™¸ë¶€ ë°ë² ë¡œ ë¶€í„° íŒ€ ì •ë³´ë¥¼ ë°›ì•„ì˜¬ ìˆ˜ ìˆëŠ” í•¨ìˆ˜
     private void TakeTeamInfo() { }
 
 
@@ -42,34 +42,34 @@ public abstract class LaserGunWeaponShootingSystem : LaserGunWeaponSystem
     [SerializeField]
     protected Guninfo _guninfo;
 
-    //°ø°İ»ç°Å¸®
+    //ê³µê²©ì‚¬ê±°ë¦¬
     [SerializeField]
     protected float _distance;
     [SerializeField]
-    //Á¶ÁØÁ¡
+    //ì¡°ì¤€ì 
     protected Vector3 _direction;
 
 
-    //ÇöÀç ³²Àº ÅºÃ¢ °ÔÀÌÁö ÃøÁ¤
+    //í˜„ì¬ ë‚¨ì€ íƒ„ì°½ ê²Œì´ì§€ ì¸¡ì •
     protected float _currentbulletcount = 0;
-    //cooltime ÃøÁ¤
+    //cooltime ì¸¡ì •
     protected float _cooltimeinterval = 0f;
-    //½î´Â ÁßÀÎÁö ¾Æ´ÑÁö È®ÀÎ
+    //ì˜ëŠ” ì¤‘ì¸ì§€ ì•„ë‹Œì§€ í™•ì¸
     protected bool _isshoot = true;
 
 
-    //ÃÑ±¸·Î ºÎÅÍ(¶Ç´Â firepoint·ÎºÎÅÍ) ³ª°¡´Â ray
+    //ì´êµ¬ë¡œ ë¶€í„°(ë˜ëŠ” firepointë¡œë¶€í„°) ë‚˜ê°€ëŠ” ray
     protected Ray _ray;
-    //ray¿¡ hitµÈ °´Ã¼µé
+    //rayì— hitëœ ê°ì²´ë“¤
     protected RaycastHit[] _hits;
 
     protected void Start()
     {
-        //»ç°Å¸® ÃÊ±âÈ­
+        //ì‚¬ê±°ë¦¬ ì´ˆê¸°í™”
         _distance = Vector3.Distance(_guninfo.firepoint.position, _guninfo.endpoint.position);
         print(_distance);
 
-        //Á¶ÁØ ¹æÇâ ÃÊ±âÈ­
+        //ì¡°ì¤€ ë°©í–¥ ì´ˆê¸°í™”
         _direction = _guninfo.endpoint.position - _guninfo.firepoint.position;
     }
 

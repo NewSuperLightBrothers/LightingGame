@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,14 +44,14 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             _readyendtime = Time.time;
 
 
-        if (_duration < _endtime - _starttime && _isTouch == true){//ÀÏÁ¤ ½Ã°£ ´©¸¥ °æ¿ì, ÇØ´ç À§Ä¡¿¡ Èí¼ö °¡´É ºûÀÌ ÀÖ´ÂÁö È®ÀÎ
+        if (_duration < _endtime - _starttime && _isTouch == true){//ì¼ì • ì‹œê°„ ëˆ„ë¥¸ ê²½ìš°, í•´ë‹¹ ìœ„ì¹˜ì— í¡ìˆ˜ ê°€ëŠ¥ ë¹›ì´ ìˆëŠ”ì§€ í™•ì¸
             if (emissionmanager != null) emissionmanager.TurnOffUI();
 
             if (takeRaycastObject(_touch)) { 
                 if (emissionmanager.takeLightEnergy(_team)) 
                     LasergunManager.SetGauge(emissionmanager.getWeight());           
-                //ÇöÀç »ö±ò·Î Èí¼ö °¡´ÉÇÑ ¹°Ã¼°¡ ¸Â´ÂÁö È®ÀÎ
-                 //Èí¼ö °¡´ÉÇÑ ¹°Ã¼¸é gauge¸¦ Ã¤¿ò
+                //í˜„ì¬ ìƒ‰ê¹”ë¡œ í¡ìˆ˜ ê°€ëŠ¥í•œ ë¬¼ì²´ê°€ ë§ëŠ”ì§€ í™•ì¸
+                 //í¡ìˆ˜ ê°€ëŠ¥í•œ ë¬¼ì²´ë©´ gaugeë¥¼ ì±„ì›€
             }
         }
         else if(_duration * 5 < _readyendtime - _readytime && _isTouch == false) {
@@ -76,10 +76,10 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
-                //Debug.Log("·Õ ÇÁ·¹½ºÇÑ ¿ÀºêÁ§Æ®: " + hit.collider.gameObject.name);
+                //Debug.Log("ë¡± í”„ë ˆìŠ¤í•œ ì˜¤ë¸Œì íŠ¸: " + hit.collider.gameObject.name);
                 if (hit.collider.TryGetComponent<ObjectEmissionManager>(out emissionmanager))
                 {
-                    /* Å¬¸¯ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ ¿Ü°û¼± Ç¥½Ã...
+                    /* í´ë¦­ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•œ ì™¸ê³½ì„  í‘œì‹œ...
                     MeshRenderer renderer;
                     if (hit.collider.TryGetComponent<MeshRenderer>(out renderer))
                     {

@@ -1,30 +1,30 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-//Åº¾Ë Á¤º¸
+//íƒ„ì•Œ ì •ë³´
 [Serializable]
 public struct Laserinfo
 {
-    public LineRenderer bulletlinerenderer;                 //¶óÀÎ·»´õ·¯
-    public List<LaserParticleSystem> usinglaserParticle;    //Åº¾Ë °ü·Ã ÆÄÆ¼Å¬
-    public float speed;                                     //Åº¾Ë ½ºÇÇµå (±Ù°Å¸®ÀÇ °æ¿ì ÈÖµÎ¸£´Â ¼Óµµ)
-    public float distance;                                  //Åº¾ËÀÌ ³¯¾Æ°¡´Â °Å¸® (±Ù°Å¸®ÀÇ °æ¿ì °ËÀÇ °Å¸®)
-    public float dmg;                                       //Åº¾Ë µ¥¹ÌÁö
+    public LineRenderer bulletlinerenderer;                 //ë¼ì¸ë Œë”ëŸ¬
+    public List<LaserParticleSystem> usinglaserParticle;    //íƒ„ì•Œ ê´€ë ¨ íŒŒí‹°í´
+    public float speed;                                     //íƒ„ì•Œ ìŠ¤í”¼ë“œ (ê·¼ê±°ë¦¬ì˜ ê²½ìš° íœ˜ë‘ë¥´ëŠ” ì†ë„)
+    public float distance;                                  //íƒ„ì•Œì´ ë‚ ì•„ê°€ëŠ” ê±°ë¦¬ (ê·¼ê±°ë¦¬ì˜ ê²½ìš° ê²€ì˜ ê±°ë¦¬)
+    public float dmg;                                       //íƒ„ì•Œ ë°ë¯¸ì§€
 }
 
-//¹«±â 
+//ë¬´ê¸° 
 [Serializable]
 public struct Guninfo
 { 
-    public float maxgauge;                                   //ÃÖ´ë ºû ¿¡³ÊÁö °ÔÀÌÁö
-    public float usinggauge;                                 //ÇÑ¹ß ½ò¶§¸¶´Ù »ç¿ëµÇ´Â °ÔÀÌÁö
-    public float Cooltime;                                   //´ÙÀ½ °ø°İÀÇ ÄğÅ¸ÀÓ
-    public Animator gunanimation;                            //¹«±â ¾Ö´Ï¸ŞÀÌ¼Ç
-    public GameObject usingbullet;                           //ÀÌ ¹«±â°¡ »ç¿ëÇÏ´Â ½ÇÁ¦ °ø°İ¹æ½Ä
-    public Transform firepoint;                              //(¿ø°Å¸®¸¸ ÇØ´ç) Åº¾Ë ¹ß»ç À§Ä¡
-    public Transform endpoint;                               //(¿ø°Å¸®¸¸ ÇØ´ç) ÃÖ´ë »ç°Å¸®
-    public AudioSource shootingsound;                        //°ø°İ½Ã ¹æÃâµÇ´Â ¼Ò¸®
+    public float maxgauge;                                   //ìµœëŒ€ ë¹› ì—ë„ˆì§€ ê²Œì´ì§€
+    public float usinggauge;                                 //í•œë°œ ì ë•Œë§ˆë‹¤ ì‚¬ìš©ë˜ëŠ” ê²Œì´ì§€
+    public float Cooltime;                                   //ë‹¤ìŒ ê³µê²©ì˜ ì¿¨íƒ€ì„
+    public Animator gunanimation;                            //ë¬´ê¸° ì• ë‹ˆë©”ì´ì…˜
+    public GameObject usingbullet;                           //ì´ ë¬´ê¸°ê°€ ì‚¬ìš©í•˜ëŠ” ì‹¤ì œ ê³µê²©ë°©ì‹
+    public Transform firepoint;                              //(ì›ê±°ë¦¬ë§Œ í•´ë‹¹) íƒ„ì•Œ ë°œì‚¬ ìœ„ì¹˜
+    public Transform endpoint;                               //(ì›ê±°ë¦¬ë§Œ í•´ë‹¹) ìµœëŒ€ ì‚¬ê±°ë¦¬
+    public AudioSource shootingsound;                        //ê³µê²©ì‹œ ë°©ì¶œë˜ëŠ” ì†Œë¦¬
 }

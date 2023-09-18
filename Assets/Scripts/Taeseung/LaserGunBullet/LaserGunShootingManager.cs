@@ -1,10 +1,10 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-//¹«±â¿¡ ´ëÇÑ Á¤º¸
+//ë¬´ê¸°ì— ëŒ€í•œ ì •ë³´
 public class LaserGunShootingManager : LaserGunWeaponShootingSystem
 {
     [SerializeField]
@@ -30,14 +30,14 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
     {
         _direction = _guninfo.endpoint.position - _guninfo.firepoint.position;
 
-        //ÃÑ±¸°¡ Èçµé·Á¼­ raycast¸¦ ´Ù½Ã ÇØ¾ßÇÏ´Â °æ¿ì
+        //ì´êµ¬ê°€ í”ë“¤ë ¤ì„œ raycastë¥¼ ë‹¤ì‹œ í•´ì•¼í•˜ëŠ” ê²½ìš°
         if (_gunDirection != _direction)
         {
             _gunDirection = _direction;
             l_pathPoints.Clear();
             BulletRayCast();
         }
-        //ÄğÅ¸ÀÓÀÌ µ¹°í ÅÍÄ¡ÀÔ·ÂÀÌ Á¸ÀçÇßÀ» °æ¿ì, ¹ß»ç
+        //ì¿¨íƒ€ì„ì´ ëŒê³  í„°ì¹˜ì…ë ¥ì´ ì¡´ì¬í–ˆì„ ê²½ìš°, ë°œì‚¬
         if (Input.GetMouseButtonDown(0) && _isshoot && _currentbulletcount - _guninfo.usinggauge >= 0)
         {
             BulletFire();
@@ -100,21 +100,21 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
             _ray.origin = Beforepoint;
             _hits = Physics.RaycastAll(_ray, distance, LayerMask.GetMask("Mirror"));
 
-            //ÃÖ´ë ¹İ»ç È½¼ö¿¡ µµ´ŞÇÑ °æ¿ì
+            //ìµœëŒ€ ë°˜ì‚¬ íšŸìˆ˜ì— ë„ë‹¬í•œ ê²½ìš°
             if (_reflectCount <= l_pathPoints.Count - 2)
             {
                 l_pathPoints.Add(Beforepoint + distance * Input);
                 distance -= distance;
                 break;
             }
-            //´õ ÀÌ»óÀÇ Æ¨±èÀÌ ¾ø´Â °æ¿ì
+            //ë” ì´ìƒì˜ íŠ•ê¹€ì´ ì—†ëŠ” ê²½ìš°
             else if (_hits.Length <= 0)
             {
                 l_pathPoints.Add(Beforepoint + distance * Input);
                 distance -= distance;
                 continue;
             }
-            //Æ¨±èÀÌ Á¸ÀçÇÏ´Â °æ¿ì
+            //íŠ•ê¹€ì´ ì¡´ì¬í•˜ëŠ” ê²½ìš°
             else
             {
                 reflectcount++;

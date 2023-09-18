@@ -1,14 +1,14 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//¹«±â Åõ»çÃ¼ ´ëÇÑ Àü¹İÀûÀÎ ±â´É Á¤ÀÇ¸¦ ÇÏ´Â ºÎºĞ
+//ë¬´ê¸° íˆ¬ì‚¬ì²´ ëŒ€í•œ ì „ë°˜ì ì¸ ê¸°ëŠ¥ ì •ì˜ë¥¼ í•˜ëŠ” ë¶€ë¶„
 public abstract class LaserGunManager : LaserGunWeaponSystem
 {
     // Start is called before the first frame update
 
-    [Header("·¹ÀÌÀú Á¤º¸")]
+    [Header("ë ˆì´ì € ì •ë³´")]
     [SerializeField]
     protected Laserinfo _laserInfo;
 
