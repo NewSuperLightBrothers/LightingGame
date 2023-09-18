@@ -2780,11 +2780,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Team: 1
-  _emissionstrength: 2.25
+  _emissionStrength: 2
   _guninfo:
-    maxgauge: 500
+    maxgauge: 200
     usinggauge: 10
-    Cooltime: 0.225
+    Cooltime: 0.25
     gunanimation: {fileID: 2193688954742874990}
     usingbullet: {fileID: 4991624656693594560, guid: 3ea7dd346bb63f047acc8386692f9e07,
       type: 3}
@@ -2793,10 +2793,11 @@ MonoBehaviour:
     shootingsound: {fileID: 3666025443288946325}
   _distance: 0
   _direction: {x: 0, y: 0, z: 0}
-  L_Gunmeshrenderer:
+  l_gunMeshRenderer:
+  - {fileID: 6896715134445907207}
   - {fileID: 7919078574248938559}
-  FirePath: {fileID: 4312640782357111138}
-  _reflectcount: 0
+  firePath: {fileID: 4312640782357111138}
+  _reflectCount: 3
 --- !u!95 &2193688954742874990
 Animator:
   serializedVersion: 5
@@ -3909,7 +3910,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26d9d637cb976d346901ae1fc5587c0b, type: 2}
+  - {fileID: 2100000, guid: 1226e654470dbe6459cae9e059d4aa78, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

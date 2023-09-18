@@ -607,6 +607,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
+      propertyPath: _emissionStrength
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
       propertyPath: _emissionstrength
       value: 2.25
       objectReference: {fileID: 0}
@@ -623,6 +628,11 @@ PrefabInstance:
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
       propertyPath: L_Gunmeshrenderer.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
+      propertyPath: l_gunMeshRenderer.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
@@ -1240,6 +1250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TestHP: 100
+  bomb: {fileID: 0}
 --- !u!54 &517641077
 Rigidbody:
   m_ObjectHideFlags: 0

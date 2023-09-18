@@ -4859,12 +4859,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04304e14d661d4b8b4e971ac117255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlePrefab: {fileID: 6179340009750829026}
-  l_particlesystem:
+  particlePrefab: {fileID: 6179340009750829026}
+  l_particleSystem:
   - {fileID: 6179340009683086169}
   - {fileID: 6179340010225430133}
   - {fileID: 6179340010362465113}
-  _guntype: 0
+  gunType: 0
 --- !u!1 &6179340010225430138
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,9 +6,9 @@ using UnityEngine;
 public abstract class LaserGunWeaponSystem : MonoBehaviour
 {
     [SerializeField]
-    protected LaserTeamType Team;
+    protected ELaserTeamType Team;
     [SerializeField]
-    protected float _emissionstrength;
+    protected float _emissionStrength;
     protected Color _materialcolor;
 
     private void Awake()
@@ -19,9 +19,9 @@ public abstract class LaserGunWeaponSystem : MonoBehaviour
 
     protected Color getTeamColor()
     {
-        if (Team == LaserTeamType.Red) _materialcolor = Color.red;
-        else if (Team == LaserTeamType.Blue) _materialcolor = Color.blue;
-        else if (Team == LaserTeamType.Green) _materialcolor = Color.green;
+        if (Team == ELaserTeamType.Red) _materialcolor = Color.red;
+        else if (Team == ELaserTeamType.Blue) _materialcolor = Color.blue;
+        else if (Team == ELaserTeamType.Green) _materialcolor = Color.green;
 
         return _materialcolor;
     }

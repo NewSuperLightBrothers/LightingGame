@@ -4857,7 +4857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04304e14d661d4b8b4e971ac117255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlePrefab: {fileID: 8544280266926002492}
-  l_particlesystem:
+  particlePrefab: {fileID: 8544280266926002492}
+  l_particleSystem:
   - {fileID: 4373139767650407413}
-  _guntype: 1
+  gunType: 0

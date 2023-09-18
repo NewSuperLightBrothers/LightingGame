@@ -4982,16 +4982,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Team: 1
-  _emissionstrength: 2.25
-  _laserinfo:
-    bulletlinerenderer: {fileID: 4991624656693594562}
+  _emissionStrength: 2
+  _laserInfo:
+    bulletlinerenderer: {fileID: 0}
     usinglaserParticle:
-    - {fileID: 3858565777216842866, guid: 8ba506efbf5fa7d4aa0b67ee2dd894c3, type: 3}
+    - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
     - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
     speed: 4
-    distance: 100
-    dmg: 10
-  glasssound: {fileID: 917092243866544903, guid: 1632bf2047f1acf4fb3b7688556a5e3e,
+    distance: 50
+    dmg: 5
+  glassSound: {fileID: 917092243866544903, guid: 1632bf2047f1acf4fb3b7688556a5e3e,
     type: 3}
   points: []
   distance: 0

@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04304e14d661d4b8b4e971ac117255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticlePrefab: {fileID: 8794439379758290803}
-  l_particlesystem:
+  particlePrefab: {fileID: 8794439379758290803}
+  l_particleSystem:
   - {fileID: 8794439379758290801}
-  _guntype: 1
+  gunType: 0
 --- !u!198 &8794439379758290801
 ParticleSystem:
   m_ObjectHideFlags: 0

@@ -5,57 +5,59 @@ using UnityEngine;
 public class LaserParticleSystem : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject ParticlePrefab;
-    public List<ParticleSystem> l_particlesystem;
-    [SerializeField] private LaserGunType _guntype;
+    public GameObject particlePrefab;
+    public List<ParticleSystem> l_particleSystem;
+
+    [SerializeField]
+    private ELaserGunType gunType;
 
 
     private void Update()
     {
-        if (isparticleStop() && _guntype == LaserGunType.Bullet)
+        if (isparticleStop() && gunType == ELaserGunType.Bullet)
         {
             Destroy(this.gameObject);
         }
     }
 
 
-    public void particleplay()
+    public void particlePlay()
     {
-        for (int i = 0; i < l_particlesystem.Count; i++) {
-            l_particlesystem[i].Play();
+        for (int i = 0; i < l_particleSystem.Count; i++) {
+            l_particleSystem[i].Play();
          }
     }
 
-    public void particlestop()
+    public void particleStop()
     {
-        for (int i = 0; i < l_particlesystem.Count; i++)
+        for (int i = 0; i < l_particleSystem.Count; i++)
         {
-            l_particlesystem[i].Stop();
+            l_particleSystem[i].Stop();
         }
     }
 
     public bool isparticleStart()
     {
-        return l_particlesystem[0].isPlaying;
+        return l_particleSystem[0].isPlaying;
     }
 
     public bool isparticleStop()
     {
-        return l_particlesystem[0].isStopped;
+        return l_particleSystem[0].isStopped;
     }
 
     public (GameObject, LaserParticleSystem) particleInstantiate()
     {
-        GameObject newobject = Instantiate(ParticlePrefab);
-        LaserParticleSystem newparticlesystem = newobject.GetComponent<LaserParticleSystem>();
-        return (newobject, newparticlesystem);
+        GameObject newObject = Instantiate(particlePrefab);
+        LaserParticleSystem newParticleSystem = newObject.GetComponent<LaserParticleSystem>();
+        return (newObject, newParticleSystem);
     }
 
-    public (GameObject,LaserParticleSystem) particleInstantiate(Vector3 Location, Quaternion Rotation)
+    public (GameObject,LaserParticleSystem) particleInstantiate(Vector3 location, Quaternion rotation)
     {
-        GameObject newobject = Instantiate(ParticlePrefab, Location, Rotation, null);
-        LaserParticleSystem newparticlesystem = newobject.GetComponent<LaserParticleSystem>();
-        return (newobject, newparticlesystem);
+        GameObject newObject = Instantiate(particlePrefab, location, rotation, null);
+        LaserParticleSystem newParticleSystem = newObject.GetComponent<LaserParticleSystem>();
+        return (newObject, newParticleSystem);
     }
 
     public void particleDestroy(GameObject particle)

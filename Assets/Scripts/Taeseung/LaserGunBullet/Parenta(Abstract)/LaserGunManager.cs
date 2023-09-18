@@ -10,13 +10,13 @@ public abstract class LaserGunManager : LaserGunWeaponSystem
 
     [Header("레이저 정보")]
     [SerializeField]
-    protected Laserinfo _laserinfo;
+    protected Laserinfo _laserInfo;
 
-    protected Vector3 _startposition;
-    protected Vector3 _bulletforwardvector;
-    protected Vector3 _rayhitpos;
-    protected float _rayhitposdistance = -1;
-    protected Vector3 _rayoppositenormal;
+    protected Vector3 _startPosition;
+    protected Vector3 _bulletForwardVector;
+    protected Vector3 _rayHitPos;
+    protected float _rayHitPosdistance = -1;
+    protected Vector3 _rayOppositeNormal;
     protected Ray _ray = new();
 
 
@@ -30,17 +30,17 @@ public abstract class LaserGunManager : LaserGunWeaponSystem
     {
         VectorInitialize(transform.position, transform.forward);
         MakeMirrorRayhitInfo(_ray, 500);
-        SetObjectTeamColor(_materialcolor, _emissionstrength);
+        SetObjectTeamColor(_materialcolor, _emissionStrength);
     }
 
 
-    protected void VectorInitialize(Vector3 newstartposition, Vector3 forwardvector)
+    protected void VectorInitialize(Vector3 newstartPosition, Vector3 forwardvector)
     {
-        _startposition = newstartposition;
-        _bulletforwardvector = forwardvector;
+        _startPosition = newstartPosition;
+        _bulletForwardVector = forwardvector;
 
-        _ray.direction = _bulletforwardvector;
-        _ray.origin = _startposition;
+        _ray.direction = _bulletForwardVector;
+        _ray.origin = _startPosition;
     }
 
 
@@ -49,20 +49,20 @@ public abstract class LaserGunManager : LaserGunWeaponSystem
         RaycastHit[] hits = Physics.RaycastAll(ray, distance, LayerMask.GetMask("Mirror"));
         if (hits.Length > 0)
         {
-            _rayhitpos = hits[0].point;
-            _rayhitposdistance = Vector3.Distance(_startposition, _rayhitpos);
-            _rayoppositenormal = hits[0].normal;
+            _rayHitPos = hits[0].point;
+            _rayHitPosdistance = Vector3.Distance(_startPosition, _rayHitPos);
+            _rayOppositeNormal = hits[0].normal;
 
-            Debug.DrawLine(_startposition, _rayhitpos , Color.red, 10);
+            Debug.DrawLine(_startPosition, _rayHitPos , Color.red, 10);
         }
         else
         {
-            _rayhitposdistance = -1;
+            _rayHitPosdistance = -1;
         }
     }
 
     protected override void SetObjectTeamColor(Color color, float emissionstrength)
     {
-        _laserinfo.bulletlinerenderer.material.SetColor("_EmissionColor", color * Mathf.Pow(2, emissionstrength));
+        _laserInfo.bulletlinerenderer.material.SetColor("_EmissionColor", color * Mathf.Pow(2, emissionstrength));
     }
 }
