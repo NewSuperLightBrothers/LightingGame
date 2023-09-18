@@ -5,21 +5,17 @@ using TMPro;
 
 public class TestUI : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text textUI;
+    [SerializeField] private TMP_Text _textUI;
 
     public static TestUI testUI;
 
     private void Start()
     {
         testUI = this;
-
     }
 
-
-    // Update is called once per frame
-    public void setText(string newtext)
+    public void setText(string newText)
     {
-       textUI.text = newtext;
+       _textUI.text = newText;
     }
 }

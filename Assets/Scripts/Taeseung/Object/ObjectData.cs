@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ObjectColorType
+public enum EObjectColorType
 {
     Red,
     Green,

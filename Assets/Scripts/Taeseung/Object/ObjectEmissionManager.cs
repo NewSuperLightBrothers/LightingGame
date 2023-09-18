@@ -1,161 +1,154 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ObjectEmissionManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private MeshRenderer _meshRenderer;
+    [SerializeField] private EObjectColorType _colorType;
+    [SerializeField] private float _gauge;
+    [SerializeField] private float _takeWeight;
+    [SerializeField] private float _emissionStrength;
 
-    [SerializeField]
-    private MeshRenderer _meshrenderer;
-    [SerializeField]
-    private ObjectColorType _colortype;
-    [SerializeField]
-    private float _gauge;
-    [SerializeField]
-    private float _takeweight;
-    [SerializeField]
-    private float _emissionstrength;
+    [SerializeField] private ObjectEmissionUI _emissionUI;
 
-    [SerializeField]
-    private ObjectEmissionUI _emissionUI;
+    private Color _initialColor;
+    private Dictionary<EObjectColorType, float> _d_colorInitialValue;
+    private Dictionary<EObjectColorType, int> _d_check;
 
-    private Color _Initialcolor;
-    private Dictionary<ObjectColorType, float> _colorInitialvalue;
-    private Dictionary<ObjectColorType, int> _check;
-
-    void Start()
+    private void Start()
     {
-        _Initialcolor = _meshrenderer.material.GetColor("_EmissionColor");
+        _initialColor = _meshRenderer.material.GetColor("_EmissionColor");
         GameObject UI = _emissionUI.InstantiateUI(this.transform);
         _emissionUI = UI.GetComponent<ObjectEmissionUI>();
         UI.SetActive(false);
 
         SetColorInitialize();
-        _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
+        _meshRenderer.material.SetColor("_EmissionColor", _initialColor);
     }
 
 
     private void SetColorInitialize() {
 
-        _colorInitialvalue = new();
-        _check = new();
+        _d_colorInitialValue = new();
+        _d_check = new();
 
-        Vector3 playerposition = Camera.main.transform.position;
-        Vector3 thisposition = this.transform.position;
-        Vector3 face =thisposition - playerposition;
+        Vector3 playerPosition = Camera.main.transform.position;
+        Vector3 thisPosition = this.transform.position;
+        Vector3 face = thisPosition - playerPosition;
 
-        if (_colortype == ObjectColorType.Red)
+        if (_colorType == EObjectColorType.Red)
         {
-            _Initialcolor = Color.red; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Red, _Initialcolor.r);
-            _check.Add(ObjectColorType.Red, 0);
-            _emissionUI.AddFirseBar(Color.red, 1);
+            _initialColor = Color.red; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Red, _initialColor.r);
+            _d_check.Add(EObjectColorType.Red, 0);
+            _emissionUI.AddFirstBar(Color.red, 1);
            
         }
-        else if (_colortype == ObjectColorType.Green)
+        else if (_colorType == EObjectColorType.Green)
         {
-            _Initialcolor = Color.green; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
-            _check.Add(ObjectColorType.Green, 0);
-            _emissionUI.AddFirseBar(Color.green, 1);
+            _initialColor = Color.green; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Green, _initialColor.g);
+            _d_check.Add(EObjectColorType.Green, 0);
+            _emissionUI.AddFirstBar(Color.green, 1);
         }
-        else if (_colortype == ObjectColorType.Blue)
+        else if (_colorType == EObjectColorType.Blue)
         {
-            _Initialcolor = Color.blue; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
-            _check.Add(ObjectColorType.Blue,0) ;
-            _emissionUI.AddFirseBar(Color.blue, 1);
+            _initialColor = Color.blue; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Blue, _initialColor.b);
+            _d_check.Add(EObjectColorType.Blue,0) ;
+            _emissionUI.AddFirstBar(Color.blue, 1);
         }
-        else if (_colortype == ObjectColorType.Magenta)
+        else if (_colorType == EObjectColorType.Magenta)
         {
-            _Initialcolor = Color.magenta; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Red, _Initialcolor.r);
-            _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
-            _check.Add(ObjectColorType.Red, 0);
-            _check.Add(ObjectColorType.Blue, 0);
-            _emissionUI.AddFirseBar(Color.red, 1);
+            _initialColor = Color.magenta; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Red, _initialColor.r);
+            _d_colorInitialValue.Add(EObjectColorType.Blue, _initialColor.b);
+            _d_check.Add(EObjectColorType.Red, 0);
+            _d_check.Add(EObjectColorType.Blue, 0);
+            _emissionUI.AddFirstBar(Color.red, 1);
             _emissionUI.AddProgressbar(Color.blue, 1);
         }
-        else if (_colortype == ObjectColorType.Yellow)
+        else if (_colorType == EObjectColorType.Yellow)
         {
-            _Initialcolor = Color.yellow; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Red, _Initialcolor.r);
-            _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
-            _check.Add(ObjectColorType.Red, 0);
-            _check.Add(ObjectColorType.Green, 0);
+            _initialColor = Color.yellow; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Red, _initialColor.r);
+            _d_colorInitialValue.Add(EObjectColorType.Green, _initialColor.g);
+            _d_check.Add(EObjectColorType.Red, 0);
+            _d_check.Add(EObjectColorType.Green, 0);
 
-            _emissionUI.AddFirseBar(Color.red, 1);
+            _emissionUI.AddFirstBar(Color.red, 1);
             _emissionUI.AddProgressbar(Color.green, 1);
         }
-        else if (_colortype == ObjectColorType.Cyan)
+        else if (_colorType == EObjectColorType.Cyan)
         {
-            _Initialcolor = Color.cyan; //* _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
-            _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
-            _check.Add(ObjectColorType.Green, 0);
-            _check.Add(ObjectColorType.Blue, 0);
-            _emissionUI.AddFirseBar(Color.green, 1);
+            _initialColor = Color.cyan; //* _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Green, _initialColor.g);
+            _d_colorInitialValue.Add(EObjectColorType.Blue, _initialColor.b);
+            _d_check.Add(EObjectColorType.Green, 0);
+            _d_check.Add(EObjectColorType.Blue, 0);
+            _emissionUI.AddFirstBar(Color.green, 1);
             _emissionUI.AddProgressbar(Color.blue, 1);
         }
-        else if (_colortype == ObjectColorType.White)
+        else if (_colorType == EObjectColorType.White)
         {
-            _Initialcolor = Color.white;// * _emissionInitialvalue;
-            _colorInitialvalue.Add(ObjectColorType.Red, _Initialcolor.r);
-            _colorInitialvalue.Add(ObjectColorType.Green, _Initialcolor.g);
-            _colorInitialvalue.Add(ObjectColorType.Blue, _Initialcolor.b);
-            _check.Add(ObjectColorType.Red, 0);
-            _check.Add(ObjectColorType.Green, 0);
-            _check.Add(ObjectColorType.Blue, 0);
-            _emissionUI.AddFirseBar(Color.red, 1);
+            _initialColor = Color.white;// * _emissionInitialValue;
+            _d_colorInitialValue.Add(EObjectColorType.Red, _initialColor.r);
+            _d_colorInitialValue.Add(EObjectColorType.Green, _initialColor.g);
+            _d_colorInitialValue.Add(EObjectColorType.Blue, _initialColor.b);
+            _d_check.Add(EObjectColorType.Red, 0);
+            _d_check.Add(EObjectColorType.Green, 0);
+            _d_check.Add(EObjectColorType.Blue, 0);
+            _emissionUI.AddFirstBar(Color.red, 1);
             _emissionUI.AddProgressbar(Color.green, 1);
             _emissionUI.AddProgressbar(Color.blue, 1);
         }
 
 
-        _emissionUI.PanelColor(_Initialcolor);
+        _emissionUI.PanelColor(_initialColor);
         _emissionUI.SetForwardVector(face);
      }
     
-    public bool takeLightEnergy(ObjectColorType colortype)
+    public bool takeLightEnergy(EObjectColorType colorType)
     {
-        float tempcolorval = 0;
-        int tempcheck = 0;
+        float tempColorVal = 0;
+        int tempCheck = 0;
 
         if (!_emissionUI.gameObject.activeSelf)
             _emissionUI.gameObject.SetActive(true);
 
 
-        if (_check.TryGetValue(colortype, out tempcheck)) {
-            if (tempcheck < (_gauge / _takeweight))
+        if (_d_check.TryGetValue(colorType, out tempCheck)) {
+            if (tempCheck < (_gauge / _takeWeight))
             {
-                _check[colortype]++;
+                _d_check[colorType]++;
 
-                if (colortype == ObjectColorType.Red)
+                if (colorType == EObjectColorType.Red)
                 {
-                    if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
-                        _Initialcolor.r -= (tempcolorval / _gauge) * _takeweight;
+                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
+                        _initialColor.r -= (tempColorVal / _gauge) * _takeWeight;
 
-                    _emissionUI.SetProgrssbarFill(Color.red, _Initialcolor.r, 1);
+                    _emissionUI.SetProgressbarFill(Color.red, _initialColor.r, 1);
 
                 }
-                else if (colortype == ObjectColorType.Green)
+                else if (colorType == EObjectColorType.Green)
                 {
-                    if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
-                        _Initialcolor.g -= (tempcolorval / _gauge) * _takeweight;
+                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
+                        _initialColor.g -= (tempColorVal / _gauge) * _takeWeight;
 
-                    _emissionUI.SetProgrssbarFill(Color.green, _Initialcolor.g, 1);
+                    _emissionUI.SetProgressbarFill(Color.green, _initialColor.g, 1);
                 }
 
-                else if (colortype == ObjectColorType.Blue)
+                else if (colorType == EObjectColorType.Blue)
                 {
-                    if (_colorInitialvalue.TryGetValue(colortype, out tempcolorval))
-                        _Initialcolor.b -= (tempcolorval / _gauge) * _takeweight;
+                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
+                        _initialColor.b -= (tempColorVal / _gauge) * _takeWeight;
 
-                    _emissionUI.SetProgrssbarFill(Color.blue, _Initialcolor.b, 1);
+                    _emissionUI.SetProgressbarFill(Color.blue, _initialColor.b, 1);
 
                 }
-                _meshrenderer.material.SetColor("_EmissionColor", _Initialcolor);
+                _meshRenderer.material.SetColor("_EmissionColor", _initialColor);
                 return true;
             }
             else
@@ -171,10 +164,10 @@ public class ObjectEmissionManager : MonoBehaviour
 
 
     public void TurnOffUI() => _emissionUI.SetTurnUI(false);
-    public ObjectColorType getColortype() => _colortype;
+    public EObjectColorType getColortype() => _colorType;
     public float getGuage() => _gauge;
     public void setGauge(float gauge) => _gauge = gauge;
-    public float getWeight() => _takeweight;
+    public float getWeight() => _takeWeight;
 
 
 }

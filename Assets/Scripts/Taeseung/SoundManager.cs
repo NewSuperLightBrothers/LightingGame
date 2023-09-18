@@ -5,17 +5,14 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public AudioSource audios;
-    private bool istart = false;
+    private bool isStart = false;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (audios.isPlaying && istart == false)
-            istart = true;
+        if (audios.isPlaying && isStart == false)
+            isStart = true;
 
-        if (istart && !audios.isPlaying)
+        if (isStart && !audios.isPlaying)
             Destroy(this.gameObject);
     }
-
-
 }
