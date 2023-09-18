@@ -4984,13 +4984,13 @@ MonoBehaviour:
   Team: 1
   _emissionStrength: 2
   _laserInfo:
-    bulletlinerenderer: {fileID: 0}
+    bulletlinerenderer: {fileID: 4991624656693594562}
     usinglaserParticle:
     - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
     - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
-    speed: 4
+    speed: 3.5
     distance: 50
-    dmg: 5
+    dmg: 10
   glassSound: {fileID: 917092243866544903, guid: 1632bf2047f1acf4fb3b7688556a5e3e,
     type: 3}
   points: []

@@ -4860,4 +4860,4 @@ MonoBehaviour:
   particlePrefab: {fileID: 8544280266926002492}
   l_particleSystem:
   - {fileID: 4373139767650407413}
-  gunType: 0
+  gunType: 1
