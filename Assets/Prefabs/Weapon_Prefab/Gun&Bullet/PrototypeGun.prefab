@@ -2742,8 +2742,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3666025442990851036}
   - component: {fileID: 3666025442990851034}
-  - component: {fileID: 2193688954742874990}
   - component: {fileID: 3662283403504373286}
+  - component: {fileID: 2193688954742874990}
   m_Layer: 0
   m_Name: PrototypeGun
   m_TagString: Untagged
@@ -2779,25 +2779,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6704479d073fff4eaf0f19a141cdae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Team: 1
+  _team: 0
   _emissionStrength: 2
-  _guninfo:
-    maxgauge: 200
-    usinggauge: 10
-    Cooltime: 0.25
-    gunanimation: {fileID: 2193688954742874990}
-    usingbullet: {fileID: 4991624656693594560, guid: 3ea7dd346bb63f047acc8386692f9e07,
+  _gunInfo:
+    maxGauge: 200
+    usingGauge: 10
+    coolTime: 0.25
+    gunAnimation: {fileID: 2193688954742874990}
+    usingBullet: {fileID: 4991624656693594560, guid: 3ea7dd346bb63f047acc8386692f9e07,
       type: 3}
-    firepoint: {fileID: 3666025443288946326}
-    endpoint: {fileID: 7017205797398912093}
-    shootingsound: {fileID: 3666025443288946325}
+    firePoint: {fileID: 3666025443288946326}
+    endPoint: {fileID: 7017205797398912093}
+    shootingSound: {fileID: 3666025443288946325}
   _distance: 0
   _direction: {x: 0, y: 0, z: 0}
-  l_gunMeshRenderer:
+  _l_gunMeshRenderer:
   - {fileID: 6896715134445907207}
   - {fileID: 7919078574248938559}
-  firePath: {fileID: 4312640782357111138}
+  _firePath: {fileID: 4312640782357111138}
   _reflectCount: 3
+--- !u!114 &3662283403504373286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3666025444731172642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa92cfe0ef4c53940810c6fb04eb8f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _team: 1
+  _choiceOutLineMaterial: {fileID: 0}
+  _laserGunManager: {fileID: 3666025442990851034}
 --- !u!95 &2193688954742874990
 Animator:
   serializedVersion: 5
@@ -2819,21 +2834,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3662283403504373286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3666025444731172642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa92cfe0ef4c53940810c6fb04eb8f82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _team: 0
-  _choiceooutlinematerial: {fileID: 0}
-  LasergunManager: {fileID: 3666025442990851034}
 --- !u!1 &5293080395590507090
 GameObject:
   m_ObjectHideFlags: 0

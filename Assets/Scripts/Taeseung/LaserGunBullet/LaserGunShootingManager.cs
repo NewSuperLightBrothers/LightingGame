@@ -150,7 +150,7 @@ public class LaserGunShootingManager : LaserGunWeaponShootingSystem
     {
         _currentBulletCount += newVal;
         SetGaugeUIBar();
-        TestUI.testUI.setText(_currentBulletCount.ToString());
+        //TestUI.testUI.setText(_currentBulletCount.ToString());
     }
 
 

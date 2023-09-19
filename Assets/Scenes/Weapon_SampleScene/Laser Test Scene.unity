@@ -602,6 +602,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
         type: 3}
+      propertyPath: _team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666025442990851034, guid: de7fa297c3f17b24ca5564c0cf8030c1,
+        type: 3}
       propertyPath: _reflectcount
       value: 3
       objectReference: {fileID: 0}
@@ -1249,8 +1254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1febc82efdbe6a241b48266ff1988880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestHP: 100
-  bomb: {fileID: 0}
+  testHP: 0
+  _bomb: {fileID: 0}
 --- !u!54 &517641077
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1498,11 +1503,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad31b1219e1f4f45b0b566729ca8646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshrenderer: {fileID: 637847274}
-  _colortype: 4
+  _meshRenderer: {fileID: 637847274}
+  _colorType: 1
   _gauge: 50
-  _takeweight: 1
-  _emissionstrength: 2
+  _takeWeight: 1
+  _emissionStrength: 2
   _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
     type: 3}
 --- !u!850595691 &918021007
@@ -1586,7 +1591,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &939217508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1599,7 +1604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8cb481421183f4abc792951851c9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textUI: {fileID: 393688121}
+  _textUI: {fileID: 0}
 --- !u!114 &939217509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2358,11 +2363,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad31b1219e1f4f45b0b566729ca8646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meshrenderer: {fileID: 1871174404}
-  _colortype: 1
+  _meshRenderer: {fileID: 1871174404}
+  _colorType: 4
   _gauge: 50
-  _takeweight: 1
-  _emissionstrength: 2
+  _takeWeight: 1
+  _emissionStrength: 2
   _emissionUI: {fileID: 2330930625685849447, guid: d2439a5464d229b47b6d39f250c53a5f,
     type: 3}
 --- !u!1001 &1875117117
@@ -2661,7 +2666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85361f1adf5a90242a23a6f4748518ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateSpeed: 20
+  _rotateSpeed: 0
 --- !u!1 &1914146670
 GameObject:
   m_ObjectHideFlags: 0

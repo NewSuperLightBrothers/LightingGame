@@ -4981,15 +4981,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9675c35a47b61d84eaeebac1d21e2b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Team: 1
+  _team: 1
   _emissionStrength: 2
   _laserInfo:
-    bulletlinerenderer: {fileID: 4991624656693594562}
-    usinglaserParticle:
+    bulletLineRenderer: {fileID: 4991624656693594562}
+    usingLaserParticle:
     - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
     - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
     speed: 3.5
-    distance: 50
+    distance: 0
     dmg: 10
   glassSound: {fileID: 917092243866544903, guid: 1632bf2047f1acf4fb3b7688556a5e3e,
     type: 3}
