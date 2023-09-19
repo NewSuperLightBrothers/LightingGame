@@ -1,18 +1,17 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//°ø°İ Å¸ÀÔ (Å¸ÀÔ¿¡ µû¶ó ÆÄÆ¼Å¬ Ã³¸® ¹æ½ÄÀÌ ´Ş¶óÁö±â ¶§¹®, LaserParticleSystem¿¡¼­ °¢ ÆÄÆ¼Å¬¸¶´Ù ¼³Á¤)
+//ê³µê²© íƒ€ì… (íƒ€ì…ì— ë”°ë¼ íŒŒí‹°í´ ì²˜ë¦¬ ë°©ì‹ì´ ë‹¬ë¼ì§€ê¸° ë•Œë¬¸, LaserParticleSystemì—ì„œ ê° íŒŒí‹°í´ë§ˆë‹¤ ì„¤ì •)
 public enum ELaserGunType
 {
-    // Start is called before the first frame update
-    Beam,       //ºö
-    Bullet,     //Åº¾Ë
-    Blade,      //±ÙÁ¢°ø°İ
+    Beam,       //ë¹”
+    Bullet,     //íƒ„ì•Œ
+    Blade,      //ê·¼ì ‘ê³µê²©
 }
 
 
-//ÆÀ Å¸ÀÔ (Å¸ÀÔ¿¡ µû¶ó ¹«±â »ö»ó º¯°æ)
+//íŒ€ íƒ€ì… (íƒ€ì…ì— ë”°ë¼ ë¬´ê¸° ìƒ‰ìƒ ë³€ê²½)
 public enum ELaserTeamType
 {
     Red,

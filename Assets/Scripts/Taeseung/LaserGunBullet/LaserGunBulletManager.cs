@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class LaserGunBulletManager : LaserGunManager
 
     protected override void LaserBulletToPlayer(Collider other)
     {
-        other.GetComponent<TestPlayer>().TestHP -= _laserInfo.dmg;
+        other.GetComponent<TestPlayer>().testHP -= _laserInfo.dmg;
     }
 
 
@@ -58,14 +58,14 @@ public class LaserGunBulletManager : LaserGunManager
 
         if(transform.position == points[_pointIndex] )
         {
-            _pointIndex ++;
+            _pointIndex++;
             if (_pointIndex >= points.Length) LaserBulletDestroy();
             else
             {
                 GameObject SoundCreate = Instantiate(glassSound.gameObject);
                 SoundCreate.transform.position = transform.position;
                 SoundCreate.GetComponent<AudioSource>().Play();
-                _laserInfo.usinglaserParticle[1].particleInstantiate(transform.position, this.transform.rotation);
+                _laserInfo.usingLaserParticle[1].ParticleInstantiate(transform.position, this.transform.rotation);
 
                 transform.forward = (points[_pointIndex] - points[_pointIndex - 1]);
             }
@@ -74,7 +74,7 @@ public class LaserGunBulletManager : LaserGunManager
     
     protected override void LaserBulletDestroy()
     {
-        _laserInfo.usinglaserParticle[0].particleInstantiate(this.transform.position,this.transform.rotation);
+        _laserInfo.usingLaserParticle[0].ParticleInstantiate(this.transform.position,this.transform.rotation);
         Destroy(this.gameObject);
     }
 
@@ -88,9 +88,7 @@ public class LaserGunBulletManager : LaserGunManager
         transform.forward = Vector3.Reflect(forward, collisionNormal).normalized;
 
         VectorInitialize(_rayHitPos, transform.forward);
-        MakeMirrorRayhitInfo(_ray, 500);
-
-
+        MakeMirrorRayHitInfo(_ray, 500);
     }
 
 }

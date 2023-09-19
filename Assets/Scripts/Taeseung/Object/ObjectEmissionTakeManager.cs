@@ -1,66 +1,64 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ObjectEmissionTakeManager : MonoBehaviour
 {
-    [SerializeField]
-    private ObjectColorType _team;
-    [SerializeField]
-    private Material _choiceooutlinematerial;
+    [SerializeField] private EObjectColorType _team;
+    [SerializeField] private Material _choiceOutLineMaterial;
 
     private Touch _touch;
     private float _duration = 0.5f;
-    private float _starttime = 0;
-    private float _endtime = 0;
-    private float _readytime = 0;
-    private float _readyendtime = 0;
+    private float _startTime = 0;
+    private float _endTime = 0;
+    private float _readyTime = 0;
+    private float _readyEndTime = 0;
     private bool _isTouch = false;
 
-    private ObjectEmissionManager emissionmanager;
-    [SerializeField]
-    private LaserGunShootingManager LasergunManager;
+    private ObjectEmissionManager _emissionManager;
+    [SerializeField] private LaserGunShootingManager _laserGunManager;
     
 
-    void Update()
+    private void Update()
     {
         if (Input.touchCount > 0 && _isTouch == false)
         {
             _touch = Input.GetTouch(0);
-            _starttime = Time.time;
+            _startTime = Time.time;
             _isTouch = true;
         }
         else if (Input.touchCount <= 0 && _isTouch == true)
         {
-            _endtime = 0;
-            _starttime = 0;
-            _readytime = Time.time;
+            _endTime = 0;
+            _startTime = 0;
+            _readyTime = Time.time;
             _isTouch = false;
         }
 
         if (_isTouch == true)
-            _endtime = Time.time;
+            _endTime = Time.time;
         else if (_isTouch == false)
-            _readyendtime = Time.time;
+            _readyEndTime = Time.time;
 
 
-        if (_duration < _endtime - _starttime && _isTouch == true){//ÀÏÁ¤ ½Ã°£ ´©¸¥ °æ¿ì, ÇØ´ç À§Ä¡¿¡ Èí¼ö °¡´É ºûÀÌ ÀÖ´ÂÁö È®ÀÎ
-            if (emissionmanager != null) emissionmanager.TurnOffUI();
+        if (_duration < _endTime - _startTime && _isTouch == true){//ì¼ì • ì‹œê°„ ëˆ„ë¥¸ ê²½ìš°, í•´ë‹¹ ìœ„ì¹˜ì— í¡ìˆ˜ ê°€ëŠ¥ ë¹›ì´ ìˆëŠ”ì§€ í™•ì¸
+            if (_emissionManager != null) _emissionManager.TurnOffUI();
 
             if (takeRaycastObject(_touch)) { 
-                if (emissionmanager.takeLightEnergy(_team)) 
-                    LasergunManager.SetGauge(emissionmanager.getWeight());           
-                //ÇöÀç »ö±ò·Î Èí¼ö °¡´ÉÇÑ ¹°Ã¼°¡ ¸Â´ÂÁö È®ÀÎ
-                 //Èí¼ö °¡´ÉÇÑ ¹°Ã¼¸é gauge¸¦ Ã¤¿ò
+                if (_emissionManager.takeLightEnergy(_team)) 
+                    _laserGunManager.SetGauge(_emissionManager.getWeight());           
+                //í˜„ì¬ ìƒ‰ê¹”ë¡œ í¡ìˆ˜ ê°€ëŠ¥í•œ ë¬¼ì²´ê°€ ë§ëŠ”ì§€ í™•ì¸
+                 //í¡ìˆ˜ ê°€ëŠ¥í•œ ë¬¼ì²´ë©´ gaugeë¥¼ ì±„ì›€
             }
         }
-        else if(_duration * 5 < _readyendtime - _readytime && _isTouch == false) {
-            if (emissionmanager != null)
+        else if(_duration * 5 < _readyEndTime - _readyTime && _isTouch == false) {
+            if (_emissionManager != null)
             {
-                emissionmanager.TurnOffUI();
-                emissionmanager = null;
-                _readyendtime = 0;
-                _readytime = 0;
+                _emissionManager.TurnOffUI();
+                _emissionManager = null;
+                _readyEndTime = 0;
+                _readyTime = 0;
             }
         }
 
@@ -70,16 +68,16 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
     private bool takeRaycastObject(Touch touch)
     {
-        emissionmanager = null;
+        _emissionManager = null;
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
-                //Debug.Log("·Õ ÇÁ·¹½ºÇÑ ¿ÀºêÁ§Æ®: " + hit.collider.gameObject.name);
-                if (hit.collider.TryGetComponent<ObjectEmissionManager>(out emissionmanager))
+                //Debug.Log("ë¡± í”„ë ˆìŠ¤í•œ ì˜¤ë¸Œì íŠ¸: " + hit.collider.gameObject.name);
+                if (hit.collider.TryGetComponent<ObjectEmissionManager>(out _emissionManager))
                 {
-                    /* Å¬¸¯ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ ¿Ü°û¼± Ç¥½Ã...
+                    /* í´ë¦­ ì˜¤ë¸Œì íŠ¸ì— ëŒ€í•œ ì™¸ê³½ì„  í‘œì‹œ...
                     MeshRenderer renderer;
                     if (hit.collider.TryGetComponent<MeshRenderer>(out renderer))
                     {

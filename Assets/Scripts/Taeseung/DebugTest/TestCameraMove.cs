@@ -1,28 +1,28 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TestCameraMove : MonoBehaviour
 {
+    [SerializeField] private float _rotateSpeed;
 
-    [SerializeField]
-    private float RotateSpeed;
-
-    void Start()
+    private void Start()
     {
-        // ÀÚÀÌ·Î½ºÄÚÇÁ ÃÊ±âÈ­
+        // ìì´ë¡œìŠ¤ì½”í”„ ì´ˆê¸°í™”
         Input.gyro.enabled = true;
     }
-void Update()
+
+    private void Update()
     {
-        // µğ¹ÙÀÌ½ºÀÇ ÀÚÀÌ·Î½ºÄÚÇÁ µ¥ÀÌÅÍ¸¦ °¡Á®¿È
+        // ë””ë°”ì´ìŠ¤ì˜ ìì´ë¡œìŠ¤ì½”í”„ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜´
         Vector3 gyroRotationRate = Input.gyro.rotationRate;
 
-        // ÀÚÀÌ·Î½ºÄÚÇÁ µ¥ÀÌÅÍ¸¦ ÀÌ¿ëÇÏ¿© È¸Àü ¹æÇâ °è»ê
+        // ìì´ë¡œìŠ¤ì½”í”„ ë°ì´í„°ë¥¼ ì´ìš©í•˜ì—¬ íšŒì „ ë°©í–¥ ê³„ì‚°
         Vector3 rotation = new Vector3(gyroRotationRate.x, gyroRotationRate.y, gyroRotationRate.z);
 
-        // È¸Àü ¹æÇâ¿¡ µû¶ó ¿ÀºêÁ§Æ®¸¦ È¸Àü½ÃÅ´
-        transform.Rotate(rotation * RotateSpeed * Time.deltaTime);
+        // íšŒì „ ë°©í–¥ì— ë”°ë¼ ì˜¤ë¸Œì íŠ¸ë¥¼ íšŒì „ì‹œí‚´
+        transform.Rotate(rotation * _rotateSpeed * Time.deltaTime);
     }
 
 
