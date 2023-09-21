@@ -5,6 +5,6 @@ using UnityEngine;
 public class CameraMovSystem : MonoBehaviour
 {
     [SerializeField]
-    private GameObject player;
+    private GameObject _player;
 
 }

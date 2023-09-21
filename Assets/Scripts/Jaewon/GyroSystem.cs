@@ -5,7 +5,7 @@ using UnityEngine;
 public class GyroSystem : MonoBehaviour
 {
     [SerializeField]
-    private float gyroSpeed = 0.5f;
+    private float _gyroSpeed = 0.5f;
     void Start()
     {
         Input.gyro.enabled = true;
@@ -14,6 +14,6 @@ public class GyroSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Input.gyro.rotationRateUnbiased.x* gyroSpeed, Input.gyro.rotationRateUnbiased.y * gyroSpeed, Input.gyro.rotationRateUnbiased.z * gyroSpeed);
+        transform.Rotate(Input.gyro.rotationRateUnbiased.x* _gyroSpeed, Input.gyro.rotationRateUnbiased.y * _gyroSpeed, Input.gyro.rotationRateUnbiased.z * _gyroSpeed);
     }
 }
