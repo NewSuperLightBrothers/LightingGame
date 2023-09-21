@@ -35,8 +35,8 @@ public class InputManager : MonoBehaviour
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
 
-    private Vector2 mouseDelta = Vector2.zero;
-    private Vector2 rotationOS = Vector2.zero;
+    private Vector2 _mouseDelta = Vector2.zero;
+    private Vector2 _rotationOS = Vector2.zero;
 
     private void Awake() {
         _userInputAssets = new();
@@ -113,7 +113,7 @@ public class InputManager : MonoBehaviour
     }
 
     private void OnTouchDelta(InputAction.CallbackContext c) {
-        mouseDelta = c.ReadValue<Vector2>();
+        _mouseDelta = c.ReadValue<Vector2>();
     }
 
     private void Start() {
@@ -130,9 +130,9 @@ public class InputManager : MonoBehaviour
     }
 
     private void LateUpdate() {
-        rotationOS = GetTouchDeltaEnhanced() + mouseDelta;
-        rotationOS *= 0.1f;
-        Vector3 lookInputWS = new Vector3(rotationOS.x, rotationOS.y, 0);
+        _rotationOS = GetTouchDeltaEnhanced() + _mouseDelta;
+        _rotationOS *= 0.1f;
+        Vector3 lookInputWS = new Vector3(_rotationOS.x, _rotationOS.y, 0);
 
         characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
         characterInputs.CameraRotation = characterCamera.Transform.rotation;
