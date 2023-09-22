@@ -135,7 +135,6 @@ public class InputManager : MonoBehaviour
 
         _lookInputWS.x = Mathf.Clamp(_lookInputWS.x, -85f, 90f);
         _lookInputWS.y = Mathf.Repeat(_lookInputWS.y, 360f);
-        Debug.Log(_lookInputWS);
 
         //characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
         //characterInputs.CameraRotation = characterCamera.Transform.rotation;
