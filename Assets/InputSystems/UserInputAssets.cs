@@ -46,10 +46,10 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""View"",
+                    ""name"": ""Run"",
                     ""type"": ""Value"",
-                    ""id"": ""e5b80988-8c8f-4685-bf32-95647b687f9c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""id"": ""a031a39d-1f52-45f8-93b5-a02ec879c80c"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -146,12 +146,23 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3953a060-4b10-4efc-a3a8-11a0fa307f58"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""b8b6dad5-6a98-47d9-b23f-5f40cc04332e"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""View"",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff4ab705-65cb-4f41-b694-3f67d49f85ce"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -251,7 +262,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         m_Locomotion = asset.FindActionMap("Locomotion", throwIfNotFound: true);
         m_Locomotion_Move = m_Locomotion.FindAction("Move", throwIfNotFound: true);
         m_Locomotion_Jump = m_Locomotion.FindAction("Jump", throwIfNotFound: true);
-        m_Locomotion_View = m_Locomotion.FindAction("View", throwIfNotFound: true);
+        m_Locomotion_Run = m_Locomotion.FindAction("Run", throwIfNotFound: true);
         // Interaction
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Fire = m_Interaction.FindAction("Fire", throwIfNotFound: true);
@@ -322,14 +333,14 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     private List<ILocomotionActions> m_LocomotionActionsCallbackInterfaces = new List<ILocomotionActions>();
     private readonly InputAction m_Locomotion_Move;
     private readonly InputAction m_Locomotion_Jump;
-    private readonly InputAction m_Locomotion_View;
+    private readonly InputAction m_Locomotion_Run;
     public struct LocomotionActions
     {
         private @UserInputAssets m_Wrapper;
         public LocomotionActions(@UserInputAssets wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Locomotion_Move;
         public InputAction @Jump => m_Wrapper.m_Locomotion_Jump;
-        public InputAction @View => m_Wrapper.m_Locomotion_View;
+        public InputAction @Run => m_Wrapper.m_Locomotion_Run;
         public InputActionMap Get() { return m_Wrapper.m_Locomotion; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -345,9 +356,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @View.started += instance.OnView;
-            @View.performed += instance.OnView;
-            @View.canceled += instance.OnView;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
         }
 
         private void UnregisterCallbacks(ILocomotionActions instance)
@@ -358,9 +369,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @View.started -= instance.OnView;
-            @View.performed -= instance.OnView;
-            @View.canceled -= instance.OnView;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
         }
 
         public void RemoveCallbacks(ILocomotionActions instance)
@@ -482,7 +493,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnView(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
     public interface IInteractionActions
     {
