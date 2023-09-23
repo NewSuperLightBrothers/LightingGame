@@ -11,13 +11,13 @@ public class NetworkUIManager : MonoBehaviour
         [SerializeField] private Button _spawnBtn;
         
         [SerializeField] private TMP_Text _joinCodeText;
+        [SerializeField] private TMP_Text _curPlayerNumText;
         [SerializeField] private TMP_InputField _joinCodeInput;
-        
-        private bool _isServerStarted;
         
         private void Awake()
         {
             Cursor.visible = true;
+            _curPlayerNumText.text = "000";
         }
 
         private void Start()
@@ -66,15 +66,11 @@ public class NetworkUIManager : MonoBehaviour
             {
                 Spawner.Instance.SpawnObjects();
             });
-            
-            NetworkManager.Singleton.OnServerStarted += () =>
-            {
-                _isServerStarted = true;
-            };
         }
 
         private void Update()
         {
             _joinCodeText.text = NetworkController.Instance.joinCode;
+            _curPlayerNumText.text = GameData.currentConnectedPlayerNum.ToString();
         }
     }
