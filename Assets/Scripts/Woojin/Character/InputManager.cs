@@ -10,27 +10,21 @@ using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 using Unity.Mathematics;
 
 
-[System.Serializable]
-public class UserInputData {
-    public Vector2 velocityIS;
-    public Vector2 swipeIS;
-    public bool isJump;
-    public bool isRun;
-    public bool isFire;
-    public Vector3 characterForwardWS;
-}
-
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private UserInputData _inputData;
-    public UserInputData InputData => _inputData;
-
     public PlayerCharacterInputs characterInputs = new();
 
     private UserInputAssets _userInputAssets;
 
     public ExampleCharacterController character;
-    public ExampleCharacterCamera characterCamera;
+    //public ExampleCharacterCamera characterCamera;
+    //public CharacterCamera characterCamera;
+    public Transform cameraAnchor;
+
+    public float walkSpeed;
+    public float runSpeed;
+    public float crouchSpeed;
+    private bool isRunning;
 
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
@@ -38,12 +32,13 @@ public class InputManager : MonoBehaviour
     private Vector2 _mouseDelta = Vector2.zero;
     private Vector2 _rotationOS = Vector2.zero;
 
+    private Vector3 _lookInputWS = Vector3.zero;
+
     private void Awake() {
         _userInputAssets = new();
 
         _userInputAssets.Enable();
         EnhancedTouch.EnhancedTouchSupport.Enable();
-        EnhancedTouch.TouchSimulation.Enable();
 
         _userInputAssets.Locomotion.Move.started -= OnMove;
         _userInputAssets.Locomotion.Move.performed -= OnMove;
@@ -52,6 +47,8 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Jump.started -= OnJump;
         _userInputAssets.Locomotion.Jump.performed -= OnJump;
         _userInputAssets.Locomotion.Jump.canceled -= OnJump;
+
+        _userInputAssets.Locomotion.Run.started -= OnRun;
 
         _userInputAssets.Interaction.Fire.started -= OnFire;
         _userInputAssets.Interaction.Fire.performed -= OnFire;
@@ -64,6 +61,8 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Jump.started += OnJump;
         _userInputAssets.Locomotion.Jump.performed += OnJump;
         _userInputAssets.Locomotion.Jump.canceled += OnJump;
+
+        _userInputAssets.Locomotion.Run.started += OnRun;
 
         _userInputAssets.Interaction.Fire.started += OnFire;
         _userInputAssets.Interaction.Fire.performed += OnFire;
@@ -83,6 +82,8 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Jump.performed -= OnJump;
         _userInputAssets.Locomotion.Jump.canceled -= OnJump;
 
+        _userInputAssets.Locomotion.Run.started -= OnRun;
+
         _userInputAssets.Interaction.Fire.started -= OnFire;
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
@@ -98,18 +99,20 @@ public class InputManager : MonoBehaviour
         Vector2 velocityIS = c.ReadValue<Vector2>();
         characterInputs.MoveAxisRight = velocityIS.x;
         characterInputs.MoveAxisForward = velocityIS.y;
-        //character.SetInputs(ref characterInputs);
     }
     private void OnMoveCancel(InputAction.CallbackContext c) {
         characterInputs.MoveAxisRight = 0f;
         characterInputs.MoveAxisForward = 0f;
-        //character.SetInputs(ref characterInputs);
     }
     private void OnJump(InputAction.CallbackContext c) {
         characterInputs.JumpDown = c.ReadValue<float>() == 1f;
     }
+    private void OnRun(InputAction.CallbackContext c) {
+        isRunning = !isRunning;
+        character.MaxStableMoveSpeed = isRunning ? runSpeed : walkSpeed;
+        character.MaxAirMoveSpeed = isRunning ? runSpeed : walkSpeed;
+    }
     private void OnFire(InputAction.CallbackContext c) {
-        //_inputData.isFire = c.ReadValue<float>() == 1f;
     }
 
     private void OnTouchDelta(InputAction.CallbackContext c) {
@@ -122,20 +125,21 @@ public class InputManager : MonoBehaviour
         _rect.position = _joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);
         _rect.size -= new Vector2(_image.raycastPadding.x, _image.raycastPadding.y) * 2;
 
-        characterCamera.SetFollowTransform(character.CameraFollowPoint);
-    }
-
-    private void Update() {
-        
+        //characterCamera.SetFollowTransform(character.CameraFollowPoint);
     }
 
     private void LateUpdate() {
         _rotationOS = GetTouchDeltaEnhanced() + _mouseDelta;
         _rotationOS *= 0.1f;
-        Vector3 lookInputWS = new Vector3(_rotationOS.x, _rotationOS.y, 0);
+        _lookInputWS += new Vector3(-_rotationOS.y, _rotationOS.x);
 
-        characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
-        characterInputs.CameraRotation = characterCamera.Transform.rotation;
+        _lookInputWS.x = Mathf.Clamp(_lookInputWS.x, -85f, 90f);
+        _lookInputWS.y = Mathf.Repeat(_lookInputWS.y, 360f);
+
+        //characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
+        //characterInputs.CameraRotation = characterCamera.Transform.rotation;
+        cameraAnchor.rotation = Quaternion.Euler(_lookInputWS);
+        characterInputs.CameraRotation = cameraAnchor.rotation;
         character.SetInputs(ref characterInputs);
     }
 

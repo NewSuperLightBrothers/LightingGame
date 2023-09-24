@@ -24,10 +24,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "View",
+                    "name": "Run",
                     "type": "Value",
-                    "id": "e5b80988-8c8f-4685-bf32-95647b687f9c",
-                    "expectedControlType": "Vector2",
+                    "id": "a031a39d-1f52-45f8-93b5-a02ec879c80c",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -124,12 +124,23 @@
                 },
                 {
                     "name": "",
-                    "id": "3953a060-4b10-4efc-a3a8-11a0fa307f58",
-                    "path": "<Mouse>/delta",
+                    "id": "b8b6dad5-6a98-47d9-b23f-5f40cc04332e",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "View",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ff4ab705-65cb-4f41-b694-3f67d49f85ce",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
