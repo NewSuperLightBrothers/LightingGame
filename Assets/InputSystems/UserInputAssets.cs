@@ -53,6 +53,15 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Value"",
+                    ""id"": ""b074dec7-40c6-48ad-85a9-6cd1661d3821"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -165,6 +174,28 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eef02dab-3f3b-4f4b-958f-454553d05599"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7458d48d-8e54-426d-8ac0-70c68cca6a61"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -263,6 +294,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         m_Locomotion_Move = m_Locomotion.FindAction("Move", throwIfNotFound: true);
         m_Locomotion_Jump = m_Locomotion.FindAction("Jump", throwIfNotFound: true);
         m_Locomotion_Run = m_Locomotion.FindAction("Run", throwIfNotFound: true);
+        m_Locomotion_Crouch = m_Locomotion.FindAction("Crouch", throwIfNotFound: true);
         // Interaction
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Fire = m_Interaction.FindAction("Fire", throwIfNotFound: true);
@@ -334,6 +366,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
     private readonly InputAction m_Locomotion_Move;
     private readonly InputAction m_Locomotion_Jump;
     private readonly InputAction m_Locomotion_Run;
+    private readonly InputAction m_Locomotion_Crouch;
     public struct LocomotionActions
     {
         private @UserInputAssets m_Wrapper;
@@ -341,6 +374,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Locomotion_Move;
         public InputAction @Jump => m_Wrapper.m_Locomotion_Jump;
         public InputAction @Run => m_Wrapper.m_Locomotion_Run;
+        public InputAction @Crouch => m_Wrapper.m_Locomotion_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_Locomotion; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -359,6 +393,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @Crouch.started += instance.OnCrouch;
+            @Crouch.performed += instance.OnCrouch;
+            @Crouch.canceled += instance.OnCrouch;
         }
 
         private void UnregisterCallbacks(ILocomotionActions instance)
@@ -372,6 +409,9 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
         }
 
         public void RemoveCallbacks(ILocomotionActions instance)
@@ -494,6 +534,7 @@ public partial class @UserInputAssets: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
     public interface IInteractionActions
     {

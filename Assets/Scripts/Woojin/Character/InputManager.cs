@@ -24,7 +24,8 @@ public class InputManager : MonoBehaviour
     public float walkSpeed;
     public float runSpeed;
     public float crouchSpeed;
-    private bool isRunning;
+    private bool _isRunning;
+    private bool _isCrouching;
 
     [SerializeField] private RectTransform _joystickForeground;
     private Rect _rect;
@@ -50,6 +51,8 @@ public class InputManager : MonoBehaviour
 
         _userInputAssets.Locomotion.Run.started -= OnRun;
 
+        _userInputAssets.Locomotion.Crouch.started -= OnCrouch;
+
         _userInputAssets.Interaction.Fire.started -= OnFire;
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
@@ -63,6 +66,8 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Locomotion.Jump.canceled += OnJump;
 
         _userInputAssets.Locomotion.Run.started += OnRun;
+
+        _userInputAssets.Locomotion.Crouch.started += OnCrouch;
 
         _userInputAssets.Interaction.Fire.started += OnFire;
         _userInputAssets.Interaction.Fire.performed += OnFire;
@@ -84,6 +89,8 @@ public class InputManager : MonoBehaviour
 
         _userInputAssets.Locomotion.Run.started -= OnRun;
 
+        _userInputAssets.Locomotion.Crouch.started -= OnCrouch;
+
         _userInputAssets.Interaction.Fire.started -= OnFire;
         _userInputAssets.Interaction.Fire.performed -= OnFire;
         _userInputAssets.Interaction.Fire.canceled -= OnFire;
@@ -95,6 +102,8 @@ public class InputManager : MonoBehaviour
         _userInputAssets.Disable();
         EnhancedTouch.EnhancedTouchSupport.Disable();
     }
+
+
     private void OnMove(InputAction.CallbackContext c) {
         Vector2 velocityIS = c.ReadValue<Vector2>();
         characterInputs.MoveAxisRight = velocityIS.x;
@@ -108,13 +117,18 @@ public class InputManager : MonoBehaviour
         characterInputs.JumpDown = c.ReadValue<float>() == 1f;
     }
     private void OnRun(InputAction.CallbackContext c) {
-        isRunning = !isRunning;
-        character.MaxStableMoveSpeed = isRunning ? runSpeed : walkSpeed;
-        character.MaxAirMoveSpeed = isRunning ? runSpeed : walkSpeed;
+        _isRunning = !_isRunning;
+        character.MaxStableMoveSpeed = _isRunning ? runSpeed : walkSpeed;
+        character.MaxAirMoveSpeed = _isRunning ? runSpeed : walkSpeed;
     }
     private void OnFire(InputAction.CallbackContext c) {
     }
-
+    private void OnCrouch(InputAction.CallbackContext c) {
+        _isCrouching = !_isCrouching;
+        characterInputs.CrouchDown = _isCrouching;
+        characterInputs.CrouchUp = !_isCrouching;
+        character.SetInputs(ref characterInputs);
+    }
     private void OnTouchDelta(InputAction.CallbackContext c) {
         _mouseDelta = c.ReadValue<Vector2>();
     }
@@ -124,8 +138,6 @@ public class InputManager : MonoBehaviour
         Image _image = _joystickForeground.gameObject.GetComponent<Image>();
         _rect.position = _joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);
         _rect.size -= new Vector2(_image.raycastPadding.x, _image.raycastPadding.y) * 2;
-
-        //characterCamera.SetFollowTransform(character.CameraFollowPoint);
     }
 
     private void LateUpdate() {
@@ -133,11 +145,9 @@ public class InputManager : MonoBehaviour
         _rotationOS *= 0.1f;
         _lookInputWS += new Vector3(-_rotationOS.y, _rotationOS.x);
 
-        _lookInputWS.x = Mathf.Clamp(_lookInputWS.x, -85f, 90f);
+        _lookInputWS.x = Mathf.Clamp(_lookInputWS.x, -89f, 89f);
         _lookInputWS.y = Mathf.Repeat(_lookInputWS.y, 360f);
 
-        //characterCamera.UpdateWithInput(Time.deltaTime, 0f, lookInputWS);
-        //characterInputs.CameraRotation = characterCamera.Transform.rotation;
         cameraAnchor.rotation = Quaternion.Euler(_lookInputWS);
         characterInputs.CameraRotation = cameraAnchor.rotation;
         character.SetInputs(ref characterInputs);
