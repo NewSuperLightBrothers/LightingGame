@@ -2,25 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using KinematicCharacterController;
 
 public class AutoAimSystem : MonoBehaviour
 {
     private Vector3 _currentAim;
     private Vector3 _enemyAim;
-    [SerializeField]
-    private float _rayLength = 10.0f;
-    [SerializeField]
-    private float _autoAimLength = 10.0f;
-    [SerializeField]
-    private float _autoAimAngle = 10.0f;
-    [SerializeField]
-    private float _followSpeed = 1.0f;
+    [SerializeField] private float _rayLength = 10.0f;
+    [SerializeField] private float _autoAimLength = 10.0f;
+    [SerializeField] private float _autoAimAngle = 10.0f;
+    [SerializeField] private float _followSpeed = 1.0f;
+    [SerializeField] private float _autoAimPower = 4f;
+    [SerializeField] private GameObject player;
+    [SerializeField] private float _autoAimCriticalPoint = 10.0f;
     private GameObject _targetEnemy;
- 
+
     private void FixedUpdate()
     {
-        Vector3 characterPos = transform.position;
-        Vector3 currentAim = transform.forward;
+        #region DEBUG LINE
+        Vector3 characterPos = this.transform.position;
+        Vector3 currentAim = this.transform.forward;
         RaycastHit hit;
         //레이 테스트용
         Debug.DrawLine(characterPos, characterPos + currentAim * 10, Color.red);
@@ -29,16 +30,21 @@ public class AutoAimSystem : MonoBehaviour
             // 레이와 충돌한 오브젝트를 감지했을 때 실행할 코드
             //Debug.Log("레이와 충돌한 오브젝트: " + hit.collider.gameObject.name);
         }
+        #endregion
     }
     private void TargetEnemy()
     {
         List<GameObject> targetList = new List<GameObject>();
         GameObject[] enemysList = GameObject.FindGameObjectsWithTag("Enemy");
+        _currentAim = player.transform.forward;
+        float atLeast = 100;
+        GameObject atLeastObj = null;
         for (int i = 0; i < enemysList.Length; i++)
         {
-            float dis = (transform.position - enemysList[i].transform.position).magnitude;
-            Vector3 enemyVec = enemysList[i].transform.position - this.transform.position;
+            float dis = (player.transform.position - enemysList[i].transform.position).magnitude;
+            Vector3 enemyVec = enemysList[i].transform.position - player.transform.position;
             float vecAngle = Vector3.Angle(enemyVec, _currentAim);
+            Debug.Log("각도 = " + vecAngle);
             if(dis< _autoAimLength && vecAngle< _autoAimAngle)
             {
                 targetList.Add(enemysList[i]);
@@ -47,7 +53,15 @@ public class AutoAimSystem : MonoBehaviour
         }
         if (targetList.Count > 0)
         {
-            _targetEnemy = targetList[0];
+            for (int i = 0; i < targetList.Count; i++)
+            {
+                if((targetList[i].transform.position - player.transform.position).magnitude < atLeast)
+                {
+                    atLeastObj = targetList[i];
+                    atLeast = (targetList[i].transform.position - player.transform.position).magnitude;
+                }
+            }
+            _targetEnemy = atLeastObj;
             Debug.Log(_targetEnemy.name);
         }
     }
@@ -56,21 +70,38 @@ public class AutoAimSystem : MonoBehaviour
         TargetEnemy();
         if (_targetEnemy != null)
         {
-            Vector3 lookEnemy = _targetEnemy.transform.position - this.transform.position;
-            this.transform.LookAt(_targetEnemy.transform);
-            //GameObject.DestroyImmediate(targetEnemy);
+            if ((_targetEnemy.transform.position - player.transform.position).magnitude > _autoAimLength || Vector3.Angle(_targetEnemy.transform.position - player.transform.position, player.transform.forward) > _autoAimAngle)
+            {
+                _targetEnemy = null;
+            }
+        }
+        if (_targetEnemy != null)
+        {
+            Debug.Log("코루틴 시작");
+            StopAllCoroutines();
+            StartCoroutine(FollowEnemy());
         }
         else if (_targetEnemy == null)
         {
             Debug.Log("타겟 없음");
         }
     }
-    public void FollowTarget()
+    IEnumerator FollowEnemy()
     {
-        if (_targetEnemy != null)
-        { 
-        Vector3 dir = _targetEnemy.transform.position - this.transform.position;
-        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _followSpeed);
+        while (true)
+        {
+            Vector3 currentPlayerForward = this.transform.forward;
+            Vector3 currentEnemyOrient = _targetEnemy.transform.position - this.transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(currentEnemyOrient);
+            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, targetRotation, _autoAimPower);
+            float angleDif = Quaternion.Angle(this.transform.rotation, targetRotation);
+            Debug.Log(angleDif);
+            if(angleDif < _autoAimCriticalPoint)
+            {
+                Debug.Log("에임 도달");
+                break;
+            }
+            yield return null;
         }
     }
 }
