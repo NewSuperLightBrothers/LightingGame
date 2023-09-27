@@ -10,6 +10,7 @@ public class LaserGunBulletManager : LaserGunManager
     public float distance;
     private int _pointIndex = 1;
 
+
     private void FixedUpdate()
     {
         if (points != null || points.Length != 0) 
