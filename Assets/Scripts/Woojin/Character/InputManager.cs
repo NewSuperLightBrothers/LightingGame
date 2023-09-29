@@ -12,13 +12,14 @@ using Unity.Mathematics;
 
 public class InputManager : MonoBehaviour
 {
-    public PlayerCharacterInputs characterInputs = new();
+    private PlayerCharacterInputs _characterInputs = new();
 
     private UserInputAssets _userInputAssets;
 
-    public ExampleCharacterController character;
-    //public ExampleCharacterCamera characterCamera;
-    //public CharacterCamera characterCamera;
+    public GameObject characterObject;
+    private ExampleCharacterController _characterController;
+    private CharacterState _characterState;
+    
     public Transform cameraAnchor;
 
     public float walkSpeed;
@@ -76,6 +77,9 @@ public class InputManager : MonoBehaviour
         _userInputAssets.TouchFallback.Delta.started += OnTouchDelta;
         _userInputAssets.TouchFallback.Delta.performed += OnTouchDelta;
         _userInputAssets.TouchFallback.Delta.canceled += OnTouchDelta;
+
+        _characterController = characterObject.GetComponent<ExampleCharacterController>();
+        _characterState = characterObject.GetComponent<CharacterState>();
     }
     
     private void OnDisable() {
@@ -106,28 +110,27 @@ public class InputManager : MonoBehaviour
 
     private void OnMove(InputAction.CallbackContext c) {
         Vector2 velocityIS = c.ReadValue<Vector2>();
-        characterInputs.MoveAxisRight = velocityIS.x;
-        characterInputs.MoveAxisForward = velocityIS.y;
+        _characterInputs.MoveAxisRight = velocityIS.x;
+        _characterInputs.MoveAxisForward = velocityIS.y;
     }
     private void OnMoveCancel(InputAction.CallbackContext c) {
-        characterInputs.MoveAxisRight = 0f;
-        characterInputs.MoveAxisForward = 0f;
+        _characterInputs.MoveAxisRight = 0f;
+        _characterInputs.MoveAxisForward = 0f;
     }
     private void OnJump(InputAction.CallbackContext c) {
-        characterInputs.JumpDown = c.ReadValue<float>() == 1f;
+        _characterInputs.JumpDown = c.ReadValue<float>() == 1f;
     }
     private void OnRun(InputAction.CallbackContext c) {
         _isRunning = !_isRunning;
-        character.MaxStableMoveSpeed = _isRunning ? runSpeed : walkSpeed;
-        character.MaxAirMoveSpeed = _isRunning ? runSpeed : walkSpeed;
+        // characterController.MaxStableMoveSpeed = _isRunning ? runSpeed : walkSpeed;
+        // characterController.MaxAirMoveSpeed = _isRunning ? runSpeed : walkSpeed;
     }
     private void OnFire(InputAction.CallbackContext c) {
     }
     private void OnCrouch(InputAction.CallbackContext c) {
         _isCrouching = !_isCrouching;
-        characterInputs.CrouchDown = _isCrouching;
-        characterInputs.CrouchUp = !_isCrouching;
-        character.SetInputs(ref characterInputs);
+        // _characterInputs.CrouchDown = _isCrouching;
+        // _characterInputs.CrouchUp = !_isCrouching;
     }
     private void OnTouchDelta(InputAction.CallbackContext c) {
         _mouseDelta = c.ReadValue<Vector2>();
@@ -140,6 +143,19 @@ public class InputManager : MonoBehaviour
         _rect.size -= new Vector2(_image.raycastPadding.x, _image.raycastPadding.y) * 2;
     }
 
+    private void Update() {
+        if (_isCrouching) {
+            _isRunning = false;
+            _characterState.characterData.moveSpeed = crouchSpeed;
+        } else {
+            if (_isRunning) {
+                _characterState.characterData.moveSpeed = runSpeed;
+            } else {
+                _characterState.characterData.moveSpeed = walkSpeed;
+            }
+        }
+    }
+
     private void LateUpdate() {
         _rotationOS = GetTouchDeltaEnhanced() + _mouseDelta;
         _rotationOS *= 0.1f;
@@ -149,8 +165,8 @@ public class InputManager : MonoBehaviour
         _lookInputWS.y = Mathf.Repeat(_lookInputWS.y, 360f);
 
         cameraAnchor.rotation = Quaternion.Euler(_lookInputWS);
-        characterInputs.CameraRotation = cameraAnchor.rotation;
-        character.SetInputs(ref characterInputs);
+        _characterInputs.CameraRotation = cameraAnchor.rotation;
+        _characterController.SetInputs(ref _characterInputs);
     }
 
     private Vector2 GetTouchDeltaEnhanced()
