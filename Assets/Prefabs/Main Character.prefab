@@ -449,3 +449,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCharacter: {fileID: 6799172815293619605}
+  characterData:
+    teamColor: 0
+    healthPoints: 0
+    moveSpeed: 0
+    jumpSpeed: 0
+  OnCharacterDestroy:
+    m_PersistentCalls:
+      m_Calls: []

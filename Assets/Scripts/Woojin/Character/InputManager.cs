@@ -122,15 +122,13 @@ public class InputManager : MonoBehaviour
     }
     private void OnRun(InputAction.CallbackContext c) {
         _isRunning = !_isRunning;
-        // characterController.MaxStableMoveSpeed = _isRunning ? runSpeed : walkSpeed;
-        // characterController.MaxAirMoveSpeed = _isRunning ? runSpeed : walkSpeed;
     }
     private void OnFire(InputAction.CallbackContext c) {
     }
     private void OnCrouch(InputAction.CallbackContext c) {
         _isCrouching = !_isCrouching;
-        // _characterInputs.CrouchDown = _isCrouching;
-        // _characterInputs.CrouchUp = !_isCrouching;
+        _characterInputs.CrouchDown = _isCrouching;
+        _characterInputs.CrouchUp = !_isCrouching;
     }
     private void OnTouchDelta(InputAction.CallbackContext c) {
         _mouseDelta = c.ReadValue<Vector2>();

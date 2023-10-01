@@ -19,7 +19,7 @@ public class CharacterData{
 
 public class CharacterState : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainCharacter;
+    private GameObject _mainCharacter;
     private ExampleCharacterController _characterController;
     private KinematicCharacterMotor _kinematicCharacterMotor;
 
@@ -27,6 +27,7 @@ public class CharacterState : MonoBehaviour
     public UnityEvent OnCharacterDestroy;
 
     private void Awake() {
+        _mainCharacter = this.gameObject;
         _characterController = _mainCharacter.GetComponent<ExampleCharacterController>();
         _kinematicCharacterMotor = _characterController.Motor;
         characterData.healthPoints = characterData.maxHealthPoints;
