@@ -78,4 +78,14 @@ public class BombShootingManager: MonoBehaviour
         tempBomb.GetComponent<Rigidbody>().useGravity = true;
     }
 
+    private void OnEnable()
+    {
+        _lineRenderer.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        _lineRenderer.enabled = false;
+    }
+
 }

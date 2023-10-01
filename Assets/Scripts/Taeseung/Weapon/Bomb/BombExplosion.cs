@@ -7,6 +7,7 @@ public class BombExplosion : MonoBehaviour
     [SerializeField] private float _maxExplosionSize;
     [SerializeField] private float _explosionTime;
     [SerializeField] Animator _explosionAnimation;
+    public Rigidbody a;
 
     private bool _isMaxsize = false;
     private float _time = 0;
@@ -16,6 +17,9 @@ public class BombExplosion : MonoBehaviour
     {
         _explosionAnimation.Play(0);
         _anitime = _explosionAnimation.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        a.AddExplosionForce(150, this.transform.position, 500);
+        
+
 
         //_explosionAnimation.GetCurrentAnimatorClipInfo(0)[0].clip;
     }

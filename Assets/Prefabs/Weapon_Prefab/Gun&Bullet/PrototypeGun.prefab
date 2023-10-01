@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4680826628443657732}
   - component: {fileID: 4810848834202066966}
   - component: {fileID: 8914625080126392259}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1294,7 +1294,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7017205797398912093}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Endpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 6896715134445907207}
   - component: {fileID: 3310385022829412447}
   - component: {fileID: 8372893219433605329}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1621,7 +1621,7 @@ GameObject:
   - component: {fileID: 2491318730083284000}
   - component: {fileID: 4536283849783097953}
   - component: {fileID: 4577690849342349174}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2505,7 +2505,7 @@ GameObject:
   - component: {fileID: 3666025443288946326}
   - component: {fileID: 3666025443288946325}
   - component: {fileID: 4312640782357111138}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Firepoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2744,7 +2744,7 @@ GameObject:
   - component: {fileID: 1787973871524621034}
   - component: {fileID: 3662283403504373286}
   - component: {fileID: 2193688954742874990}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PrototypeGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2790,14 +2790,21 @@ MonoBehaviour:
   - {fileID: 7919078574248938559}
   l_weaponSound:
   - {fileID: 3666025443288946325}
-  l_weaponAttackAnimation:
-  - {fileID: 2193688954742874990}
   l_weaponParticleSystem:
   - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
   - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
+  SD_weaponAttackAnimation:
+    _keys:
+    - GunFire
+    _values:
+    - {fileID: 2193688954742874990}
+  SD_weaponLineRenderer:
+    _keys: []
+    _values: []
   _weaponUsingBullet: {fileID: 4991624656693594560, guid: f2d9cfde9b164bb4483bf090eba5c56c,
     type: 3}
-  _weaponAfterImage: {fileID: 0}
+  _weaponAfterImage: {fileID: 6308018242423459397, guid: bc73e544e05db8740b61768a91c0f8d8,
+    type: 3}
   _weaponShotPoint: {fileID: 3666025443288946326}
   _weaponShotEndPoint: {fileID: 7017205797398912093}
   _weaponBulletSpeed: 4
@@ -2854,7 +2861,7 @@ GameObject:
   - component: {fileID: 3077734423050684300}
   - component: {fileID: 6820820815524827566}
   - component: {fileID: 2424404215547692182}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3684,7 +3691,7 @@ GameObject:
   - component: {fileID: 7919078574248938559}
   - component: {fileID: 4618920533008198439}
   - component: {fileID: 8344089154223005842}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightUI_real
   m_TagString: Untagged
   m_Icon: {fileID: 0}
