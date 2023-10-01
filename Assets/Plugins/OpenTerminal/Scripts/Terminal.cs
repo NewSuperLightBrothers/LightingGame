@@ -136,8 +136,9 @@ public class Terminal : MonoBehaviour
 
     public void PreExecute()
     {
+        History += ConsoleLine + InputText + "\n";
         string result = ExecuteCommand(InputText);
-        History += ConsoleLine + InputText + "\n" + (!string.IsNullOrEmpty(result) ? (result + "\n") : "");
+        History += (!string.IsNullOrEmpty(result) ? (result + "\n") : "");
         InputText = "";
     }
 
