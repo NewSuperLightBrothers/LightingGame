@@ -47,6 +47,7 @@ public class Terminal : MonoBehaviour
     private void HandleLog(string logString, string stackTrace, LogType type)
     {
         logStack.AddLog(logString, stackTrace, type);
+        History += "[" + DateTime.Now.ToString(("HH:mm:ss")) + "] " + (!string.IsNullOrEmpty(logString) ? (logString + "\n") : "");
     }
 
 
