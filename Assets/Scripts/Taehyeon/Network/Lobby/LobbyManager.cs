@@ -6,31 +6,32 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using WebSocketSharp;
 using Logger = Utils.Logger;
 
-public class LobbyManager : MonoBehaviour
+public class LobbyManager : SingletonPersistent<LobbyManager>
 {
     private Lobby _hostLobby;
     private Lobby _joinedLobby;
     private float _heartbeatTimer;
     private float _lobbyUpdateTimer;
-    private string _playerName;
+    public string PlayerName { get; private set; }
     
-    private async void Start()
-    {
-        _playerName = "PlayerName" + UnityEngine.Random.Range(0, 99);
-        Logger.Log("PlayerName : " + _playerName);
-        
-        await UnityServices.InitializeAsync();
-        Logger.Log("LobbyManager Start");
-
-        AuthenticationService.Instance.SignedIn += () =>
-        {
-            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
-        };
-
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-    }
+    // private async void Start()
+    // {
+    //     _playerName = "PlayerName" + UnityEngine.Random.Range(0, 99);
+    //     Logger.Log("PlayerName : " + _playerName);
+    //     
+    //     await UnityServices.InitializeAsync();
+    //     Logger.Log("LobbyManager Start");
+    //
+    //     AuthenticationService.Instance.SignedIn += () =>
+    //     {
+    //         Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
+    //     };
+    //
+    //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    // }
 
     private void Update()
     {
@@ -70,12 +71,15 @@ public class LobbyManager : MonoBehaviour
     }
 
     [TerminalCommand("CreateLobby")]
-    public async void CreateLobby()
+    public async void CreateLobby(string lobbyName, int maxPlayers)
     {
         try
         {
-            string lobbyName = "MyLobby";
-            int maxPlayers = 4;
+            if (string.IsNullOrEmpty(lobbyName))
+                throw new Exception("Lobby name is empty!");
+
+            if (maxPlayers <= 0 || maxPlayers % 2 != 0)
+                throw new Exception("Max players must be an even number!");
 
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
@@ -97,6 +101,9 @@ public class LobbyManager : MonoBehaviour
             PrintPlayers(_hostLobby);
             
         }catch(LobbyServiceException e)
+        {
+            Logger.Log(e.Message);
+        }catch(Exception e)
         {
             Logger.Log(e.Message);
         }
@@ -186,7 +193,7 @@ public class LobbyManager : MonoBehaviour
         {
             Data = new Dictionary<string, PlayerDataObject>
             {
-                { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
+                { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerName) }
             }
         };
     }
@@ -234,12 +241,12 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            _playerName = newPlayerName;
+            PlayerName = newPlayerName;
             await LobbyService.Instance.UpdatePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId,
             new UpdatePlayerOptions
             {
                 Data = new Dictionary<string, PlayerDataObject> { 
-                    { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
+                    { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerName) }
                 }
             });
         }
@@ -305,6 +312,24 @@ public class LobbyManager : MonoBehaviour
         {
             Logger.Log(e.Message);
         }
+    }
+
+    public async void Authenticate(string playerName)
+    {
+        PlayerName = playerName;
+        InitializationOptions initializationOptions = new InitializationOptions();
+        initializationOptions.SetProfile(playerName);
+        
+        await UnityServices.InitializeAsync(initializationOptions);
+
+        AuthenticationService.Instance.SignedIn += () =>
+        {
+            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
+
+            // RefreshLobbyList();
+        };
+
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 }
  
