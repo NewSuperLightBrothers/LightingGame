@@ -13,7 +13,7 @@ public class AutoAimSystem : MonoBehaviour
     [SerializeField] private float _autoAimAngle = 10.0f;
     [SerializeField] private float _followSpeed = 1.0f;
     [SerializeField] private float _autoAimPower = 4f;
-    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject _player;
     [SerializeField] private float _autoAimCriticalPoint = 10.0f;
     private GameObject _targetEnemy;
 
@@ -23,42 +23,42 @@ public class AutoAimSystem : MonoBehaviour
         Vector3 characterPos = this.transform.position;
         Vector3 currentAim = this.transform.forward;
         RaycastHit hit;
-        //·¹ÀÌ Å×½ºÆ®¿ë
+        //ë ˆì´ í…ŒìŠ¤íŠ¸ìš©
         Debug.DrawLine(characterPos, characterPos + currentAim * 10, Color.red);
         if (Physics.Raycast(characterPos, currentAim, out hit, _rayLength))
         {
-            // ·¹ÀÌ¿Í Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®¸¦ °¨ÁöÇßÀ» ¶§ ½ÇÇàÇÒ ÄÚµå
-            //Debug.Log("·¹ÀÌ¿Í Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®: " + hit.collider.gameObject.name);
+            // ë ˆì´ì™€ ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°ì§€í–ˆì„ ë•Œ ì‹¤í–‰í•  ì½”ë“œ
+            //Debug.Log("ë ˆì´ì™€ ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸: " + hit.collider.gameObject.name);
         }
         #endregion
     }
     private void TargetEnemy()
     {
         List<GameObject> targetList = new List<GameObject>();
-        GameObject[] enemysList = GameObject.FindGameObjectsWithTag("Enemy");
-        _currentAim = player.transform.forward;
+        GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+        _currentAim = _player.transform.forward;
         float atLeast = 100;
         GameObject atLeastObj = null;
-        for (int i = 0; i < enemysList.Length; i++)
+        for (int i = 0; i < enemyList.Length; i++)
         {
-            float dis = (player.transform.position - enemysList[i].transform.position).magnitude;
-            Vector3 enemyVec = enemysList[i].transform.position - player.transform.position;
+            float dis = (_player.transform.position - enemyList[i].transform.position).magnitude;
+            Vector3 enemyVec = enemyList[i].transform.position - _player.transform.position;
             float vecAngle = Vector3.Angle(enemyVec, _currentAim);
-            Debug.Log("°¢µµ = " + vecAngle);
+            Debug.Log("ê°ë„ = " + vecAngle);
             if(dis< _autoAimLength && vecAngle< _autoAimAngle)
             {
-                targetList.Add(enemysList[i]);
-                Debug.Log("Àû ÀÎ½Ä, Àû ÀÌ¸§ = " + enemysList[i].name);
+                targetList.Add(enemyList[i]);
+                Debug.Log("ì  ì¸ì‹, ì  ì´ë¦„ = " + enemyList[i].name);
             }
         }
         if (targetList.Count > 0)
         {
             for (int i = 0; i < targetList.Count; i++)
             {
-                if((targetList[i].transform.position - player.transform.position).magnitude < atLeast)
+                if((targetList[i].transform.position - _player.transform.position).magnitude < atLeast)
                 {
                     atLeastObj = targetList[i];
-                    atLeast = (targetList[i].transform.position - player.transform.position).magnitude;
+                    atLeast = (targetList[i].transform.position - _player.transform.position).magnitude;
                 }
             }
             _targetEnemy = atLeastObj;
@@ -70,23 +70,23 @@ public class AutoAimSystem : MonoBehaviour
         TargetEnemy();
         if (_targetEnemy != null)
         {
-            if ((_targetEnemy.transform.position - player.transform.position).magnitude > _autoAimLength || Vector3.Angle(_targetEnemy.transform.position - player.transform.position, player.transform.forward) > _autoAimAngle)
+            if ((_targetEnemy.transform.position - _player.transform.position).magnitude > _autoAimLength || Vector3.Angle(_targetEnemy.transform.position - _player.transform.position, _player.transform.forward) > _autoAimAngle)
             {
                 _targetEnemy = null;
             }
         }
         if (_targetEnemy != null)
         {
-            Debug.Log("ÄÚ·çÆ¾ ½ÃÀÛ");
+            Debug.Log("ì½”ë£¨í‹´ ì‹œì‘");
             StopAllCoroutines();
             StartCoroutine(FollowEnemy());
         }
         else if (_targetEnemy == null)
         {
-            Debug.Log("Å¸°Ù ¾øÀ½");
+            Debug.Log("íƒ€ê²Ÿ ì—†ìŒ");
         }
     }
-    IEnumerator FollowEnemy()
+    private IEnumerator FollowEnemy()
     {
         while (true)
         {
@@ -98,7 +98,7 @@ public class AutoAimSystem : MonoBehaviour
             Debug.Log(angleDif);
             if(angleDif < _autoAimCriticalPoint)
             {
-                Debug.Log("¿¡ÀÓ µµ´Ş");
+                Debug.Log("ì—ì„ ë„ë‹¬");
                 break;
             }
             yield return null;

@@ -1597,7 +1597,7 @@ MonoBehaviour:
   _autoAimAngle: 10
   _followSpeed: 1
   _autoAimPower: 1
-  player: {fileID: 94234870}
+  _player: {fileID: 0}
   _autoAimCriticalPoint: 10
 --- !u!114 &1022112466
 MonoBehaviour:
@@ -1695,8 +1695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b6c677bb6105c48a1c5e68990f2a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterBody: {fileID: 94234875}
-  cameraArm: {fileID: 1806171377}
+  _characterBody: {fileID: 0}
+  _cameraArm: {fileID: 0}
 --- !u!114 &1022112470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1904,7 +1904,7 @@ MonoBehaviour:
   _autoAimAngle: 10
   _followSpeed: 1
   _autoAimPower: 4
-  player: {fileID: 94234870}
+  _player: {fileID: 0}
   _autoAimCriticalPoint: 0
 --- !u!1 &1204241858
 GameObject:
@@ -2785,7 +2785,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1806330875}
   - component: {fileID: 1806330874}
-  - component: {fileID: 1806330873}
   - component: {fileID: 1806330872}
   - component: {fileID: 1806330876}
   m_Layer: 0
@@ -2828,14 +2827,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1806330873
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806330871}
-  m_Enabled: 1
 --- !u!20 &1806330874
 Camera:
   m_ObjectHideFlags: 0
@@ -2906,7 +2897,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf0f82e260757e498eab2db8033b9ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 94234870}
+  _player: {fileID: 0}
+  _yPos: 10
+  _adjustmentValue: 1
 --- !u!1 &1849296612
 GameObject:
   m_ObjectHideFlags: 0
