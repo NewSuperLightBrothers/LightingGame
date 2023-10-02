@@ -15,7 +15,7 @@ public class HitInfo {
     }
 }
 
-public class HitRay : MonoBehaviour
+public class AimPositionGetter : MonoBehaviour
 {
     [SerializeField] private float _maxDistance;
     [SerializeField] private int _maxIterations;
