@@ -733,7 +733,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1806330876}
         m_TargetAssemblyTypeName: MiniMapSystem, Assembly-CSharp
-        m_MethodName: ZoonIn
+        m_MethodName: ZoomIn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1695,8 +1695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b6c677bb6105c48a1c5e68990f2a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterBody: {fileID: 0}
-  _cameraArm: {fileID: 0}
+  _characterBody: {fileID: 94234875}
+  _cameraArm: {fileID: 1806171377}
 --- !u!114 &1022112470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1904,7 +1904,7 @@ MonoBehaviour:
   _autoAimAngle: 10
   _followSpeed: 1
   _autoAimPower: 4
-  _player: {fileID: 0}
+  _player: {fileID: 94234870}
   _autoAimCriticalPoint: 0
 --- !u!1 &1204241858
 GameObject:
@@ -2897,7 +2897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf0f82e260757e498eab2db8033b9ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
+  _player: {fileID: 94234870}
   _yPos: 10
   _adjustmentValue: 1
 --- !u!1 &1849296612
@@ -2986,7 +2986,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1806330876}
         m_TargetAssemblyTypeName: MiniMapSystem, Assembly-CSharp
-        m_MethodName: ZoonOut
+        m_MethodName: ZoomOut
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
