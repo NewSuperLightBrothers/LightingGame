@@ -447,7 +447,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 549545877}
-  - component: {fileID: 549545876}
   m_Layer: 0
   m_Name: Camera Anchor
   m_TagString: Untagged
@@ -455,24 +454,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &549545876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549545875}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23d55c3402243234583f8cb49d3e7adc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTarget: {fileID: 2131972120}
-  _mainCamera: {fileID: 1156247208}
-  _aimRay: {fileID: 1162580859}
-  _cameraOffset: {fileID: 100221873}
-  _cameraOffsetValue: {x: 0.2, y: 0.8, z: 0}
-  _cameraRadius: 0.2
 --- !u!4 &549545877
 Transform:
   m_ObjectHideFlags: 0
@@ -1559,7 +1540,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: dd621aea9ee63a348bb8d8d42e5cd885, type: 2}
+      objectReference: {fileID: 2100000, guid: cf774b4c734b1d04e9fbf6d71e964591, type: 2}
     - target: {fileID: 6799172815293619605, guid: 32591bee8d5bcce4194cc2dc21a0a94b,
         type: 3}
       propertyPath: m_Name
@@ -1765,9 +1746,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064256409}
   m_CullTransparentMesh: 1
---- !u!4 &2131972120 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6799172814335874120, guid: 32591bee8d5bcce4194cc2dc21a0a94b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1841820052}
-  m_PrefabAsset: {fileID: 0}

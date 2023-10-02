@@ -96,7 +96,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf774b4c734b1d04e9fbf6d71e964591, type: 2}
+  - {fileID: 2100000, guid: dd621aea9ee63a348bb8d8d42e5cd885, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -308,7 +308,6 @@ GameObject:
   - component: {fileID: 6799172815293619610}
   - component: {fileID: 6799172815293619611}
   - component: {fileID: 6799172815293619604}
-  - component: {fileID: 2515665992488672546}
   m_Layer: 9
   m_Name: Main Character
   m_TagString: Player
@@ -436,24 +435,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2515665992488672546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6799172815293619605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8db5693bcea2c7a40a3379a967aa522e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainCharacter: {fileID: 6799172815293619605}
-  characterData:
-    teamColor: 0
-    healthPoints: 0
-    moveSpeed: 0
-    jumpSpeed: 0
-  OnCharacterDestroy:
-    m_PersistentCalls:
-      m_Calls: []
