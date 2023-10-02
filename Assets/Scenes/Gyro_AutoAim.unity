@@ -3118,7 +3118,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1022112465}
+      - m_Target: {fileID: 1156247210}
         m_TargetAssemblyTypeName: AutoAimSystem, Assembly-CSharp
         m_MethodName: AutoAim
         m_Mode: 1
