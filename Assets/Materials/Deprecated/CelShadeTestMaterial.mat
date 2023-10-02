@@ -87,7 +87,7 @@ Material:
     - _ADDITIONAL_LIGHTS: 1
     - _ADDITIONAL_LIGHT_SHADOWS: 1
     - _AlphaClip: 0
-    - _AmbientBrightnesss: 15
+    - _AmbientBrightnesss: 10
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -111,25 +111,25 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rim: 0.037
-    - _RimOffset: 0
-    - _RimThreshold: 0.005
+    - _Rim: 0.7
+    - _RimOffset: 0.2
+    - _RimThreshold: 0.2
     - _SHADOWS_SOFT: 1
     - _ShadowAttenuation: 1
-    - _Smoothness: 0.2
+    - _Smoothness: 0.677
     - _SmoothnessTextureChannel: 0
-    - _Specular: 0
+    - _Specular: 0.2
     - _SpecularHighlights: 1
-    - _SpecularOffset: 0
+    - _SpecularOffset: 0.2
     - _SrcBlend: 1
     - _Surface: 0
     - _Temperature: 6500
-    - _TemperatureBrightness: 0
-    - _TemperatureMultiplier: 0.5
+    - _TemperatureBrightness: 1
+    - _TemperatureMultiplier: -1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _Albedo: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+    - _Albedo: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

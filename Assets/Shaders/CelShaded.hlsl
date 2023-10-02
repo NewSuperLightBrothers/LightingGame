@@ -22,7 +22,7 @@ struct SurfaceVariables {
 };
 
 
-float3 CalculateCelShading(Light l, SurfaceVariables s) {
+float4 CalculateCelShading(Light l, SurfaceVariables s) {
     float sA = smoothstep(0, s.ec.shadowAttenuation, l.shadowAttenuation);
     float dA = smoothstep(0, s.ec.distanceAttenuation, l.distanceAttenuation);
     float attenuation = sA * dA;
@@ -42,14 +42,13 @@ float3 CalculateCelShading(Light l, SurfaceVariables s) {
     specular = s.smoothness * smoothstep((1 - s.smoothness) * s.ec.specular + s.ec.specularOffset, s.ec.specular + s.ec.specularOffset, specular);
     rim = s.smoothness * smoothstep(s.ec.rim - 0.5f * s.ec.rimOffset, s.ec.rim + 0.5f * s.ec.rimOffset, rim);
 
-    
-    return l.color * (diffuse + max(specular, rim));
+    return float4(l.color * (diffuse + max(specular, rim)), diffuse + max(specular, rim));
 }
 #endif
 
 void LightingCelShaded_float(float Smoothness, float RimThreshold, float3 Position, float3 Normal, float3 View, 
     float EdgeDiffuse, float EdgeSpecular, float EdgeSpecularOffset,
-    float EdgeDistanceAttenuation, float EdgeShadowAttenuation, float EdgeRim, float EdgeRimOffset, out float3 Color) {
+    float EdgeDistanceAttenuation, float EdgeShadowAttenuation, float EdgeRim, float EdgeRimOffset, out float4 Color) {
     SurfaceVariables s;
     s.normal = Normal;
     s.view = SafeNormalize(View);
