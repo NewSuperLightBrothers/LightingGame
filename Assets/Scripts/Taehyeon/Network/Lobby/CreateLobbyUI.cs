@@ -15,7 +15,12 @@ public class CreateLobbyUI : MonoBehaviour
     
     private void Awake()
     {
-        _createBtn.onClick.AddListener(CreateLobby);
+        _createBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("CreateBtn Click");
+            CreateLobby();
+            gameObject.SetActive(false);
+        });
     }
 
     private void CreateLobby()
