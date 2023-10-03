@@ -33,7 +33,7 @@ namespace KinematicCharacterController.Examples
         public bool RotateWithPhysicsMover = false;
 
         [Header("Obstruction")]
-        public float ObstructionCheckRadius = 0.2f;
+        public float ObstructionCheckRadius = 1f;
         public LayerMask ObstructionLayers = -1;
         public float ObstructionSharpness = 10000f;
         public List<Collider> IgnoredColliders = new List<Collider>();
