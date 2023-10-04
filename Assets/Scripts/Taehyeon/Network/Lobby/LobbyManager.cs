@@ -1,37 +1,30 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using WebSocketSharp;
 using Logger = Utils.Logger;
 
 public class LobbyManager : SingletonPersistent<LobbyManager>
 {
     private Lobby _hostLobby;
-    private Lobby _joinedLobby;
+    private Lobby _joinedLobby { get; set; }
     private float _heartbeatTimer;
     private float _lobbyUpdateTimer;
     public string PlayerName { get; private set; }
     
-    // private async void Start()
-    // {
-    //     _playerName = "PlayerName" + UnityEngine.Random.Range(0, 99);
-    //     Logger.Log("PlayerName : " + _playerName);
-    //     
-    //     await UnityServices.InitializeAsync();
-    //     Logger.Log("LobbyManager Start");
-    //
-    //     AuthenticationService.Instance.SignedIn += () =>
-    //     {
-    //         Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
-    //     };
-    //
-    //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
-    // }
+    private void Start()
+    {
+        LobbyUIManager.Instance.OnLobbyLeave -= LeaveLobby;
+        LobbyUIManager.Instance.OnLobbyLeave += LeaveLobby;
+    }
+
+    private void OnDestroy()
+    {
+        LobbyUIManager.Instance.OnLobbyLeave -= LeaveLobby;
+    }
 
     private void Update()
     {
@@ -100,6 +93,9 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             
             PrintPlayers(_hostLobby);
             
+            LobbyUIManager.Instance.OnLobbyCreate?.Invoke();
+            LobbyUIManager.Instance.OnLobbyJoin?.Invoke();
+
         }catch(LobbyServiceException e)
         {
             Logger.Log(e.Message);
@@ -262,6 +258,8 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         try
         {
             LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+            _hostLobby = null;
+            _joinedLobby = null;
         }
         catch (LobbyServiceException e)
         {
@@ -330,6 +328,47 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    public List<PlayerInfo> GetJoinedPlayerInfos()
+    {
+        List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+        try
+        {
+            if(_joinedLobby == null)
+                throw new Exception("Joined lobby is null");
+
+            foreach (Player joinedLobbyPlayer in _joinedLobby.Players)
+            {
+                PlayerInfo playerInfo = new PlayerInfo
+                {
+                    id = joinedLobbyPlayer.Id,
+                    name = joinedLobbyPlayer.Data["PlayerName"].Value
+                };
+                
+                playerInfos.Add(playerInfo);
+            }
+        }catch(Exception e)
+        {
+            Logger.Log(e.Message);
+        }
+        
+        return playerInfos;
+    }
+
+    public Lobby GetJoinedLobby()
+    {
+        try
+        {
+            if(_joinedLobby == null)
+                throw new Exception("Joined lobby is null");
+
+            return _joinedLobby;
+        } catch(Exception e)
+        {
+            Logger.Log(e.Message);
+            return null;
+        }
     }
 }
  

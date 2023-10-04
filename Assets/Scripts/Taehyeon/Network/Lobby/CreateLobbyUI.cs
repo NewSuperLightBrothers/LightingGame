@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Logger = Utils.Logger;
 
@@ -19,7 +16,6 @@ public class CreateLobbyUI : MonoBehaviour
         {
             Logger.Log("CreateBtn Click");
             CreateLobby();
-            gameObject.SetActive(false);
         });
     }
 
