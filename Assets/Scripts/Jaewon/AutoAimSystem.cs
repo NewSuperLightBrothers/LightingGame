@@ -17,6 +17,10 @@ public class AutoAimSystem : MonoBehaviour
     [SerializeField] private float _autoAimCriticalPoint = 10.0f;
     private GameObject _targetEnemy;
 
+    private void Start()
+    {
+        Debug.Log("오토에임 시작");
+    }
     private void FixedUpdate()
     {
         #region DEBUG LINE
