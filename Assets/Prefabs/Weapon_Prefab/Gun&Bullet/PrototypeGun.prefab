@@ -2538,7 +2538,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 81b1b0daeed0e1644ac85c22fdb0ef8e,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 486c22589d1fb4f47b466015f28fdbef, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 96b191e311616d7438b1c2f2bb00cbb9, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2824,7 +2824,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _team: 1
   _choiceOutLineMaterial: {fileID: 0}
-  _laserGunManager: {fileID: 0}
   _laserGunManager2: {fileID: 1787973871524621034}
 --- !u!95 &2193688954742874990
 Animator:

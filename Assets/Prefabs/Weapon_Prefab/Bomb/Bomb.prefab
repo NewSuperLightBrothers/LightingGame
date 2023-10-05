@@ -225,11 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9629e8cc4323e948965c083aa910b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 0
-  _emissionStrength: 2
-  colortype: 0
-  _meshRenderer: {fileID: 8055679635129320037}
-  _maxdistance: 120
-  _explosionObject: {fileID: 5473048986851759174, guid: 234d1c6553fb4c44ea3c168c6f7cca2d,
+  _bombExplosionObject: {fileID: 5473048986851759174, guid: 234d1c6553fb4c44ea3c168c6f7cca2d,
     type: 3}
-  _explosionTime: 2.5
+  _bombMeshRenderer: {fileID: 8055679635129320037}
+  _bombDamage: 30

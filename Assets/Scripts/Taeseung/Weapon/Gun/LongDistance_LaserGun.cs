@@ -103,7 +103,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
                     //Mirror가 아닌 경우, 종료
                     else
                     {
-                        l_gunPathPoints.Add(Beforepoint + distance * Input);
+                        l_gunPathPoints.Add(Beforepoint + Vector3.Distance(Beforepoint,_weaponRayHit.point)  * Input);
                         break;
                     }
                 }

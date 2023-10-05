@@ -17,7 +17,6 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     private bool _isTouch = false;
 
     private ObjectEmissionManager _emissionManager;
-    [SerializeField] private LaserGunShootingManager _laserGunManager;
     [SerializeField] private LongDistance_LaserGun _laserGunManager2;
 
 

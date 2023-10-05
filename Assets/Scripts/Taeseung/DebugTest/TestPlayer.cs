@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using KinematicCharacterController;
+using KinematicCharacterController.Examples;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -7,7 +9,9 @@ public class TestPlayer : Singleton<TestPlayer>
 {
     public float testHP;
     public GameObject Gun;
-    public BombShootingManager bomb;
+    public SubWeapon_BombManager bomb;
+    public Animator animation;
+    public KinematicCharacterMotor motor;
 
     public int bombmode = 0;
 
@@ -25,7 +29,20 @@ public class TestPlayer : Singleton<TestPlayer>
             bomb.enabled = false;
             bombmode = 0;
         }
+    }
 
+    private void Update()
+    {
+        animation.SetFloat("Spd", motor.Velocity.magnitude/4);
+        if (motor.Velocity.magnitude/4 > 1)
+        {
+            print(animation.GetCurrentAnimatorStateInfo(0).shortNameHash);
+            animation.speed = motor.Velocity.magnitude/4;
+        }
+        else
+        {
+            animation.speed = 1;
+        }
     }
 
 

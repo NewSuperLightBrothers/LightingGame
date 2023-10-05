@@ -887,7 +887,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883711494}
-  m_LocalRotation: {x: 0.062151864, y: -0, z: -0, w: 0.9980667}
+  m_LocalRotation: {x: 0.08789802, y: -0, z: -0, w: 0.9961296}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -895,7 +895,7 @@ Transform:
   - {fileID: 591769517}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 7.127, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.085, y: 0, z: 0}
 --- !u!114 &1883711500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,13 +908,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1113d36f02419bf4eb9ed9686e86a977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bomb: {fileID: 8055679635129320025, guid: 6943f70fd14d9ad48806db7b4d6e1c44, type: 3}
-  _simulationTime: 4
-  _power: 20
-  _pointsCount: 30
-  _lineRenderer: {fileID: 591769519}
-  _firePoint: {fileID: 591769517}
-  _launchVelocity: {x: 0, y: 0, z: 0}
+  _teamColor: 1
+  _weaponDamage: 20
+  _weaponEmissionStrength: 5
+  l_weaponMeshRenderer: []
+  l_weaponSound: []
+  l_weaponParticleSystem: []
+  SD_weaponLineRenderer:
+    _keys: []
+    _values: []
+  _weaponCount: 10
+  _weaponRemainTime: 4
+  _bombPrefab: {fileID: 8055679635129320025, guid: 6943f70fd14d9ad48806db7b4d6e1c44,
+    type: 3}
+  _bombPrefabThrowPower: 20
+  _bombPrefabPointsCount: 50
+  _bombPrefabPointsIntervalTime: 5
+  _bombPrefabLineRenderer: {fileID: 591769519}
+  _bombPrefabFirePoint: {fileID: 591769517}
 --- !u!1 &1939082682
 GameObject:
   m_ObjectHideFlags: 0
