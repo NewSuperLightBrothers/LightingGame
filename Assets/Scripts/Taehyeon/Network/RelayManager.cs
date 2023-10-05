@@ -12,8 +12,6 @@ public class RelayManager : Singleton<RelayManager>
 {
     private const string _ENVIRONMENT_NAME = "lightgameenvironment";
 
-    private const int _MAX_CONNECTIONS = 10;
-
     public bool isRelayEnabled =>
         _transport != null && _transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
 
@@ -21,7 +19,7 @@ public class RelayManager : Singleton<RelayManager>
 
     public async Task<RelayHostData> SetupRelay()
     {
-        Logger.Log($"Relay server starting with max connections {_MAX_CONNECTIONS}");
+        Logger.Log($"Relay server starting with max connections {GameData.playerNumPerTeam * 2}");
         InitializationOptions options = new InitializationOptions()
             .SetEnvironmentName(_ENVIRONMENT_NAME);
         
@@ -32,7 +30,7 @@ public class RelayManager : Singleton<RelayManager>
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 
-        Allocation allocation = await Relay.Instance.CreateAllocationAsync(_MAX_CONNECTIONS);
+        Allocation allocation = await Relay.Instance.CreateAllocationAsync(GameData.playerNumPerTeam * 2);
 
         RelayHostData relayHostData = new RelayHostData
         {
@@ -48,6 +46,8 @@ public class RelayManager : Singleton<RelayManager>
 
         _transport.SetRelayServerData(relayHostData.ipv4Address, relayHostData.port, relayHostData.allocationIDBytes,
             relayHostData.key, relayHostData.connectionData);
+        
+        NetworkController.Instance.joinCode = relayHostData.joinCode;
         
         Logger.Log($"Relay server generated a join code {relayHostData.joinCode}");
 
