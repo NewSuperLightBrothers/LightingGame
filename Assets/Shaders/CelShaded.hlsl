@@ -49,6 +49,9 @@ float4 CalculateCelShading(Light l, SurfaceVariables s) {
 void LightingCelShaded_float(float Smoothness, float RimThreshold, float3 Position, float3 Normal, float3 View, 
     float EdgeDiffuse, float EdgeSpecular, float EdgeSpecularOffset,
     float EdgeDistanceAttenuation, float EdgeShadowAttenuation, float EdgeRim, float EdgeRimOffset, out float4 Color) {
+#ifdef SHADERGRAPH_PREVIEW
+    Color = float4(0.5,0.5,0.5,0.5);
+#else
     SurfaceVariables s;
     s.normal = Normal;
     s.view = SafeNormalize(View);
@@ -80,5 +83,6 @@ void LightingCelShaded_float(float Smoothness, float RimThreshold, float3 Positi
         light = GetAdditionalLight(i, Position, 1);
         Color += CalculateCelShading(light,s);
     }
+#endif
 }
 #endif

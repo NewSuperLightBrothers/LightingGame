@@ -1311,11 +1311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3c95bcf772717498ff0784d6355ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
-  iteration: 0
-  _maxIteration: 0
-  _mirrorCameraPrefab: {fileID: 0}
-  mirror: {fileID: 1131174429}
 --- !u!1 &1162580858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1419,7 +1414,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cf774b4c734b1d04e9fbf6d71e964591, type: 2}
+  - {fileID: 2100000, guid: cd1b6ebec905d3b40a72387268c54bcd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
