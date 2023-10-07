@@ -18,7 +18,6 @@ public class MovSystem : MonoBehaviour
             Vector3 lookForward = new Vector3(_cameraArm.forward.x, 0f, _cameraArm.forward.z).normalized;
             Vector3 lookRight = new Vector3(_cameraArm.right.x, 0f, _cameraArm.right.z).normalized;
             Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
-
             _characterBody.forward = moveDir;
             transform.position += moveDir * Time.deltaTime * 5f;
         }

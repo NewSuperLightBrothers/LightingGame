@@ -14,6 +14,7 @@ public class AutoAimSystem : MonoBehaviour
     [SerializeField] private float _followSpeed = 1.0f;
     [SerializeField] private float _autoAimPower = 4f;
     [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _camArm;
     [SerializeField] private float _autoAimCriticalPoint = 10.0f;
     private GameObject _targetEnemy;
 
@@ -94,8 +95,8 @@ public class AutoAimSystem : MonoBehaviour
     {
         while (true)
         {
-            Vector3 currentPlayerForward = this.transform.forward;
-            Vector3 currentEnemyOrient = _targetEnemy.transform.position - this.transform.position;
+            Vector3 currentPlayerForward = _player.transform.forward;
+            Vector3 currentEnemyOrient = _targetEnemy.transform.position - _player.transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(currentEnemyOrient);
             this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, targetRotation, _autoAimPower);
             float angleDif = Quaternion.Angle(this.transform.rotation, targetRotation);
