@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 83066507}
   - component: {fileID: 83066506}
   - component: {fileID: 83066505}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Buff2
   m_TagString: Ally
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 193489473}
   - component: {fileID: 193489472}
   - component: {fileID: 193489471}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DeBuff2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1423,7 +1423,7 @@ GameObject:
   - component: {fileID: 1465158117}
   - component: {fileID: 1465158116}
   - component: {fileID: 1465158115}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Buff
   m_TagString: Ally
   m_Icon: {fileID: 0}
@@ -1653,6 +1653,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3145212921041896167, guid: ad63f89dee488034596a6d4f529fb099,
         type: 3}
+      propertyPath: JumpUpSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3145212921041896167, guid: ad63f89dee488034596a6d4f529fb099,
+        type: 3}
       propertyPath: MaxAirMoveSpeed
       value: 6
       objectReference: {fileID: 0}
@@ -1745,6 +1750,12 @@ MonoBehaviour:
   isEnemy: 0
   isAlly: 0
   stateCheck: {fileID: 913103448}
+  _defaultVelocity: 6
+  _buffVelocity: 10
+  _debuffVelocity: 3
+  _defaultJump: 10
+  _buffJump: 15
+  _debuffJump: 6
 --- !u!1 &1671306462
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,7 +2207,7 @@ GameObject:
   - component: {fileID: 1893327507}
   - component: {fileID: 1893327506}
   - component: {fileID: 1893327505}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DeBuff
   m_TagString: Enemy
   m_Icon: {fileID: 0}

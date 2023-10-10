@@ -14,16 +14,17 @@ public class LightBuffSystem : MonoBehaviour
     public bool isEnemy;
     public bool isAlly;
     public Image stateCheck;
-    [Header("Buff Velocity")]
-    private float _defaultVelocity = 6;
-    private float _buffVelocity = 10;
-    private float _debuffVelocity = 3;
-    Color redColor = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-    Color blueColor = new Color(0.0f, 0.0f, 1.0f, 1.0f);
-    Color pupleColor = new Color(1.0f, 0.0f, 1.0f, 1.0f);
-    Color defaultColor = new Color(0, 0, 0, 1.0f);
+
+    [SerializeField] private float _defaultVelocity = 6;
+    [SerializeField] private float _buffVelocity = 10;
+    [SerializeField] private float _debuffVelocity = 3;
+    [SerializeField] private float _defaultJump = 10;
+    [SerializeField] private float _buffJump = 15;
+    [SerializeField] private float _debuffJump = 6;
+
+
     ExampleCharacterController exampleCharacterController;
-    private void Start()
+    private void Awake()
     {
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
@@ -31,26 +32,37 @@ public class LightBuffSystem : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        _lightList.Add(other.gameObject);
-        if (other.CompareTag("Enemy"))
+        #region LightAreaIn
+        if (other.gameObject.layer == 7)
         {
-            isEnemy = true;
-        }else if (other.CompareTag("Ally"))
-        {
-            isAlly = true;
+            _lightList.Add(other.gameObject);
+            if (other.CompareTag("Enemy"))
+            {
+                isEnemy = true;
+            }
+            else if (other.CompareTag("Ally"))
+            {
+                isAlly = true;
+            }
+            Debug.Log("현재 남은 light수 = " + _lightList.Count);
+            Debug.Log("적 잔상 = " + isEnemy);
+            Debug.Log("아군 잔상 = " + isAlly);
         }
-        Debug.Log("현재 남은 light수 = " + _lightList.Count);
-        Debug.Log("적 잔상 = " + isEnemy);
-        Debug.Log("아군 잔상 = " + isAlly);
+        #endregion LightAreaIn
     }
     private void OnTriggerExit(Collider other)
     {
-        _lightList.Remove(other.gameObject);
-        isEnemy = IsTag<string>(_lightList, "Enemy");
-        isAlly = IsTag<string>(_lightList, "Ally");
-        Debug.Log("현재 남은 light수 = " + _lightList.Count);
-        Debug.Log("적 잔상 = " + isEnemy);
-        Debug.Log("아군 잔상 = " + isAlly);
+        #region LightAreaOut
+        if (other.gameObject.layer == 7)
+        {
+            _lightList.Remove(other.gameObject);
+            isEnemy = IsTag<string>(_lightList, "Enemy");
+            isAlly = IsTag<string>(_lightList, "Ally");
+            Debug.Log("현재 남은 light수 = " + _lightList.Count);
+            Debug.Log("적 잔상 = " + isEnemy);
+            Debug.Log("아군 잔상 = " + isAlly);
+        }
+        #endregion LightAreaOut
     }
     private bool IsTag<T>(List<GameObject> Array,T tagname)
     {
@@ -67,46 +79,61 @@ public class LightBuffSystem : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        StartCoroutine(Buff());
-        Debug.Log("현재 최대 속도 = " + exampleCharacterController.MaxStableMoveSpeed);
+        if (isAlly || isEnemy)
+        {
+            StartCoroutine(Buff());
+            Debug.Log("현재 최대 속도 = " + exampleCharacterController.MaxStableMoveSpeed);
+        }
     }
-    //불러온 에셋에서 velocity를 변환하는 메소드를 찾아야함. 찾으면 바로 적용가능
     private IEnumerator Buff()
     {
         float time = 0;
+        #region Debuff
         if (isEnemy && !isAlly)
         {
             while (true)
             {
+                stateCheck.GetComponent<Image>().color = new Color(0, 0, 1, 1);
                 time += Time.deltaTime;
                 exampleCharacterController.MaxStableMoveSpeed = _debuffVelocity;
+                exampleCharacterController.JumpUpSpeed = _debuffJump;
                 if (time >= 1.0f)
                 {
                     time = 0;
                     exampleCharacterController.MaxStableMoveSpeed = _defaultVelocity;
+                    exampleCharacterController.JumpUpSpeed = _defaultJump;
                     break;
                 }
                 yield return null;
             }
         }
+        #endregion Debuff
+        #region Buff
         if (!isEnemy && isAlly)
         {
             while (true)
             {
+                stateCheck.GetComponent<Image>().color = new Color(1, 0, 0, 1);
                 time += Time.deltaTime;
                 exampleCharacterController.MaxStableMoveSpeed = _buffVelocity;
+                exampleCharacterController.JumpUpSpeed = _buffJump;
                 if (time >= 1.0f)
                 {
                     time = 0;
                     exampleCharacterController.MaxStableMoveSpeed = _defaultVelocity;
+                    exampleCharacterController.JumpUpSpeed = _defaultJump;
                     break;
                 }
                 yield return null;
             }
         }
-        if(isAlly && isEnemy)
+        #endregion Buff
+        #region Together
+        if (isAlly && isEnemy)
         {
             yield return null;
+            stateCheck.GetComponent<Image>().color = new Color(1, 0, 1, 1);
         }
+        #endregion Together
     }
 }
