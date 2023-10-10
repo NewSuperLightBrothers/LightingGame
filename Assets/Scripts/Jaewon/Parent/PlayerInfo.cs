@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//플레이어의 정보를 받고,설정합니다. 초기값은 Default로 초기화 해둠.
 public abstract class PlayerInfo
 {
     #region 변수값
-    protected GameObject player;
+    protected GameObject _player;
 
     protected float _playerHp;
     protected float _playerSpd;
@@ -17,7 +16,6 @@ public abstract class PlayerInfo
     //플레이어의 스탯을 딕셔너리로 관리합니다. 문자열은 앞선 변수값의 변수명, float은 변수값을 값입니다. 기본값은 전부 100입니다.
     protected Dictionary<string,float> _playerStat =  new Dictionary<string, float>();
 
-    //값을 초기화합니다. 기본값은 모두 100이며, 기본 색은 Red입니다.
     #region 초기화
     private void Awake()
     {
