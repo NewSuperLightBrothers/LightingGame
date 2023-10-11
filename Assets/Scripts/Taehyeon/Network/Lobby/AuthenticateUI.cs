@@ -15,8 +15,13 @@ public class AuthenticateUI : MonoBehaviour
             if(_playerNameInputField.text.IsNullOrEmpty()) return;
             
             LobbyManager.Instance.Authenticate(_playerNameInputField.text);
-            LobbyUIManager.Instance.OnAuthenticate?.Invoke();
+            Hide();
         });
         
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

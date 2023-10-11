@@ -7,15 +7,15 @@ public class LobbyListUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private Button _createLobbyBtn;
-    [SerializeField] private GameObject _createUI;
     
     private void Awake()
     {
-        _createLobbyBtn.onClick.AddListener(() =>
-        {
-            Logger.Log("CreateLobbyBtn Click");
-            _createUI.SetActive(true);
-        });
+        _createLobbyBtn.onClick.AddListener(CreateLobbyButtonClick);
+    }
+
+    private void CreateLobbyButtonClick()
+    {
+        CreateLobbyUI.Instance.Show();
     }
 
     private void Update()

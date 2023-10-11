@@ -15,6 +15,21 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     private float _lobbyUpdateTimer;
     public string PlayerName { get; private set; }
     
+    public event EventHandler OnLeftLobby;
+
+    public event EventHandler<LobbyEventArgs> OnJoinedLobby;
+    public event EventHandler<LobbyEventArgs> OnJoinedLobbyUpdate;
+    public event EventHandler<LobbyEventArgs> OnKickedFromLobby;
+    public event EventHandler<LobbyEventArgs> OnLobbyGameModeChanged;
+    public class LobbyEventArgs : EventArgs {
+        public Lobby lobby;
+    }
+
+    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+    public class OnLobbyListChangedEventArgs : EventArgs {
+        public List<Lobby> lobbyList;
+    }
+    
     private void Start()
     {
         LobbyUIManager.Instance.OnLobbyLeave -= LeaveLobby;
@@ -322,7 +337,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
         AuthenticationService.Instance.SignedIn += () =>
         {
-            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
+            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId + " "+ playerName);
 
             // RefreshLobbyList();
         };
