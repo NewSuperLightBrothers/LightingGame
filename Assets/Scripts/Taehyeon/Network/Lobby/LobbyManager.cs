@@ -9,8 +9,11 @@ using Logger = Utils.Logger;
 
 public class LobbyManager : SingletonPersistent<LobbyManager>
 {
+    public const string KEY_PLAYER_NAME = "PlayerName";
+
     private Lobby _hostLobby;
     private Lobby _joinedLobby { get; set; }
+    private float _lobbyPollTimer;
     private float _heartbeatTimer;
     private float _lobbyUpdateTimer;
     public string PlayerName { get; private set; }
@@ -20,7 +23,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     public event EventHandler<LobbyEventArgs> OnJoinedLobby;
     public event EventHandler<LobbyEventArgs> OnJoinedLobbyUpdate;
     public event EventHandler<LobbyEventArgs> OnKickedFromLobby;
-    public event EventHandler<LobbyEventArgs> OnLobbyGameModeChanged;
+    
     public class LobbyEventArgs : EventArgs {
         public Lobby lobby;
     }
@@ -30,17 +33,6 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         public List<Lobby> lobbyList;
     }
     
-    private void Start()
-    {
-        LobbyUIManager.Instance.OnLobbyLeave -= LeaveLobby;
-        LobbyUIManager.Instance.OnLobbyLeave += LeaveLobby;
-    }
-
-    private void OnDestroy()
-    {
-        LobbyUIManager.Instance.OnLobbyLeave -= LeaveLobby;
-    }
-
     private void Update()
     {
         HandleLobbyHeartBeat();
@@ -77,6 +69,41 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             }
         }
     }
+    
+    private async void HandleLobbyPolling() {
+        if (_joinedLobby != null) {
+            _lobbyPollTimer -= Time.deltaTime;
+            if (_lobbyPollTimer < 0f) {
+                float lobbyPollTimerMax = 1.1f;
+                _lobbyPollTimer = lobbyPollTimerMax;
+
+                _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
+
+                OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
+
+                if (!IsPlayerInLobby()) {
+                    // Player was kicked out of this lobby
+                    Debug.Log("Kicked from Lobby!");
+
+                    OnKickedFromLobby?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
+
+                    _joinedLobby = null;
+                }
+            }
+        }
+    }
+
+    private bool IsPlayerInLobby() {
+        if (_joinedLobby != null && _joinedLobby.Players != null) {
+            foreach (Player player in _joinedLobby.Players) {
+                if (player.Id == AuthenticationService.Instance.PlayerId) {
+                    // This player is in this lobby
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     [TerminalCommand("CreateLobby")]
     public async void CreateLobby(string lobbyName, int maxPlayers)
@@ -104,12 +131,11 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             _hostLobby = lobby;
             _joinedLobby = _hostLobby;
             
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+            
             Logger.Log("Create Lobby! : " + lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
             
             PrintPlayers(_hostLobby);
-            
-            LobbyUIManager.Instance.OnLobbyCreate?.Invoke();
-            LobbyUIManager.Instance.OnLobbyJoin?.Invoke();
 
         }catch(LobbyServiceException e)
         {
@@ -177,6 +203,8 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
             _joinedLobby = lobby;
 
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+            
             Logger.Log("Join lobby with code : " + lobbyCode);
             PrintPlayers(lobby);
             
@@ -200,7 +228,10 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
             };
             
-            await LobbyService.Instance.QuickJoinLobbyAsync(quickJoinLobbyOptions);
+            Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync(quickJoinLobbyOptions);
+            _joinedLobby = lobby;
+
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
         }
         catch (LobbyServiceException e)
         {
@@ -278,31 +309,44 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     }
 
     [TerminalCommand("LeaveLobby")]
-    public void LeaveLobby()
+    public async void LeaveLobby()
     {
-        try
+        if (_joinedLobby != null)
         {
-            LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-            _hostLobby = null;
-            _joinedLobby = null;
-        }
-        catch (LobbyServiceException e)
-        {
-            Logger.Log(e.Message);
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                _hostLobby = null;
+                _joinedLobby = null;
+                
+                OnLeftLobby?.Invoke(this, EventArgs.Empty);
+            }
+            catch (LobbyServiceException e)
+            {
+                Logger.Log(e.Message);
+            }
         }
     }
 
     [TerminalCommand("KickPlayer")]
-    public void KickPlayer()
+    public async void KickPlayer(string playerId)
     {
-        try
+        if (IsLobbyHost())
         {
-            LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, _joinedLobby.Players[1].Id);
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
+            }
+            catch (LobbyServiceException e)
+            {
+                Logger.Log(e.Message);
+            }
         }
-        catch (LobbyServiceException e)
-        {
-            Logger.Log(e.Message);
-        }
+    }
+
+    public bool IsLobbyHost()
+    {
+        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId; 
     }
 
     [TerminalCommand("MigrateLobbyHost")]

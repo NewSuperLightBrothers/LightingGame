@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Logger = Utils.Logger;
 
 // This prefab must be active state before start scene
 public class UI_InputWindow : MonoBehaviour
@@ -50,12 +51,14 @@ public class UI_InputWindow : MonoBehaviour
 
         _inputField.text = inputString;
         _inputField.Select();
-
+        
+        _okBtn.onClick.RemoveAllListeners();
         _okBtn.onClick.AddListener(() => {
             Hide();
             onOk(_inputField.text);
         });
 
+        _cancelBtn.onClick.RemoveAllListeners();
         _cancelBtn.onClick.AddListener(() => {
             Hide();
             onCancel();

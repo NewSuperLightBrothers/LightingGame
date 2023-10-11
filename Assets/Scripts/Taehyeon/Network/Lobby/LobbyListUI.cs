@@ -26,7 +26,18 @@ public class LobbyListUI : MonoBehaviour
 
     private void Start()
     {
+        LobbyManager.Instance.OnLeftLobby += LobbyManager_OnLeftLobby;
         LobbyManager.Instance.OnLobbyListChanged += LobbyManager_OnLobbyListChanged;
+    }
+
+    private void LobbyManager_OnLeftLobby(object sender, EventArgs e)
+    {
+        Show();
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
     }
 
     private void LobbyManager_OnLobbyListChanged(object sender, LobbyManager.OnLobbyListChangedEventArgs e)

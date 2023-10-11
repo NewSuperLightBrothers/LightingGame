@@ -18,7 +18,7 @@ public class CreateLobbyUI : Singleton<CreateLobbyUI>
     private new void Awake()
     {
         base.Awake();
-        
+
         _createBtn.onClick.AddListener(() =>
         {
             Logger.Log("CreateBtn Click");
@@ -31,10 +31,12 @@ public class CreateLobbyUI : Singleton<CreateLobbyUI>
         
         _lobbyNameBtn.onClick.AddListener(() =>
         {
+            Logger.Log("LobbyNameBtn Click");
             UI_InputWindow.Show_Static("Lobby Name", _lobbyName,
                 "abcdefghijklmnopqrstuvxywzABCDEFGHIJKLMNOPQRSTUVXYWZ .,-", 20,
                 () =>
                 {
+                    Logger.Log("lobby name Cancel");
                     // cancel
                 },
                 (string lobbyName) =>
@@ -46,9 +48,11 @@ public class CreateLobbyUI : Singleton<CreateLobbyUI>
         
         _maxPlayerBtn.onClick.AddListener(() =>
         {
+            Logger.Log("MaxPlayerBtn Click");
             UI_InputWindow.Show_Static("Max Players", _maxPlayers,
                 () =>
                 {
+                    Logger.Log("max player Cancel");
                     // cancel
                 },
                 (int maxPlayers) =>
