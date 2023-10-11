@@ -153,6 +153,16 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         }
     }
 
+    public async void JoinLobby(Lobby lobby) {
+        Player player = GetPlayer();
+
+        _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions {
+            Player = player
+        });
+
+        OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+    }
+    
     [TerminalCommand("JoinLobbyByCode")]
     public async void JoinLobbyByCode(string lobbyCode)
     {
@@ -383,6 +393,38 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         {
             Logger.Log(e.Message);
             return null;
+        }
+    }
+
+    public async void RefreshLobbyList()
+    {
+        try
+        {
+            QueryLobbiesOptions options = new QueryLobbiesOptions();
+            options.Count = 25;
+            
+            // Filter for open lobbies only
+            options.Filters = new List<QueryFilter>
+            {
+                new QueryFilter(
+                    field: QueryFilter.FieldOptions.AvailableSlots,
+                    op: QueryFilter.OpOptions.GT,
+                    value: "0")
+            };
+            
+            // Order by newest lobbies first
+            options.Order = new List<QueryOrder>
+            {
+                new QueryOrder(asc: false,
+                    field: QueryOrder.FieldOptions.Created)
+            };
+
+            QueryResponse lobbyListsQueryResponse = await Lobbies.Instance.QueryLobbiesAsync();
+            
+            OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs{ lobbyList = lobbyListsQueryResponse.Results});
+        } catch(LobbyServiceException e)
+        {
+            Logger.Log(e.Message);
         }
     }
 }
