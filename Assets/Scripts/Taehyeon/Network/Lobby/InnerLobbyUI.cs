@@ -17,6 +17,7 @@ public class InnerLobbyUI : MonoBehaviour
     [SerializeField] private Transform _playerContainer;
     
     [SerializeField] private Button _leaveLobbyBtn;
+    [SerializeField] private Button _StartGameBtn;
 
     private void Awake()
     {
@@ -25,6 +26,11 @@ public class InnerLobbyUI : MonoBehaviour
         _leaveLobbyBtn.onClick.AddListener(() =>
         {
             LobbyManager.Instance.LeaveLobby();
+        });
+        
+        _StartGameBtn.onClick.AddListener(() =>
+        {
+            LobbyManager.Instance.StartGame();
         });
     }
 
@@ -63,6 +69,11 @@ public class InnerLobbyUI : MonoBehaviour
                 player.Id != AuthenticationService.Instance.PlayerId); // Don't allow kick self
             
             lobbyPlayerSingleUI.UpdatePlayer(player);
+        }
+
+        if (!LobbyManager.Instance.IsLobbyHost())
+        {
+            _StartGameBtn.gameObject.SetActive(false);
         }
 
         _lobbyNameText.text = lobby.Name;
