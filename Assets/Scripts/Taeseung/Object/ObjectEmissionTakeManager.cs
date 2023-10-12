@@ -17,8 +17,8 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     private bool _isTouch = false;
 
     private ObjectEmissionManager _emissionManager;
-    [SerializeField] private LaserGunShootingManager _laserGunManager;
-    
+    [SerializeField] private LongDistance_LaserGun _laserGunManager2;
+
 
     private void Update()
     {
@@ -47,7 +47,8 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
             if (takeRaycastObject(_touch)) { 
                 if (_emissionManager.takeLightEnergy(_team)) 
-                    _laserGunManager.SetGauge(_emissionManager.getWeight());           
+                    //_laserGunManager.SetGauge(_emissionManager.getWeight());
+                    _laserGunManager2.SetWeaponGauge(_emissionManager.getWeight());
                 //현재 색깔로 흡수 가능한 물체가 맞는지 확인
                  //흡수 가능한 물체면 gauge를 채움
             }
