@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Logger = Utils.Logger;
 
 public class LobbyManager : SingletonPersistent<LobbyManager>
@@ -111,8 +113,8 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
                     else
                     {
                         Logger.Log("Start Game! - host");
-                        
                     }
+                    NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
                 }
             }
         }
