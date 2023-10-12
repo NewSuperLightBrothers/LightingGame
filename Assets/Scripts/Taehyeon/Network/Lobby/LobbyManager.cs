@@ -36,7 +36,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     private void Update()
     {
         HandleLobbyHeartBeat();
-        HandleLobbyPollForUpdate();
+        HandleLobbyPolling();
     }
 
     private async void HandleLobbyHeartBeat()
@@ -79,15 +79,19 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
                 _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
 
-                OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
 
-                if (!IsPlayerInLobby()) {
+                if (IsPlayerInLobby()) {
+                    OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
+                }
+                else
+                {
                     // Player was kicked out of this lobby
                     Debug.Log("Kicked from Lobby!");
 
                     OnKickedFromLobby?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
-
+                
                     _joinedLobby = null;
+                    
                 }
             }
         }
