@@ -10,20 +10,24 @@ public class LightBuffSystem : MonoBehaviour
 {
     Transform tr;
     Rigidbody rb;
+    ExampleCharacterController exampleCharacterController;
+
     private List<GameObject> _lightList = new List<GameObject>();
+
     public bool isEnemy;
     public bool isAlly;
+    
     public Image stateCheck;
 
+    #region 버프/디버프 변수값(SerializeField)
     [SerializeField] private float _defaultVelocity = 6;
     [SerializeField] private float _buffVelocity = 10;
     [SerializeField] private float _debuffVelocity = 3;
     [SerializeField] private float _defaultJump = 10;
     [SerializeField] private float _buffJump = 15;
     [SerializeField] private float _debuffJump = 6;
+    #endregion
 
-
-    ExampleCharacterController exampleCharacterController;
     private void Awake()
     {
         tr = GetComponent<Transform>();
@@ -56,20 +60,20 @@ public class LightBuffSystem : MonoBehaviour
         if (other.gameObject.layer == 7)
         {
             _lightList.Remove(other.gameObject);
-            isEnemy = IsTag<string>(_lightList, "Enemy");
-            isAlly = IsTag<string>(_lightList, "Ally");
+            isEnemy = IsTag(_lightList, "Enemy");
+            isAlly = IsTag(_lightList, "Ally");
             Debug.Log("현재 남은 light수 = " + _lightList.Count);
             Debug.Log("적 잔상 = " + isEnemy);
             Debug.Log("아군 잔상 = " + isAlly);
         }
         #endregion LightAreaOut
     }
-    private bool IsTag<T>(List<GameObject> Array,T tagname)
+    private bool IsTag(List<GameObject> Array,string tagname)
     {
         bool isTag = false;
         for (int i = 0; i < Array.Count; i++)
         {
-            if (Array[i].CompareTag("Enemy"))
+            if (Array[i].CompareTag(tagname))
             {
                 isTag = true;
                 break;
