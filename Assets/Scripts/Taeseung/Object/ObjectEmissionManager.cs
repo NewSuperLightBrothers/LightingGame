@@ -5,13 +5,17 @@ using UnityEngine.Serialization;
 
 public class ObjectEmissionManager : MonoBehaviour
 {
+    [Header("OBJECT LIGHT INFO")]
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private EObjectColorType _colorType;
     [SerializeField] private float _gauge;
     [SerializeField] private float _takeWeight;
     [SerializeField] private float _emissionStrength;
 
+    [Space]
+    [Header("OBJECT UI")]
     [SerializeField] private ObjectEmissionUI _emissionUI;
+
 
     private Color _initialColor;
     private Dictionary<EObjectColorType, float> _d_colorInitialValue;
@@ -25,7 +29,7 @@ public class ObjectEmissionManager : MonoBehaviour
         UI.SetActive(false);
 
         SetColorInitialize();
-        _meshRenderer.material.SetColor("_EmissionColor", _initialColor);
+        _meshRenderer.material.SetColor("_EmissionColor", _initialColor * Mathf.Pow(2,_emissionStrength));
     }
 
 

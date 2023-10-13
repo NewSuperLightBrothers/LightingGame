@@ -7,6 +7,8 @@ public class TestCameraMove : MonoBehaviour
 {
     [SerializeField] private float _rotateSpeed;
 
+    private Vector3 aa;
+
     private void Start()
     {
         // 자이로스코프 초기화

@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioSource audios;
+    public List<AudioSource> audios;
+
+    private Dictionary<string, AudioSource> dictionaryaudios;
     private bool isStart = false;
 
+
+
+
     private void Update()
-    {
-        if (audios.isPlaying && isStart == false)
+    {        
+        if (audios[0].isPlaying && isStart == false)
             isStart = true;
 
-        if (isStart && !audios.isPlaying)
+        if (isStart && !audios[0].isPlaying)
             Destroy(this.gameObject);
-    }
+     }
+
+
+
 }

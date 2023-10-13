@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4680826628443657732}
   - component: {fileID: 4810848834202066966}
   - component: {fileID: 8914625080126392259}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1294,7 +1294,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7017205797398912093}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Endpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1330,7 +1330,7 @@ GameObject:
   - component: {fileID: 6896715134445907207}
   - component: {fileID: 3310385022829412447}
   - component: {fileID: 8372893219433605329}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1621,7 +1621,7 @@ GameObject:
   - component: {fileID: 2491318730083284000}
   - component: {fileID: 4536283849783097953}
   - component: {fileID: 4577690849342349174}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2505,7 +2505,7 @@ GameObject:
   - component: {fileID: 3666025443288946326}
   - component: {fileID: 3666025443288946325}
   - component: {fileID: 4312640782357111138}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Firepoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2538,7 +2538,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 81b1b0daeed0e1644ac85c22fdb0ef8e,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 486c22589d1fb4f47b466015f28fdbef, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 96b191e311616d7438b1c2f2bb00cbb9, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -2741,10 +2741,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3666025442990851036}
-  - component: {fileID: 3666025442990851034}
+  - component: {fileID: 1787973871524621034}
   - component: {fileID: 3662283403504373286}
   - component: {fileID: 2193688954742874990}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PrototypeGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2767,7 +2767,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3666025442990851034
+--- !u!114 &1787973871524621034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2776,28 +2776,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 3666025444731172642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6704479d073fff4eaf0f19a141cdae5, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ede7d6c8efd4b84291842d36ae3baae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 0
-  _emissionStrength: 2
-  _gunInfo:
-    maxGauge: 200
-    usingGauge: 10
-    coolTime: 0.25
-    gunAnimation: {fileID: 2193688954742874990}
-    usingBullet: {fileID: 4991624656693594560, guid: 3ea7dd346bb63f047acc8386692f9e07,
-      type: 3}
-    firePoint: {fileID: 3666025443288946326}
-    endPoint: {fileID: 7017205797398912093}
-    shootingSound: {fileID: 3666025443288946325}
-  _distance: 0
-  _direction: {x: 0, y: 0, z: 0}
-  _l_gunMeshRenderer:
-  - {fileID: 6896715134445907207}
+  _teamColor: 1
+  _weaponDamage: 10
+  _weaponEmissionStrength: 2
+  _weaponGauge: 200
+  _weaponAttackConsumeGauge: 10
+  _weaponDelayTime: 0.25
+  _weaponObject: {fileID: 3666025444731172642}
+  l_weaponMeshRenderer:
   - {fileID: 7919078574248938559}
-  _firePath: {fileID: 4312640782357111138}
-  _reflectCount: 3
+  l_weaponSound:
+  - {fileID: 3666025443288946325}
+  l_weaponParticleSystem:
+  - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
+  - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
+  SD_weaponAttackAnimation:
+    _keys:
+    - GunFire
+    _values:
+    - {fileID: 2193688954742874990}
+  SD_weaponLineRenderer:
+    _keys: []
+    _values: []
+  _weaponUsingBullet: {fileID: 4991624656693594560, guid: f2d9cfde9b164bb4483bf090eba5c56c,
+    type: 3}
+  _weaponAfterImage: {fileID: 6308018242423459397, guid: bc73e544e05db8740b61768a91c0f8d8,
+    type: 3}
+  _weaponShotPoint: {fileID: 3666025443288946326}
+  _weaponShotEndPoint: {fileID: 7017205797398912093}
+  _weaponBulletSpeed: 4
+  _gunFirePath: {fileID: 4312640782357111138}
+  _gunReflectCount: 3
 --- !u!114 &3662283403504373286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2812,7 +2824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _team: 1
   _choiceOutLineMaterial: {fileID: 0}
-  _laserGunManager: {fileID: 3666025442990851034}
+  _laserGunManager2: {fileID: 1787973871524621034}
 --- !u!95 &2193688954742874990
 Animator:
   serializedVersion: 5
@@ -2848,7 +2860,7 @@ GameObject:
   - component: {fileID: 3077734423050684300}
   - component: {fileID: 6820820815524827566}
   - component: {fileID: 2424404215547692182}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3678,7 +3690,7 @@ GameObject:
   - component: {fileID: 7919078574248938559}
   - component: {fileID: 4618920533008198439}
   - component: {fileID: 8344089154223005842}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: LightUI_real
   m_TagString: Untagged
   m_Icon: {fileID: 0}
