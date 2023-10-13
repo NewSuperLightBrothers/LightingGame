@@ -1,43 +1,87 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Logger = Utils.Logger;
 
-public class CreateLobbyUI : MonoBehaviour
+public class CreateLobbyUI : Singleton<CreateLobbyUI>
 {
     [SerializeField] private Button _createBtn;
-    [SerializeField] private TMP_InputField _lobbyNameInput;
-    [SerializeField] private TMP_InputField _maxPlayersInput;
+    [SerializeField] private Button _lobbyNameBtn;
+    [SerializeField] private Button _maxPlayerBtn;
     
-    private void Awake()
+    [SerializeField] private TMP_Text _lobbyNameText;
+    [SerializeField] private TMP_Text _maxPlayerText;
+    
+    private string _lobbyName;
+    private int _maxPlayers;
+    
+    private new void Awake()
     {
-        _createBtn.onClick.AddListener(CreateLobby);
+        base.Awake();
+
+        _createBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("CreateBtn Click");
+            LobbyManager.Instance.CreateLobby(
+                _lobbyName,
+                _maxPlayers
+                );
+            Hide();
+        });
+        
+        _lobbyNameBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("LobbyNameBtn Click");
+            UI_InputWindow.Show_Static("Lobby Name", _lobbyName,
+                "abcdefghijklmnopqrstuvxywzABCDEFGHIJKLMNOPQRSTUVXYWZ .,-", 20,
+                () =>
+                {
+                    Logger.Log("lobby name Cancel");
+                    // cancel
+                },
+                (string lobbyName) =>
+                {
+                    _lobbyName = lobbyName;
+                    UpdateText();
+                });
+        });
+        
+        _maxPlayerBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("MaxPlayerBtn Click");
+            UI_InputWindow.Show_Static("Max Players", _maxPlayers,
+                () =>
+                {
+                    Logger.Log("max player Cancel");
+                    // cancel
+                },
+                (int maxPlayers) =>
+                {
+                    _maxPlayers = maxPlayers;
+                    UpdateText();
+                });
+        });
+        
+        Hide();
     }
 
-    private void CreateLobby()
+    private void UpdateText()
     {
-        try
-        {
-            // Check lobby name validation
-            if(string.IsNullOrEmpty(_lobbyNameInput.text))
-                throw new Exception("Lobby name is empty");
+        _lobbyNameText.text = _lobbyName;
+        _maxPlayerText.text = _maxPlayers.ToString();
+    }
+    
+    public void Show() {
+        gameObject.SetActive(true);
 
-            // Check max players validation
-            if (int.TryParse(_maxPlayersInput.text, out int maxPlayers))
-            {
-                if(maxPlayers <= 0 || maxPlayers % 2 != 0)
-                    throw new Exception("Max players is invalid");
-                
-                // Create lobby
-                LobbyManager.Instance.CreateLobby(_lobbyNameInput.text, maxPlayers);
-            }
-        }catch(Exception e)
-        {
-            Logger.Log(e.Message);
-        }
+        _lobbyName = "MyLobby";
+        _maxPlayers = 4;
+        
+        UpdateText();
+    }
+    
+    private void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
