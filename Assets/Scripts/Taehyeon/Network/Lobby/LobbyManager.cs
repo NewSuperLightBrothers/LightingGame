@@ -426,9 +426,9 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    public List<PlayerInfo> GetJoinedPlayerInfos()
+    public List<UserInfo> GetJoinedPlayerInfos()
     {
-        List<PlayerInfo> playerInfos = new List<PlayerInfo>();
+        List<UserInfo> playerInfos = new List<UserInfo>();
         try
         {
             if(_joinedLobby == null)
@@ -436,13 +436,13 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
             foreach (Player joinedLobbyPlayer in _joinedLobby.Players)
             {
-                PlayerInfo playerInfo = new PlayerInfo
+                UserInfo userInfo = new UserInfo
                 {
                     id = joinedLobbyPlayer.Id,
                     name = joinedLobbyPlayer.Data["PlayerName"].Value
                 };
                 
-                playerInfos.Add(playerInfo);
+                playerInfos.Add(userInfo);
             }
         }catch(Exception e)
         {

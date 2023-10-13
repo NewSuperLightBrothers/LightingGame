@@ -1,4 +1,4 @@
-public struct PlayerInfo
+public struct UserInfo
 {
     public string id;
     public string name;
