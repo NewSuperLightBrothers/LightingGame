@@ -37,7 +37,6 @@ public class InputManager : MonoBehaviour
 
     private void Awake() {
         _userInputAssets = new();
-        cameraAnchor = GameObject.Find("CamArm(Clone)").transform;
         _userInputAssets.Enable();
         EnhancedTouch.EnhancedTouchSupport.Enable();
 
@@ -134,6 +133,7 @@ public class InputManager : MonoBehaviour
     }
 
     private void Start() {
+        cameraAnchor = GameObject.Find("CamArm(Clone)").transform; 
         _rect = new Rect(_joystickForeground.rect);
         Image _image = _joystickForeground.gameObject.GetComponent<Image>();
         _rect.position = _joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);

@@ -2346,6 +2346,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2448441596176298201, guid: ad63f89dee488034596a6d4f529fb099,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2789928238609512614, guid: ad63f89dee488034596a6d4f529fb099,
         type: 3}
       propertyPath: m_Enabled
@@ -2386,10 +2391,6 @@ PrefabInstance:
       propertyPath: _joystickForeground
       value: 
       objectReference: {fileID: 542720623}
-    - target: {fileID: 0}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7610946073932368753, guid: ad63f89dee488034596a6d4f529fb099,
         type: 3}
       propertyPath: m_RootOrder

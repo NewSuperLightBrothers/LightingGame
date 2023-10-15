@@ -13,12 +13,6 @@ public abstract class PlayerInfo : MonoBehaviour
 {
     #region 변수값
     protected GameObject _player;
-
-    protected float _playerHp;
-    protected float _playerSpd;
-    protected float _playerDfn;
-    protected float _playerAtk;
-    protected Color _teamColor;
     #endregion
 
     //플레이어의 스탯을 딕셔너리로 관리합니다. 정수값은 앞선 변수값의 열거형의 인덱스, float은 변수값을 값입니다. 기본값은 전부 100입니다.

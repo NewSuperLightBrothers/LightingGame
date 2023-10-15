@@ -14,12 +14,15 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
     protected float _playerAtk;
     protected Color _teamColor;
 
-    private void Awake()
+    private void OnEnable()
     {
         _player = this.gameObject;
-        SetCamArm();
         InitPlayerDic();
         _teamColor = Color.red;
+    }
+    private void Start()
+    {
+        SetCamArm();
     }
 
     #region IPlayerMovInfo
