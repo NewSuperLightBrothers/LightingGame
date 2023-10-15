@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mirror
-  - Enemy
-  - Ally
+  - Red
+  - Green
+  - Blue
   layers:
   - Default
   - TransparentFX

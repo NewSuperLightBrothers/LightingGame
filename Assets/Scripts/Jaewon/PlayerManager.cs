@@ -7,9 +7,13 @@ using Unity.Mathematics;
 
 public class PlayerManager : PlayerInfo, IPlayerMovInfo
 {
-    protected override GameObject GetPlayerPrefab()
+    private void OnEnable()
     {
-        throw new System.NotImplementedException();
+        _player = this.gameObject;
+        SetCamArm();
+        InitPlayerDic();
+        _teamColor = new Color(1, 0, 0, 0);
+        Debug.Log(_playerStat[(int)StatInfo._playerHp]);
     }
 
     #region IPlayerMovInfo
@@ -23,9 +27,14 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         throw new System.NotImplementedException();
     }
 
-    void IPlayerMovInfo.GetHit()
+    void IPlayerMovInfo.GetHit(GameObject player, GameObject obj)
     {
-        throw new System.NotImplementedException();
+        if(obj.GetComponent<LongDistance_LaserBullet>()._bulletColor != this._teamColor)
+        {
+            obj.GetComponent<LongDistance_LaserBullet>().LaserBulletToPlayer(this.GetComponent<Collider>());
+            Debug.Log("피격, 현재 체력 = " + this._playerHp);
+        }
     }
+
     #endregion IPlayerMovInfo
 }
