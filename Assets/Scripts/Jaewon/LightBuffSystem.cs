@@ -21,6 +21,8 @@ public class LightBuffSystem : PlayerManager
     public bool isEnemy;
     public bool isAlly;
     private bool isOnArea;
+    Color Neutrality = new Color(1, 1, 1, 1);
+
     //인덱스 0은 아군, 인덱스 1은 적군입니다.
     private int[] _stateCheck = new int[] { 0, 0, 0 };
 
@@ -35,11 +37,12 @@ public class LightBuffSystem : PlayerManager
     [SerializeField] private float _debuffJump = 6;
     [SerializeField] private float _buffTime=1.0f;
     #endregion
-    private void Awake()
+    private void Start()
     {
         exampleCharacterController = GetComponent<ExampleCharacterController>();
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
+        Debug.Log(_teamColor);
     }
     #region LateUpdate
     //RGB동시에 고려하니까 뭔가 말이안되는 부분이 있어서 같은 팀 영역에 들어갈때만 버프를 받도록 하였습니다.
@@ -94,21 +97,24 @@ public class LightBuffSystem : PlayerManager
         }
     }
 
-    private string GetState()
+    private Color GetState()
     {
-        string _state;
+        Color _state;
         if(_stateCheck[(int)State.Red] != 0 && _stateCheck[(int)State.Green] == 0 && _stateCheck[(int)State.Blue] == 0)
         {
-            _state = "Red";
-        }else if (_stateCheck[(int)State.Red] == 0 && _stateCheck[(int)State.Green] != 0 && _stateCheck[(int)State.Blue] == 0)
+            _state = Color.red;
+        }
+        else if (_stateCheck[(int)State.Red] == 0 && _stateCheck[(int)State.Green] != 0 && _stateCheck[(int)State.Blue] == 0)
         {
-            _state = "Green";
-        }else if (_stateCheck[(int)State.Red] == 0 && _stateCheck[(int)State.Green] == 0 && _stateCheck[(int)State.Blue] != 0)
+            _state = Color.green;
+        }
+        else if (_stateCheck[(int)State.Red] == 0 && _stateCheck[(int)State.Green] == 0 && _stateCheck[(int)State.Blue] != 0)
         {
-            _state = "Blue";
-        }else
+            _state = Color.blue;
+        }
+        else
         {
-            _state = "Neutrality";
+            _state = Neutrality;
         }
         return _state;
     }
@@ -120,16 +126,13 @@ public class LightBuffSystem : PlayerManager
         }
         else isOnArea = true;
     }
-    private void Debuff()
-    {
-
-    }
     #region Buff
     private void Buff()
     {
         if (_teamColor == GetState() && isOnArea)
         {
             StartCoroutine(EndBuff());
+            Debug.Log("버프");
         }
         else if(_teamColor == GetState() && !isOnArea)
         {
@@ -161,9 +164,8 @@ public class LightBuffSystem : PlayerManager
     {
         if (_teamColor != GetState() && isOnArea)
         {
-            if(GetState() == "Neutrality")
+            if(GetState() == Neutrality)
             {
-                Debug.Log("중립지대, 속도 = " + exampleCharacterController.MaxStableMoveSpeed);
                 return;
             }
             StartCoroutine(EndDeBuff());

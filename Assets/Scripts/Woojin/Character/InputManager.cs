@@ -37,7 +37,7 @@ public class InputManager : MonoBehaviour
 
     private void Awake() {
         _userInputAssets = new();
-
+        cameraAnchor = GameObject.Find("CamArm(Clone)").transform;
         _userInputAssets.Enable();
         EnhancedTouch.EnhancedTouchSupport.Enable();
 

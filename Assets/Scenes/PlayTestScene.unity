@@ -773,20 +773,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &304705600 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8714796203234595972, guid: ad63f89dee488034596a6d4f529fb099,
-    type: 3}
-  m_PrefabInstance: {fileID: 1559099426}
-  m_PrefabAsset: {fileID: 0}
---- !u!81 &304705605
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 304705600}
-  m_Enabled: 1
 --- !u!1 &408151587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,7 +1449,7 @@ PrefabInstance:
     - target: {fileID: 3666025444731172642, guid: f43d03aed4679f94098454b5b8533c0f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3666025444731172642, guid: f43d03aed4679f94098454b5b8533c0f,
         type: 3}
@@ -2392,11 +2378,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5072653207851224298, guid: ad63f89dee488034596a6d4f529fb099,
         type: 3}
+      propertyPath: cameraAnchor
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5072653207851224298, guid: ad63f89dee488034596a6d4f529fb099,
+        type: 3}
       propertyPath: _joystickForeground
       value: 
       objectReference: {fileID: 542720623}
-    - target: {fileID: 7025258978549324061, guid: ad63f89dee488034596a6d4f529fb099,
-        type: 3}
+    - target: {fileID: 0}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -2455,60 +2445,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3294377879602680157, guid: ad63f89dee488034596a6d4f529fb099, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad63f89dee488034596a6d4f529fb099, type: 3}
---- !u!1 &1559099427 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2284087016169672098, guid: ad63f89dee488034596a6d4f529fb099,
-    type: 3}
-  m_PrefabInstance: {fileID: 1559099426}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1559099429 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7025258978549324061, guid: ad63f89dee488034596a6d4f529fb099,
-    type: 3}
-  m_PrefabInstance: {fileID: 1559099426}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559099427}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5962d94b515357445b4064026fc7bff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1559099435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559099427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 337b51b0dddacc64ca173e8c6ffef7d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1559099440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559099427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 076051c7e117ac2418933b6b1c2273c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnemy: 0
-  isAlly: 0
-  _defaultVelocity: 6
-  _buffVelocity: 10
-  _debuffVelocity: 3
-  _defaultJump: 10
-  _buffJump: 15
-  _debuffJump: 6
-  _buffTime: 1
 --- !u!43 &1615884437
 Mesh:
   m_ObjectHideFlags: 0
@@ -3785,7 +3723,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1559099429}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AutoAimSystem, Assembly-CSharp
         m_MethodName: AutoAim
         m_Mode: 1

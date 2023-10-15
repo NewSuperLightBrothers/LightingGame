@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 3145212921041896167}
   - component: {fileID: 2789928238609512614}
   - component: {fileID: 1173388177432375872}
-  - component: {fileID: 7025258978549324061}
   - component: {fileID: 4850712125308512556}
   - component: {fileID: 2448441596176298201}
   m_Layer: 9
@@ -262,26 +261,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &7025258978549324061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2284087016169672098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5962d94b515357445b4064026fc7bff4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rayLength: 10
-  _autoAimLength: 10
-  _autoAimAngle: 10
-  _followSpeed: 1
-  _autoAimPower: 4
-  _player: {fileID: 2284087016169672098}
-  _camArm: {fileID: 0}
-  _autoAimCriticalPoint: 10
 --- !u!114 &4850712125308512556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076051c7e117ac2418933b6b1c2273c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camArm: {fileID: 0}
+  _camArm: {fileID: 1981786722029319699, guid: 1a60d531e7079a64784488438fbcce17, type: 3}
   isEnemy: 0
   isAlly: 0
   _defaultVelocity: 6
@@ -316,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337b51b0dddacc64ca173e8c6ffef7d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camArm: {fileID: 0}
+  _camArm: {fileID: 1981786722029319699, guid: 1a60d531e7079a64784488438fbcce17, type: 3}
 --- !u!1 &3713421016165171326
 GameObject:
   m_ObjectHideFlags: 0

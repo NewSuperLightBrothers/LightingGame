@@ -11,7 +11,6 @@ public enum StatInfo
 
 public abstract class PlayerInfo : MonoBehaviour
 {
-    [SerializeField] private GameObject _camArm;
     #region 변수값
     protected GameObject _player;
 
@@ -32,16 +31,7 @@ public abstract class PlayerInfo : MonoBehaviour
     }
 
     //GetPlayablePrefab의 값이 참이라면, 현재 이 프리팹에 카메라를 자식으로 생성합니다.
-    public void SetCamArm()
-    {
-        if (IsPlayablePrefab(this.gameObject))
-        {
-            GameObject CamArm = Instantiate(_camArm);
-            CamArm.transform.parent = _player.transform;
-        }
-    }
-    #region 초기화
-    #endregion
+    protected abstract void SetCamArm();
 
     //네트워크 방식을 몰라서 플레이어 정보를 만드는 메소드를 추상화하였습니다.
     #region 스탯 설정

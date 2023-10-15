@@ -7,13 +7,19 @@ using Unity.Mathematics;
 
 public class PlayerManager : PlayerInfo, IPlayerMovInfo
 {
-    private void OnEnable()
+    [SerializeField] private GameObject _camArm;
+    protected float _playerHp;
+    protected float _playerSpd;
+    protected float _playerDfn;
+    protected float _playerAtk;
+    protected Color _teamColor;
+
+    private void Awake()
     {
         _player = this.gameObject;
         SetCamArm();
         InitPlayerDic();
-        _teamColor = new Color(1, 0, 0, 0);
-        Debug.Log(_playerStat[(int)StatInfo._playerHp]);
+        _teamColor = Color.red;
     }
 
     #region IPlayerMovInfo
@@ -33,6 +39,15 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         {
             obj.GetComponent<LongDistance_LaserBullet>().LaserBulletToPlayer(this.GetComponent<Collider>());
             Debug.Log("피격, 현재 체력 = " + this._playerHp);
+        }
+    }
+
+    protected override void SetCamArm()
+    {
+        if (IsPlayablePrefab(this.gameObject))
+        {
+            GameObject CamArm = Instantiate(_camArm);
+            CamArm.transform.parent = _player.transform;
         }
     }
 
