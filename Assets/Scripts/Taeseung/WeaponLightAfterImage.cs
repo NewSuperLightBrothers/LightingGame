@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class WeaponLightAfterImage : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private EObjectColorType _colorType;
+    private float _remainTime = 5;
+    private float _currentTime = 0;
+    private float _speedBuff;
+
+
+    public float GetSpeed() => _speedBuff;
+
+    public void SetColorType(EObjectColorType colorType) {
+        _colorType = colorType;
     }
 
-    // Update is called once per frame
-    void Update()
+    public EObjectColorType GetColorType() => _colorType;
+
+    private void Update()
     {
-        
+        _currentTime += Time.deltaTime;
+        if (_remainTime <= _currentTime)
+            Destroy(this.gameObject);
     }
+
 }

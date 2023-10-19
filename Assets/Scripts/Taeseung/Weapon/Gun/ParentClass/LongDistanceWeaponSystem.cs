@@ -11,8 +11,7 @@ public abstract class LongDistanceWeaponManager : MainWeaponManager
     [SerializeField] protected Transform _weaponShotPoint;
     [SerializeField] protected Transform _weaponShotEndPoint;
     [SerializeField] protected float _weaponBulletSpeed;
-
-    protected float _weaponDistance;
+    [SerializeField] protected float _weaponDistance;
     protected Ray _weaponRay;
     protected RaycastHit _weaponRayHit;
 

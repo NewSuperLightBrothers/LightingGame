@@ -5,11 +5,11 @@ using UnityEngine;
 public class MainWeaponManager : WeaponSystem
 {
     [Space]
-    [SerializeField] protected float _weaponGauge;
-    [SerializeField] protected float _weaponAttackConsumeGauge;
+    [SerializeField] protected int _weaponGauge;
+    [SerializeField] protected int _weaponAttackConsumeGauge;
     [SerializeField] protected float _weaponDelayTime;
     [SerializeField] protected GameObject _weaponObject;
-    protected float _weaponRemainGauge;
+    protected int _weaponRemainGauge;
 
     [Space]
     [Header("WEAPON SFX INFO")]
@@ -57,5 +57,7 @@ public class MainWeaponManager : WeaponSystem
         SD_weaponAttackAnimation.InitializeList();
         SD_weaponLineRenderer.InitializeList();
     }
+
+    public int getWeaponMaxGauge() => _weaponGauge;
 
 }

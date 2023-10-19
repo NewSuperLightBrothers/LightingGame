@@ -42,6 +42,6 @@ public class ShortDistance_Blade : ShortDistanceWeaponManager, WeaponInterface
         SD_weaponAttackAnimation.GetValue("BladeAttack").SetInteger("AnimationValue", count);
     }
 
-    public float GetWeaponGauge() => _weaponRemainGauge;
-    public void SetWeaponGauge(float newval) => _weaponRemainGauge += newval;
+    public int GetWeaponGauge() => _weaponRemainGauge;
+    public void SetWeaponGauge(int newval) => _weaponRemainGauge += newval;
 }

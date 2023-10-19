@@ -26,10 +26,8 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _weaponCount > 0)
-        {
+        if (Input.GetMouseButtonDown(0) && _weaponCount > 0){
             StartAttack();
-
         }
     }
 
@@ -79,12 +77,12 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
         }
     }
 
-    public void SetWeaponGauge(float newval)
+    public void SetWeaponGauge(int newval)
     {
         //not need
     }
 
-    public float GetWeaponGauge()
+    public int GetWeaponGauge()
     {
         return 0;//not need
     } 

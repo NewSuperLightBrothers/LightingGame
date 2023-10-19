@@ -8,6 +8,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     [SerializeField] private List<LaserParticleSystem> l_bulletParticle;
     [SerializeField] private float _emissionStrength;
 
+    private EObjectColorType _bulletColorType;
     private float _bulletSpeed;
     private float _bulletDmg;
     private Color _bulletColor;
@@ -28,7 +29,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletRay.origin = this.transform.position;
         if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance))
         {
-            print(_bulletHit.collider.GetInstanceID());
+           // print(_bulletHit.collider.GetInstanceID());
         }
     }
 
@@ -38,19 +39,25 @@ public class LongDistance_LaserBullet : MonoBehaviour
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
         else if (other.transform.tag == "Mirror")
         {
-            print("Nothing");
+            print("mirror");
         }
+        else
+        {
+            print(other.transform.tag);
+        }
+        /*
         else
         {
             //if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
             LaserBulletDestroy();
-        }
+        }*/
     }
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColorType)
     {
+        _bulletColorType = bulletColorType;
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;
         _bulletDmg = bulletDmg;
@@ -70,6 +77,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
         other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
     }
 
+    public EObjectColorType GetbulletTeamtype() => _bulletColorType;
+
     private void LaserBulletFire()
     {
         transform.position = Vector3.MoveTowards(transform.position, _bulletPathPoints[_pathPointIndex], _bulletSpeed);
@@ -79,7 +88,10 @@ public class LongDistance_LaserBullet : MonoBehaviour
             _pathPointIndex++;
 
             if (_pathPointIndex >= _bulletPathPoints.Length)
+            {
                 LaserBulletDestroy();
+
+            }
             else
             {
                 if (_pathPointIndex != 1)
@@ -102,6 +114,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
         l_bulletParticle[0].ParticleInstantiate(this.transform.position, this.transform.rotation);
 
         GameObject _afterImage = Instantiate(_bulletAfterImage);
+        WeaponLightAfterImage imageScript = _afterImage.GetComponent<WeaponLightAfterImage>();
+        imageScript.SetColorType(_bulletColorType);
         _afterImage.transform.position = this.transform.position;
         _afterImage.transform.rotation = this.transform.rotation;
         
