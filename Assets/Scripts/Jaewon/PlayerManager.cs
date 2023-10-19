@@ -12,17 +12,17 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
     protected float _playerSpd;
     protected float _playerDfn;
     protected float _playerAtk;
-    protected Color _teamColor;
+    public Color _teamColor;
 
     private void OnEnable()
     {
         _player = this.gameObject;
         InitPlayerDic();
         _teamColor = Color.red;
+        SetCamArm();
     }
     private void Start()
     {
-        SetCamArm();
     }
 
     #region IPlayerMovInfo
@@ -49,6 +49,7 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
     {
         if (IsPlayablePrefab(this.gameObject))
         {
+            Debug.Log("朝五虞 持失");
             GameObject CamArm = Instantiate(_camArm);
             CamArm.transform.parent = _player.transform;
         }

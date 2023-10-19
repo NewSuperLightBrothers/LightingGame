@@ -10,11 +10,12 @@ public enum State{
     Green = 1,
     Blue = 2
 }
-public class LightBuffSystem : PlayerManager
+public class LightBuffSystem : MonoBehaviour
 {
     Transform tr;
     Rigidbody rb;
     ExampleCharacterController exampleCharacterController;
+    PlayerManager playerManager;
 
     private List<GameObject> _lightList = new List<GameObject>();
 
@@ -23,7 +24,7 @@ public class LightBuffSystem : PlayerManager
     private bool isOnArea;
     Color Neutrality = new Color(1, 1, 1, 1);
 
-    //인덱스 0은 아군, 인덱스 1은 적군입니다.
+    //인덱스 0은 아군, 인덱스 1은 적군입니다. 인덱스 2는 중립(아군도 적군도 아닌 상태)
     private int[] _stateCheck = new int[] { 0, 0, 0 };
 
     //public Image stateCheck;
@@ -42,7 +43,8 @@ public class LightBuffSystem : PlayerManager
         exampleCharacterController = GetComponent<ExampleCharacterController>();
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
-        Debug.Log(_teamColor);
+        playerManager = this.gameObject.GetComponent<PlayerManager>();
+        Debug.Log(playerManager._teamColor);
     }
     #region LateUpdate
     //RGB동시에 고려하니까 뭔가 말이안되는 부분이 있어서 같은 팀 영역에 들어갈때만 버프를 받도록 하였습니다.
@@ -129,12 +131,12 @@ public class LightBuffSystem : PlayerManager
     #region Buff
     private void Buff()
     {
-        if (_teamColor == GetState() && isOnArea)
+        if (playerManager._teamColor == GetState() && isOnArea)
         {
             StartCoroutine(EndBuff());
             Debug.Log("버프");
         }
-        else if(_teamColor == GetState() && !isOnArea)
+        else if(playerManager._teamColor == GetState() && !isOnArea)
         {
             Debug.Log("영역 밖");
         }
@@ -152,7 +154,6 @@ public class LightBuffSystem : PlayerManager
                 exampleCharacterController.MaxStableMoveSpeed = _defaultVelocity;
                 exampleCharacterController.JumpUpSpeed = _defaultJump;
                 time = 0;
-                Debug.Log("버프 끝");
                 break;
             }
             yield return null;
@@ -162,7 +163,7 @@ public class LightBuffSystem : PlayerManager
     #region DeBuff
     private void DeBuff()
     {
-        if (_teamColor != GetState() && isOnArea)
+        if (playerManager._teamColor != GetState() && isOnArea)
         {
             if(GetState() == Neutrality)
             {
@@ -170,9 +171,9 @@ public class LightBuffSystem : PlayerManager
             }
             StartCoroutine(EndDeBuff());
         }
-        else if (_teamColor != GetState() && !isOnArea)
+        else if (playerManager._teamColor != GetState() && !isOnArea)
         {
-            Debug.Log("영역 밖");
+            return;        
         }
     }
     private IEnumerator EndDeBuff()
@@ -188,7 +189,6 @@ public class LightBuffSystem : PlayerManager
                 exampleCharacterController.MaxStableMoveSpeed = _defaultVelocity;
                 exampleCharacterController.JumpUpSpeed = _defaultJump;
                 time = 0;
-                Debug.Log("버프 끝");
                 break;
             }
             yield return null;
