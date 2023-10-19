@@ -34,7 +34,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-            //LaserBulletReflection();
+        //LaserBulletReflection();
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
         else if (other.transform.tag == "Mirror")
         {
@@ -45,6 +45,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
             //if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
             LaserBulletDestroy();
         }
+
+        print("???");
     }
 
 
