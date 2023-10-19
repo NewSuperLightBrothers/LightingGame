@@ -7,12 +7,15 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     [Space]
     [Header("LASEEGUN INFO")]
     [SerializeField] private LineRenderer _gunFirePath;
-    [SerializeField] private int _gunReflectCount;
-    private int _gunBulletCount;
+    [SerializeField] private int _gunReflectCount;         
 
     //총알 궤적 포인트 리스트
     private List<Vector3> l_gunPathPoints = new();
 
+    /// <summary>
+    /// direction을 두개로 나눈 이유는 계산 비용이 큰 반사프리뷰를 조금이라도 줄이기 위해서이다.
+    /// 매 프레임마다의 direction과 현재 direction이 다를 경우 반사 광선을 쏴주고 같을 경우 계산하지 않음.
+    /// </summary>
     //현재 총구 방향
     private Vector3 _gunDirection;
     //매 프레임마다의 총구 방향
@@ -22,22 +25,23 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     private float _gunDelayInterval;
     private bool _isShoot = true;
 
+
     new void Start()
     {
         base.Start();
+        _weaponDistance = Vector3.Distance(_weaponShotPoint.position, _weaponShotEndPoint.position);
         _gunDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
     }
 
     void Update()
     {
-        //_weaponDistance = Mathf.Ceil(Vector3.Distance(_weaponShotPoint.position, _weaponShotEndPoint.position));
         _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
 
         //총알 궤적 계산
         CheckAttackRange();
 
         //발사 함수
-        StartAttack();
+        //StartAttack();
     }
 
     void FixedUpdate()
@@ -49,15 +53,14 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     //총알 궤적 계산
     public void CheckAttackRange()
     {
-        _gunDirection = _gunFrameDirection;
-        l_gunPathPoints.Clear();
+            _gunDirection = _gunFrameDirection;
+            l_gunPathPoints.Clear();
 
             float distance = _weaponDistance;
             Vector3 Input = _gunFrameDirection.normalized;
             Vector3 Beforepoint = _weaponShotPoint.position;
             Vector3 normal;
             int _gunReflectCount = 0;
-
 
             //distance = 0(총의 사거리) 될 때까지 reflect탐지
             while (distance > 0)
@@ -66,12 +69,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
                 _weaponRay.direction = Input;
                 _weaponRay.origin = Beforepoint;
 
-                RaycastHit[] kk = Physics.RaycastAll(_weaponRay, distance);
-            for (int i = 0; i < kk.Length; i++)
-                if(kk[i].transform.tag == "AfterImage")  print(i + " " + kk[i].transform.tag);
-
                 //Raycast 시도
-            if (Physics.Raycast(_weaponRay, out _weaponRayHit, distance))
+                if (Physics.Raycast(_weaponRay, out _weaponRayHit, distance))
                 {
                     //Mirror가 맞는 경우
                     if (_weaponRayHit.collider.tag == "Mirror")
@@ -102,7 +101,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
                         }
                     }
                     //Mirror가 아닌 경우, 종료
-                    else 
+                    else
                     {
                         l_gunPathPoints.Add(Beforepoint + Vector3.Distance(Beforepoint,_weaponRayHit.point)  * Input);
                         break;
@@ -131,9 +130,12 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
 
 
 
+
+
+
     public void StartAttack()
     {
-        if (Input.GetMouseButtonDown(0) && _isShoot && _gunBulletCount > 0)
+        if (/*Input.GetButtonDown("FireButton") &&*/ _isShoot && _weaponRemainGauge - _weaponAttackConsumeGauge >= 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
@@ -142,20 +144,14 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         }
     }
 
-    public void SetWeaponGauge(int newVal)
+    public void SetWeaponGauge(float newVal)
     {
         _weaponRemainGauge += newVal;
-
-        _gunBulletCount = _weaponRemainGauge / _weaponAttackConsumeGauge;
-
-        print("bullet: "+_gunBulletCount);
-
-
         SetWeaponUIGaugeBar();
     }
-    public int GetWeaponGauge() => _weaponRemainGauge;
-    public int GetWeaponBulletCount() => _gunBulletCount;
+    public float GetWeaponGauge() => _weaponRemainGauge;
     public List<Vector3> GetPathPoints() => l_gunPathPoints;
+
 
 
     private void AttackReset()
@@ -174,7 +170,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     {
         GameObject newBullet = Instantiate(bulletObject);
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
-        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor);
+        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
     }
 
@@ -184,7 +180,5 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         scale.z = (_weaponRemainGauge / _weaponGauge);
         l_weaponMeshRenderer[0].transform.localScale = scale;
     }
-
-
 
 }

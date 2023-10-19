@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: e7bf737f5ddde0d45898ffdf9d69054a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Camarm: {fileID: 1981786722029319699, guid: 1a60d531e7079a64784488438fbcce17,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

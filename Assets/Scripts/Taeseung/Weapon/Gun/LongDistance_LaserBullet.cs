@@ -11,7 +11,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     private EObjectColorType _bulletColorType;
     private float _bulletSpeed;
     private float _bulletDmg;
-    private Color _bulletColor;
+    public Color _bulletColor;
     private GameObject _bulletAfterImage;
     private Vector3[] _bulletPathPoints;
 
@@ -74,7 +74,9 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     public void LaserBulletToPlayer(Collider other)
     {
-        other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
+        Debug.Log("플레이어 충돌");
     }
 
     public EObjectColorType GetbulletTeamtype() => _bulletColorType;

@@ -1,42 +1,49 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using WebSocketSharp;
+using UnityEngine.SceneManagement;
 using Logger = Utils.Logger;
 
 public class LobbyManager : SingletonPersistent<LobbyManager>
 {
+    public const string KEY_PLAYER_NAME = "PlayerName";
+    public const string KEY_START_GAME = "0";
+    
     private Lobby _hostLobby;
-    private Lobby _joinedLobby;
+    private Lobby _joinedLobby { get; set; }
+    private float _lobbyPollTimer;
     private float _heartbeatTimer;
     private float _lobbyUpdateTimer;
+    private bool _isStartGame;
     public string PlayerName { get; private set; }
     
-    // private async void Start()
-    // {
-    //     _playerName = "PlayerName" + UnityEngine.Random.Range(0, 99);
-    //     Logger.Log("PlayerName : " + _playerName);
-    //     
-    //     await UnityServices.InitializeAsync();
-    //     Logger.Log("LobbyManager Start");
-    //
-    //     AuthenticationService.Instance.SignedIn += () =>
-    //     {
-    //         Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
-    //     };
-    //
-    //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
-    // }
+    public event EventHandler OnLeftLobby;
 
+    public event EventHandler<LobbyEventArgs> OnJoinedLobby;
+    public event EventHandler<LobbyEventArgs> OnJoinedLobbyUpdate;
+    public event EventHandler<LobbyEventArgs> OnKickedFromLobby;
+    
+    public class LobbyEventArgs : EventArgs {
+        public Lobby lobby;
+    }
+
+    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+    public class OnLobbyListChangedEventArgs : EventArgs {
+        public List<Lobby> lobbyList;
+    }
+    
     private void Update()
     {
+        if(_isStartGame) return;
+
         HandleLobbyHeartBeat();
-        HandleLobbyPollForUpdate();
+        HandleLobbyPolling();
+        
     }
 
     private async void HandleLobbyHeartBeat()
@@ -69,6 +76,61 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             }
         }
     }
+    
+    private async void HandleLobbyPolling() {
+        if (_joinedLobby != null) {
+            _lobbyPollTimer -= Time.deltaTime;
+            if (_lobbyPollTimer < 0f) {
+                float lobbyPollTimerMax = 1.1f;
+                _lobbyPollTimer = lobbyPollTimerMax;
+
+                _joinedLobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
+
+
+                if (IsPlayerInLobby()) {
+                    OnJoinedLobbyUpdate?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
+                } 
+                else
+                {
+                    // Player was kicked out of this lobby
+                    Debug.Log("Kicked from Lobby!");
+
+                    OnKickedFromLobby?.Invoke(this, new LobbyEventArgs { lobby = _joinedLobby });
+                
+                    _joinedLobby = null;
+                    
+                }
+                
+                if (_joinedLobby.Data[KEY_START_GAME].Value != "0")
+                {
+                    _isStartGame = true;
+                    // Start Game!
+                    if (!IsLobbyHost())
+                    {
+                        Logger.Log("Start Game! - client");
+                        await RelayManager.Instance.JoinRelay(_joinedLobby.Data[KEY_START_GAME].Value);
+                    }
+                    else
+                    {
+                        Logger.Log("Start Game! - host");
+                    }
+                    NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+                }
+            }
+        }
+    }
+
+    private bool IsPlayerInLobby() {
+        if (_joinedLobby != null && _joinedLobby.Players != null) {
+            foreach (Player player in _joinedLobby.Players) {
+                if (player.Id == AuthenticationService.Instance.PlayerId) {
+                    // This player is in this lobby
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     [TerminalCommand("CreateLobby")]
     public async void CreateLobby(string lobbyName, int maxPlayers)
@@ -87,7 +149,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
                 Player = GetPlayer(),
                 Data = new Dictionary<string, DataObject>
                 {
-                    { "GameMode", new DataObject(DataObject.VisibilityOptions.Public, "CaptureTheFlag", DataObject.IndexOptions.S1)}
+                    { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, "0")}
                 }
             };
             
@@ -96,10 +158,12 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             _hostLobby = lobby;
             _joinedLobby = _hostLobby;
             
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+            
             Logger.Log("Create Lobby! : " + lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
             
             PrintPlayers(_hostLobby);
-            
+
         }catch(LobbyServiceException e)
         {
             Logger.Log(e.Message);
@@ -134,7 +198,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             Logger.Log("Lobbies found : " + queryResponse.Results.Count);
             foreach (Lobby lobby in queryResponse.Results)
             {
-                Logger.Log(lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Data["GameMode"].Value);
+                Logger.Log(lobby.Name + " " + lobby.MaxPlayers);
             }
         }catch(LobbyServiceException e)
         {
@@ -142,6 +206,16 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         }
     }
 
+    public async void JoinLobby(Lobby lobby) {
+        Player player = GetPlayer();
+
+        _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions {
+            Player = player
+        });
+
+        OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+    }
+    
     [TerminalCommand("JoinLobbyByCode")]
     public async void JoinLobbyByCode(string lobbyCode)
     {
@@ -156,6 +230,8 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
             Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
             _joinedLobby = lobby;
 
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
+            
             Logger.Log("Join lobby with code : " + lobbyCode);
             PrintPlayers(lobby);
             
@@ -179,7 +255,10 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
             };
             
-            await LobbyService.Instance.QuickJoinLobbyAsync(quickJoinLobbyOptions);
+            Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync(quickJoinLobbyOptions);
+            _joinedLobby = lobby;
+
+            OnJoinedLobby?.Invoke(this, new LobbyEventArgs { lobby = lobby });
         }
         catch (LobbyServiceException e)
         {
@@ -206,7 +285,7 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     
     public void PrintPlayers(Lobby lobby)
     {
-        Logger.Log("Players in Lobby " + lobby.Name + " " + lobby.Data["GameMode"].Value);
+        Logger.Log("Players in Lobby " + lobby.Name);
         foreach (Player player in lobby.Players)
         {
             Logger.Log(player.Id + " " + player.Data["PlayerName"].Value);
@@ -257,29 +336,44 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
     }
 
     [TerminalCommand("LeaveLobby")]
-    public void LeaveLobby()
+    public async void LeaveLobby()
     {
-        try
+        if (_joinedLobby != null)
         {
-            LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
-        }
-        catch (LobbyServiceException e)
-        {
-            Logger.Log(e.Message);
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                _hostLobby = null;
+                _joinedLobby = null;
+                
+                OnLeftLobby?.Invoke(this, EventArgs.Empty);
+            }
+            catch (LobbyServiceException e)
+            {
+                Logger.Log(e.Message);
+            }
         }
     }
 
     [TerminalCommand("KickPlayer")]
-    public void KickPlayer()
+    public async void KickPlayer(string playerId)
     {
-        try
+        if (IsLobbyHost())
         {
-            LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, _joinedLobby.Players[1].Id);
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, playerId);
+            }
+            catch (LobbyServiceException e)
+            {
+                Logger.Log(e.Message);
+            }
         }
-        catch (LobbyServiceException e)
-        {
-            Logger.Log(e.Message);
-        }
+    }
+
+    public bool IsLobbyHost()
+    {
+        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId; 
     }
 
     [TerminalCommand("MigrateLobbyHost")]
@@ -324,12 +418,110 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
 
         AuthenticationService.Instance.SignedIn += () =>
         {
-            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId);
+            Logger.Log("Sign in : " + AuthenticationService.Instance.PlayerId + " "+ playerName);
 
-            // RefreshLobbyList();
+            RefreshLobbyList();
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    public List<UserInfo> GetJoinedPlayerInfos()
+    {
+        List<UserInfo> playerInfos = new List<UserInfo>();
+        try
+        {
+            if(_joinedLobby == null)
+                throw new Exception("Joined lobby is null");
+
+            foreach (Player joinedLobbyPlayer in _joinedLobby.Players)
+            {
+                UserInfo userInfo = new UserInfo
+                {
+                    id = joinedLobbyPlayer.Id,
+                    name = joinedLobbyPlayer.Data["PlayerName"].Value
+                };
+                
+                playerInfos.Add(userInfo);
+            }
+        }catch(Exception e)
+        {
+            Logger.Log(e.Message);
+        }
+        
+        return playerInfos;
+    }
+
+    public Lobby GetJoinedLobby()
+    {
+        try
+        {
+            if(_joinedLobby == null)
+                throw new Exception("Joined lobby is null");
+
+            return _joinedLobby;
+        } catch(Exception e)
+        {
+            Logger.Log(e.Message);
+            return null;
+        }
+    }
+
+    public async void RefreshLobbyList()
+    {
+        try
+        {
+            QueryLobbiesOptions options = new QueryLobbiesOptions();
+            options.Count = 25;
+            
+            // Filter for open lobbies only
+            options.Filters = new List<QueryFilter>
+            {
+                new QueryFilter(
+                    field: QueryFilter.FieldOptions.AvailableSlots,
+                    op: QueryFilter.OpOptions.GT,
+                    value: "0")
+            };
+            
+            // Order by newest lobbies first
+            options.Order = new List<QueryOrder>
+            {
+                new QueryOrder(asc: false,
+                    field: QueryOrder.FieldOptions.Created)
+            };
+
+            QueryResponse lobbyListsQueryResponse = await Lobbies.Instance.QueryLobbiesAsync();
+            
+            OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs{ lobbyList = lobbyListsQueryResponse.Results});
+        } catch(LobbyServiceException e)
+        {
+            Logger.Log(e.Message);
+        }
+    }
+
+    public async void StartGame()
+    {
+        if (IsLobbyHost())
+        {
+            try
+            {
+                string relayCode = await RelayManager.Instance.SetupRelay();
+
+                Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        { KEY_START_GAME, new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                    }
+                });
+
+                _joinedLobby = lobby;
+            }
+            catch (LobbyServiceException e)
+            {
+                Logger.Log(e);
+            }
+        }
     }
 }
  

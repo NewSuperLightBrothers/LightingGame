@@ -324,13 +324,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1113d36f02419bf4eb9ed9686e86a977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bomb: {fileID: 8055679635129320025, guid: 6943f70fd14d9ad48806db7b4d6e1c44, type: 3}
-  _simulationTime: 4
-  _power: 22
-  _pointsCount: 30
-  _lineRenderer: {fileID: 549545878}
-  _firePoint: {fileID: 52470588}
-  _launchVelocity: {x: 0, y: 0, z: 0}
+  _teamColor: 0
+  _weaponDamage: 0
+  _weaponEmissionStrength: 0
+  l_weaponMeshRenderer: []
+  l_weaponSound: []
+  l_weaponParticleSystem: []
+  SD_weaponLineRenderer:
+    _keys: []
+    _values: []
+  _weaponCount: 0
+  _weaponRemainTime: 0
+  _bombPrefab: {fileID: 0}
+  _bombPrefabThrowPower: 1
+  _bombPrefabPointsCount: 50
+  _bombPrefabPointsIntervalTime: 0
+  _bombPrefabLineRenderer: {fileID: 549545878}
+  _bombPrefabFirePoint: {fileID: 0}
 --- !u!114 &94234877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testHP: 0
-  Gun: {fileID: 0}
+  Gun: {fileID: 94234870}
   bomb: {fileID: 94234876}
   animation: {fileID: 0}
   motor: {fileID: 94234872}
@@ -613,12 +623,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d55c3402243234583f8cb49d3e7adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followTransform: {fileID: 1333256491}
-  _camera: {fileID: 1156247208}
-  rayStart: {fileID: 1162580859}
-  cameraOffset: {fileID: 100221873}
-  cameraOffsetValue: {x: 0.2, y: 0.8, z: 0}
-  cameraRadius: 0.2
+  cameraTarget: {fileID: 549545877}
+  _mainCamera: {fileID: 1156247208}
+  _aimRay: {fileID: 1162580859}
+  _cameraOffset: {fileID: 100221873}
+  _cameraOffsetValue: {x: 0, y: 0, z: 0}
+  _cameraRadius: 0
 --- !u!4 &549545877
 Transform:
   m_ObjectHideFlags: 0
@@ -1599,10 +1609,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c8f649b0b54a16488993beea99e127a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 50
-  d: 0
-  l_hitPositionWS: []
-  maxIterations: 4
+  _maxDistance: 0
+  _maxIterations: 0
+  _gunEndPoint: {fileID: 52470588}
+  l_hitInfo: []
+  bulletPath: {fileID: 549545878}
 --- !u!1 &1231344621 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8345070700331616361, guid: 09aade0ecefd01e4b8f7661acf64f5c2,
