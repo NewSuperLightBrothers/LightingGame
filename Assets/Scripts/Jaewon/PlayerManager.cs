@@ -7,9 +7,22 @@ using Unity.Mathematics;
 
 public class PlayerManager : PlayerInfo, IPlayerMovInfo
 {
-    protected override GameObject GetPlayerPrefab()
+    [SerializeField] private GameObject _camArm;
+    protected float _playerHp;
+    protected float _playerSpd;
+    protected float _playerDfn;
+    protected float _playerAtk;
+    public Color _teamColor;
+
+    private void OnEnable()
     {
-        throw new System.NotImplementedException();
+        _player = this.gameObject;
+        InitPlayerDic();
+        _teamColor = Color.red;
+        SetCamArm();
+    }
+    private void Start()
+    {
     }
 
     #region IPlayerMovInfo
@@ -23,9 +36,24 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         throw new System.NotImplementedException();
     }
 
-    void IPlayerMovInfo.GetHit()
+    void IPlayerMovInfo.GetHit(GameObject player, GameObject obj)
     {
-        throw new System.NotImplementedException();
+        if(obj.GetComponent<LongDistance_LaserBullet>()._bulletColor != this._teamColor)
+        {
+            obj.GetComponent<LongDistance_LaserBullet>().LaserBulletToPlayer(this.GetComponent<Collider>());
+            Debug.Log("피격, 현재 체력 = " + this._playerHp);
+        }
     }
+
+    protected override void SetCamArm()
+    {
+        if (IsPlayablePrefab(this.gameObject))
+        {
+            Debug.Log("카메라 생성");
+            GameObject CamArm = Instantiate(_camArm);
+            CamArm.transform.parent = _player.transform;
+        }
+    }
+
     #endregion IPlayerMovInfo
 }

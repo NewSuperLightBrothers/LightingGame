@@ -41,7 +41,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         CheckAttackRange();
 
         //발사 함수
-        StartAttack();
+        //StartAttack();
     }
 
     void FixedUpdate()
@@ -62,6 +62,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
             Vector3 normal;
             int _gunReflectCount = 0;
 
+            
             //distance = 0(총의 사거리) 될 때까지 reflect탐지
             while (distance > 0)
             {
@@ -135,7 +136,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
 
     public void StartAttack()
     {
-        if (Input.GetMouseButtonDown(0) && _isShoot && _weaponRemainGauge - _weaponAttackConsumeGauge >= 0)
+        if (/*Input.GetButtonDown("FireButton") &&*/ _isShoot && _weaponRemainGauge - _weaponAttackConsumeGauge >= 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);

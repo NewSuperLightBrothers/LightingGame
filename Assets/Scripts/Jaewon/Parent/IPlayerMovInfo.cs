@@ -6,5 +6,5 @@ public interface IPlayerMovInfo
 {
     void FireGun();
     void FireSword();
-    void GetHit();
+    void GetHit(GameObject player, GameObject obj);
 }

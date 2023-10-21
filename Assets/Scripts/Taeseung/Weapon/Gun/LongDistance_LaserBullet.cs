@@ -10,7 +10,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     private float _bulletSpeed;
     private float _bulletDmg;
-    private Color _bulletColor;
+    public Color _bulletColor;
     private GameObject _bulletAfterImage;
     private Vector3[] _bulletPathPoints;
 
@@ -34,7 +34,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-            //LaserBulletReflection();
+        //LaserBulletReflection();
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
         else if (other.transform.tag == "Mirror")
         {
@@ -45,6 +45,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
             //if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
             LaserBulletDestroy();
         }
+
+        print("???");
     }
 
 
@@ -67,7 +69,9 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     public void LaserBulletToPlayer(Collider other)
     {
-        other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
+        Debug.Log("플레이어 충돌");
     }
 
     private void LaserBulletFire()
