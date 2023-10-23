@@ -7,17 +7,14 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     [Space]
     [Header("LASEEGUN INFO")]
     [SerializeField] private LineRenderer _gunFirePath;
-    [SerializeField] private int _gunReflectCount;         
+    [SerializeField] private int _gunReflectCount;
+
+    //총알 갯수
+    private int _gunBulletCount = 0;
 
     //총알 궤적 포인트 리스트
     private List<Vector3> l_gunPathPoints = new();
 
-    /// <summary>
-    /// direction을 두개로 나눈 이유는 계산 비용이 큰 반사프리뷰를 조금이라도 줄이기 위해서이다.
-    /// 매 프레임마다의 direction과 현재 direction이 다를 경우 반사 광선을 쏴주고 같을 경우 계산하지 않음.
-    /// </summary>
-    //현재 총구 방향
-    private Vector3 _gunDirection;
     //매 프레임마다의 총구 방향
     private Vector3 _gunFrameDirection;
 
@@ -30,18 +27,21 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
     {
         base.Start();
         _weaponDistance = Vector3.Distance(_weaponShotPoint.position, _weaponShotEndPoint.position);
-        _gunDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
     }
 
     void Update()
     {
-        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
+        if (Input.GetMouseButtonDown(1))
+        {
+            Reloading();
+        }
 
+
+        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
         //총알 궤적 계산
         CheckAttackRange();
-
         //발사 함수
-        //StartAttack();
+        StartAttack();
     }
 
     void FixedUpdate()
@@ -50,10 +50,10 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         else _gunDelayInterval += Time.deltaTime;
     }
 
+
     //총알 궤적 계산
     public void CheckAttackRange()
     {
-            _gunDirection = _gunFrameDirection;
             l_gunPathPoints.Clear();
 
             float distance = _weaponDistance;
@@ -128,14 +128,30 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         } 
     }
 
+    public void Reloading()
+    {
+        int playerLightGauge = _weaponObjectTakingManager.GetPlayerLightGauge();
+        int reloadGauge = _weaponGauge - _weaponRemainGauge;
 
+        if (reloadGauge < playerLightGauge) updateGauge(reloadGauge);
+        else updateGauge(playerLightGauge);
 
+        print(_weaponObjectTakingManager.GetPlayerLightGauge());
 
+    }
 
 
     public void StartAttack()
     {
-        if (/*Input.GetButtonDown("FireButton") &&*/ _isShoot && _weaponRemainGauge - _weaponAttackConsumeGauge >= 0)
+        /*
+        if (Input.GetButtonDown("FireButton") && _isShoot && _gunBulletCount >= 0)
+        {
+            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
+            SetWeaponGauge(-_weaponAttackConsumeGauge);
+            FireEffect();
+            AttackReset();
+        }*/
+        if (Input.GetMouseButtonDown(0) && _isShoot && _gunBulletCount > 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
@@ -144,14 +160,14 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         }
     }
 
-    public void SetWeaponGauge(float newVal)
+    public void SetWeaponGauge(int newVal)
     {
         _weaponRemainGauge += newVal;
+        _gunBulletCount -= 1;
+        print(_gunBulletCount);
         SetWeaponUIGaugeBar();
     }
-    public float GetWeaponGauge() => _weaponRemainGauge;
-    public List<Vector3> GetPathPoints() => l_gunPathPoints;
-
+    public int GetWeaponGauge() => _weaponRemainGauge;
 
 
     private void AttackReset()
@@ -166,11 +182,21 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         l_weaponSound[0].Play();
     }
 
+    private void updateGauge(int enterGauge)
+    {
+        int newBulletCount = (enterGauge / _weaponAttackConsumeGauge);
+        int newGauge = _weaponAttackConsumeGauge * newBulletCount;
+        _gunBulletCount += newBulletCount;
+        _weaponRemainGauge += newGauge;
+        _weaponObjectTakingManager.SetPlayerLightGauge(-newGauge);
+    }
+
+
     private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation)
     {
         GameObject newBullet = Instantiate(bulletObject);
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
-        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints);
+        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
     }
 

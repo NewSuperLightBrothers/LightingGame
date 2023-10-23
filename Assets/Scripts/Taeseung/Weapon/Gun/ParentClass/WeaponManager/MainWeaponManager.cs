@@ -9,6 +9,7 @@ public class MainWeaponManager : WeaponSystem
     [SerializeField] protected int _weaponAttackConsumeGauge;
     [SerializeField] protected float _weaponDelayTime;
     [SerializeField] protected GameObject _weaponObject;
+    [SerializeField] protected ObjectEmissionTakeManager _weaponObjectTakingManager;
     protected int _weaponRemainGauge;
 
     [Space]

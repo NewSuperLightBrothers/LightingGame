@@ -9,9 +9,9 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     [SerializeField] private Material _choiceOutLineMaterial;
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
     [SerializeField] private AudioSource audioSrc;
-    [SerializeField] private int _lightMaxAmount;
+    [SerializeField] private int _lightMaxGauge;
 
-    private int _lightCurrentAmount = 0;
+    private int _lightCurrentGauge = 100;
 
     //input 처리 관련 변수들, 나중에 기능 통합하면 사라질 변수들임
     private Touch _touch;
@@ -26,14 +26,10 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            print(_lightCurrentAmount);
-            GiveTheLightEnergyToGun();
-        }
         checkChargingmode();
-
     }
+
+
 
     private void checkChargingmode()
     {
@@ -67,7 +63,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             //일정 시간 누른 경우, 해당 위치에 흡수 가능 빛이 있는지 확인
             if (_emissionManager != null) _emissionManager.TurnOffUI();
 
-            if (takeRaycastObject(_touch))
+            if (TakeRaycastObject(_touch))
             {
                 if (_emissionManager.takeLightEnergy(_team))
                 {
@@ -89,15 +85,14 @@ public class ObjectEmissionTakeManager : MonoBehaviour
                 _readyTime = 0;
             }
         }
+
     }
 
 
-
-
-
-    private bool takeRaycastObject(Touch touch)
+    private bool TakeRaycastObject(Touch touch)
     {
         _emissionManager = null;
+
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hit;
 
@@ -150,35 +145,12 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
     private void TakeLightEnergy(int k)
     {
-        if (_lightCurrentAmount<_lightMaxAmount)
-            _lightCurrentAmount += k;
+        if (_lightCurrentGauge <_lightMaxGauge)
+            _lightCurrentGauge += k;
     }
 
-    public void GiveTheLightEnergyToGun()
-    {
-        int maxGauge = _laserGunManager.getWeaponMaxGauge();
-        int remainGauge = _laserGunManager.GetWeaponGauge();
 
-
-        if (_lightCurrentAmount > maxGauge - remainGauge)
-        {
-            print("!");
-            _laserGunManager.SetWeaponGauge(maxGauge - remainGauge);
-            _lightCurrentAmount -= (maxGauge - remainGauge);
-        }
-        else if(_lightCurrentAmount <= 0)
-        {
-            print("no light");
-        }
-        else
-        {
-            print("2");
-            _laserGunManager.SetWeaponGauge(_lightCurrentAmount);
-            _lightCurrentAmount -= _lightCurrentAmount;
-        }
-        
-       
-    }
-    
+    public int GetPlayerLightGauge() => _lightCurrentGauge;
+    public void SetPlayerLightGauge(int newGauge) => _lightCurrentGauge += newGauge;
 
 }

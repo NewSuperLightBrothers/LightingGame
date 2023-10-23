@@ -85,6 +85,10 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
     public int GetWeaponGauge()
     {
         return 0;//not need
-    } 
+    }
 
+    public void Reloading()
+    {
+        throw new NotImplementedException();
+    }
 }
