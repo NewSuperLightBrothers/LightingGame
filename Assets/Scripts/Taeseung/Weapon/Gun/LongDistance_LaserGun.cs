@@ -136,7 +136,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         if (reloadGauge < playerLightGauge) updateGauge(reloadGauge);
         else updateGauge(playerLightGauge);
 
-        print(_weaponObjectTakingManager.GetPlayerLightGauge());
+        print("플레이어 잔량:"+ _weaponObjectTakingManager.GetPlayerLightGauge());
 
     }
 
@@ -189,6 +189,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         _gunBulletCount += newBulletCount;
         _weaponRemainGauge += newGauge;
         _weaponObjectTakingManager.SetPlayerLightGauge(-newGauge);
+        print("총의 장전된 탄알 수 : " + _gunBulletCount);
+        print("총의 새로 장전될 탄알 수 : " + newBulletCount);
     }
 
 

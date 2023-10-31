@@ -10,6 +10,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
     [SerializeField] private AudioSource audioSrc;
     [SerializeField] private int _lightMaxGauge;
+    [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
 
     private int _lightCurrentGauge = 100;
 
@@ -98,7 +99,8 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
-                //Debug.Log("롱 프레스한 오브젝트: " + hit.collider.gameObject.name);
+                _objectEmissionSystem.TakeObjectInfo(hit.collider.gameObject.transform.GetInstanceID());
+                print(hit.collider.gameObject.transform.GetInstanceID());
                 if (hit.collider.TryGetComponent<ObjectEmissionManager>(out _emissionManager))
                 {
         
@@ -147,6 +149,8 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     {
         if (_lightCurrentGauge <_lightMaxGauge)
             _lightCurrentGauge += k;
+
+        print("플레이어 현재 빛 잔량: " + _lightCurrentGauge);
     }
 
 

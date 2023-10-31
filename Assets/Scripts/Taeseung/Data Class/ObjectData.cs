@@ -7,9 +7,10 @@ public enum EObjectColorType
     Red,
     Green,
     Blue,
-    Magenta,
     Yellow,
+    Magenta,
     Cyan,
     White,
     Black,
+
 }
