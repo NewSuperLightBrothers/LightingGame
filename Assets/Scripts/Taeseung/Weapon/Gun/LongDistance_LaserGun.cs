@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
+public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface, MainWeaponInterface
 {
     [Space]
     [Header("LASEEGUN INFO")]
@@ -31,11 +31,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            Reloading();
-        }
-
+        if (Input.GetMouseButtonDown(1)) Reloading();
 
         _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
         //총알 궤적 계산
@@ -130,13 +126,13 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
 
     public void Reloading()
     {
-        int playerLightGauge = _weaponObjectTakingManager.GetPlayerLightGauge();
+        int playerLightGauge = _weaponObjectTakingManager.getCharacterCurrentGauge();
         int reloadGauge = _weaponGauge - _weaponRemainGauge;
 
         if (reloadGauge < playerLightGauge) updateGauge(reloadGauge);
         else updateGauge(playerLightGauge);
 
-        print("플레이어 잔량:"+ _weaponObjectTakingManager.GetPlayerLightGauge());
+        print("플레이어 잔량:"+ _weaponObjectTakingManager.getCharacterCurrentGauge());
 
     }
 
@@ -209,4 +205,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface
         l_weaponMeshRenderer[0].transform.localScale = scale;
     }
 
+    public int GetBulletCount() => _gunBulletCount;
+
+    public int GetBulletMaxCount() => _weaponGauge / _weaponAttackConsumeGauge;
 }

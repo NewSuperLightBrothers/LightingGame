@@ -1434,6 +1434,11 @@ PrefabInstance:
       propertyPath: _weaponDistance
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1787973871524621034, guid: f43d03aed4679f94098454b5b8533c0f,
+        type: 3}
+      propertyPath: _weaponObjectTakingManager
+      value: 
+      objectReference: {fileID: 1883711501}
     - target: {fileID: 1795872508485353729, guid: f43d03aed4679f94098454b5b8533c0f,
         type: 3}
       propertyPath: m_Mesh

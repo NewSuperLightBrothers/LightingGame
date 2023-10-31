@@ -44,12 +44,7 @@ public class MainWeaponManager : WeaponSystem
     private Color getTeamColor(EObjectColorType colorType)
     {
         Color materialColor;
-        
-        if (colorType == EObjectColorType.Red) materialColor = Color.red;
-        else if (colorType == EObjectColorType.Blue) materialColor = Color.blue;
-        else if (colorType == EObjectColorType.Green) materialColor = Color.green;
-        else materialColor = new();
-
+        materialColor = ObjectData.d_objectColor[colorType];
         return materialColor;
     }
 

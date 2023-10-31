@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class SerializeDictionary<T1, T2>
+public class SerializeDictionary<T1, T2> 
 {
     [SerializeField] private List<T1> l_key;
     [SerializeField] private List<T2> l_value;
 
     private Dictionary<T1, T2> _dict = new();
+
+
 
     public void InitializeList()
     {

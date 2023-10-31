@@ -35,10 +35,14 @@ public class ObjectEmissionSystem : MonoBehaviour
 
 
 
-    public void TakeObjectInfo(int objectID)
+    public void TakeObjectLight(int objectID)
     {
         ObjectEmissionData searchObjData= new();
-        print(_dictionary.TryGetValue(objectID, out searchObjData));
+        if(_dictionary.TryGetValue(objectID, out searchObjData))
+        {
+            searchObjData.color -= (searchObjData.color / 10);
+            searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
+        }
 
     }
 
@@ -90,7 +94,6 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         short sTC1 = (short)teamColor1;
         short sTC2 = (short)teamColor2;
-
         return ((EObjectColorType)(3 - (sTC1 + sTC2)), (EObjectColorType)sTC1 + sTC2 + 2);
     }
 

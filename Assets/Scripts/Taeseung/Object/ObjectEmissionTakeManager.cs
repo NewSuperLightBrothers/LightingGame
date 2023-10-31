@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ObjectEmissionTakeManager : MonoBehaviour
+public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInterface
 {
     [SerializeField] private EObjectColorType _team;
     [SerializeField] private Material _choiceOutLineMaterial;
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
-    [SerializeField] private AudioSource audioSrc;
     [SerializeField] private int _lightMaxGauge;
     [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
 
     private int _lightCurrentGauge = 100;
-
+    
     //input 처리 관련 변수들, 나중에 기능 통합하면 사라질 변수들임
     private Touch _touch;
     private float _duration = 0.5f;
@@ -27,12 +26,12 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
     private void Update()
     {
-        checkChargingmode();
+        CheckChargingMode();
     }
 
 
 
-    private void checkChargingmode()
+    private void CheckChargingMode()
     {
         //터치가 시작되었을시
         if (Input.touchCount > 0 && _isTouch == false)
@@ -49,7 +48,6 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             _readyTime = Time.time;
             _isTouch = false;
             _laserGunManager.enabled = true;
-            StopChargingSound();
         }
 
         if (_isTouch == true)
@@ -68,7 +66,6 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             {
                 if (_emissionManager.takeLightEnergy(_team))
                 {
-                    PlayChargingSound();
                     TakeLightEnergy(1);
                     _laserGunManager.enabled = false;
                 }
@@ -94,13 +91,14 @@ public class ObjectEmissionTakeManager : MonoBehaviour
     {
         _emissionManager = null;
 
+        
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
             {
-                _objectEmissionSystem.TakeObjectInfo(hit.collider.gameObject.transform.GetInstanceID());
-                print(hit.collider.gameObject.transform.GetInstanceID());
+                _objectEmissionSystem.TakeObjectLight (hit.collider.gameObject.transform.GetInstanceID());
+
                 if (hit.collider.TryGetComponent<ObjectEmissionManager>(out _emissionManager))
                 {
         
@@ -119,31 +117,6 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             else return false;
     }
 
-    private void PlayChargingSound()
-    {
-        /*
-        if (audioSrc.enabled == false)
-        {
-            audioSrc.enabled = true;
-            audioSrc.Play();
-            //audioSrc.loop = true;
-        }
-        else
-        {
-            if (audioSrc.clip.length - 0.5f < audioSrc.time)
-            {
-                audioSrc.time = audioSrc.clip.length - 0.6f;
-            }
-        }*/
-    }
-
-    private void StopChargingSound()
-    {
-        audioSrc.Stop();
-        audioSrc.loop = false;
-        audioSrc.enabled = false;
-
-    }
 
     private void TakeLightEnergy(int k)
     {
@@ -153,8 +126,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour
         print("플레이어 현재 빛 잔량: " + _lightCurrentGauge);
     }
 
-
-    public int GetPlayerLightGauge() => _lightCurrentGauge;
     public void SetPlayerLightGauge(int newGauge) => _lightCurrentGauge += newGauge;
-
+    public int getCharacterCurrentGauge() => _lightCurrentGauge;
+    public int getCharacterMaxGauge() => _lightMaxGauge;
 }
