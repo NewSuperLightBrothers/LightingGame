@@ -17,7 +17,6 @@ public class AnimateController : MonoBehaviour
     private void Run()
     {
         velocity = kinematicCharacterMotor.Velocity.magnitude;
-        Debug.Log("¼Óµµ = " + velocity);
         animator.SetFloat("Velocity", velocity);
     }
     public void Atk()

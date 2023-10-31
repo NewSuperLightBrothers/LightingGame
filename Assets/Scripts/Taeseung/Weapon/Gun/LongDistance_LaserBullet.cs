@@ -29,13 +29,17 @@ public class LongDistance_LaserBullet : MonoBehaviour
         if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance))
         {
             print(_bulletHit.collider.GetInstanceID());
+            //LaserBulletToPlayer(_bulletHit.collider);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
         //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player"))
+        {
+            LaserBulletToPlayer(other);
+        }
         else if (other.transform.tag == "Mirror")
         {
             print("Nothing");
@@ -71,6 +75,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     {
         //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
         other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
+        Debug.Log("남은 체력 = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
         Debug.Log("플레이어 충돌");
     }
 
