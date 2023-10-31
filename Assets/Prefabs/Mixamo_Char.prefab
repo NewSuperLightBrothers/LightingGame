@@ -1391,7 +1391,7 @@ GameObject:
   - component: {fileID: 6044827185313867460}
   - component: {fileID: 9063569183340750081}
   - component: {fileID: 5058712512957392703}
-  - component: {fileID: 6952188258305599760}
+  - component: {fileID: 7904571199681454379}
   m_Layer: 0
   m_Name: Mixamo_Char
   m_TagString: Player
@@ -1449,7 +1449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
---- !u!114 &6952188258305599760
+--- !u!114 &7904571199681454379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1458,7 +1458,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6388455993032948862}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: 91ad4d9e9f2514f26a58acfa3cf8c1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
