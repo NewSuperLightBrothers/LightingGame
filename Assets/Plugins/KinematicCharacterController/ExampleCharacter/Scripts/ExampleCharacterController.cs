@@ -79,6 +79,7 @@ namespace KinematicCharacterController.Examples
         private Vector3 _lookInputVector;
         private bool _jumpRequested = false;
         private bool _jumpConsumed = false;
+        public bool JumpConsumed => _jumpConsumed;
         private bool _jumpedThisFrame = false;
         private float _timeSinceJumpRequested = Mathf.Infinity;
         private float _timeSinceLastAbleToJump = 0f;

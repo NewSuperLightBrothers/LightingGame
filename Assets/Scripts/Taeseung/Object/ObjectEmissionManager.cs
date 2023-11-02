@@ -9,7 +9,6 @@ public class ObjectEmissionManager : MonoBehaviour
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private EObjectColorType _colorType;
     [SerializeField] private float _gauge;
-    [SerializeField] private float _takeWeight;
     [SerializeField] private float _emissionStrength;
 
     [Space]
@@ -23,14 +22,16 @@ public class ObjectEmissionManager : MonoBehaviour
 
     private void Start()
     {
+
         _initialColor = _meshRenderer.material.GetColor("_EmissionColor");
         GameObject UI = _emissionUI.InstantiateUI(this.transform);
         _emissionUI = UI.GetComponent<ObjectEmissionUI>();
         UI.SetActive(false);
 
         SetColorInitialize();
-        _meshRenderer.material.SetColor("_EmissionColor", _initialColor * Mathf.Pow(2,_emissionStrength));
+        _meshRenderer.material.SetColor("_EmissionColor", _initialColor * Mathf.Pow(2, _emissionStrength));
     }
+
 
 
     private void SetColorInitialize() {
@@ -113,7 +114,9 @@ public class ObjectEmissionManager : MonoBehaviour
         _emissionUI.PanelColor(_initialColor);
         _emissionUI.SetForwardVector(face);
      }
-    
+   
+
+
     public bool takeLightEnergy(EObjectColorType colorType)
     {
         float tempColorVal = 0;
@@ -124,14 +127,14 @@ public class ObjectEmissionManager : MonoBehaviour
 
 
         if (_d_check.TryGetValue(colorType, out tempCheck)) {
-            if (tempCheck < (_gauge / _takeWeight))
+            if (tempCheck < (_gauge))
             {
                 _d_check[colorType]++;
 
                 if (colorType == EObjectColorType.Red)
                 {
                     if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.r -= (tempColorVal / _gauge) * _takeWeight;
+                        _initialColor.r -= (tempColorVal / _gauge);
 
                     _emissionUI.SetProgressbarFill(Color.red, _initialColor.r, 1);
 
@@ -139,7 +142,7 @@ public class ObjectEmissionManager : MonoBehaviour
                 else if (colorType == EObjectColorType.Green)
                 {
                     if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.g -= (tempColorVal / _gauge) * _takeWeight;
+                        _initialColor.g -= (tempColorVal / _gauge);
 
                     _emissionUI.SetProgressbarFill(Color.green, _initialColor.g, 1);
                 }
@@ -147,12 +150,12 @@ public class ObjectEmissionManager : MonoBehaviour
                 else if (colorType == EObjectColorType.Blue)
                 {
                     if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.b -= (tempColorVal / _gauge) * _takeWeight;
+                        _initialColor.b -= (tempColorVal / _gauge);
 
                     _emissionUI.SetProgressbarFill(Color.blue, _initialColor.b, 1);
 
                 }
-                _meshRenderer.material.SetColor("_EmissionColor", _initialColor);
+                _meshRenderer.material.SetColor("_EmissionColor", _initialColor * Mathf.Pow(2, _emissionStrength));
                 return true;
             }
             else
@@ -171,7 +174,5 @@ public class ObjectEmissionManager : MonoBehaviour
     public EObjectColorType getColortype() => _colorType;
     public float getGuage() => _gauge;
     public void setGauge(float gauge) => _gauge = gauge;
-    public float getWeight() => _takeWeight;
-
 
 }

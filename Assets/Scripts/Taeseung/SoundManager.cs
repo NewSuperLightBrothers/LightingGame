@@ -11,9 +11,12 @@ public class SoundManager : MonoBehaviour
 
 
 
-
     private void Update()
-    {        
+    {
+
+
+
+
         if (audios[0].isPlaying && isStart == false)
             isStart = true;
 

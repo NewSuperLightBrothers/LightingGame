@@ -19,11 +19,11 @@ public interface WeaponInterface
     /// 게이지 셋팅
     /// </summary>
     /// <param name="newval"></param>
-    public void SetWeaponGauge(float newval);
+    public void SetWeaponGauge(int newval);
 
     /// <summary>
     /// 게이지량 가져오기
     /// </summary>
     /// <returns></returns>
-    public float GetWeaponGauge();
+    public int GetWeaponGauge();
 }

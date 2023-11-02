@@ -12,6 +12,7 @@ public class TestPlayer : Singleton<TestPlayer>
     public SubWeapon_BombManager bomb;
     public Animator animation;
     public KinematicCharacterMotor motor;
+    public ExampleCharacterController controller;
 
     public int bombmode = 0;
 
@@ -36,13 +37,24 @@ public class TestPlayer : Singleton<TestPlayer>
         animation.SetFloat("Spd", motor.Velocity.magnitude/4);
         if (motor.Velocity.magnitude/4 > 1)
         {
-            print(animation.GetCurrentAnimatorStateInfo(0).shortNameHash);
+            //print(animation.GetCurrentAnimatorStateInfo(0).shortNameHash);
             animation.speed = motor.Velocity.magnitude/4;
         }
         else
         {
             animation.speed = 1;
         }
+
+        if (controller.JumpConsumed)
+        {
+            animation.SetBool("Jump", true);
+        }
+        else
+        {
+            animation.SetBool("Jump", false);
+        }
+
+
     }
 
 
