@@ -134,7 +134,6 @@ public class LightBuffSystem : MonoBehaviour
         if (playerManager._teamColor == GetState() && isOnArea)
         {
             StartCoroutine(EndBuff());
-            Debug.Log("น๖วม");
         }
         else if(playerManager._teamColor == GetState() && !isOnArea)
         {

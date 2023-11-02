@@ -7,7 +7,7 @@ using Unity.Mathematics;
 
 public class PlayerManager : PlayerInfo, IPlayerMovInfo
 {
-    [SerializeField] private GameObject _camArm;
+    public GameObject camArm;
     protected float _playerHp;
     protected float _playerSpd;
     protected float _playerDfn;
@@ -19,10 +19,6 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         _player = this.gameObject;
         InitPlayerDic();
         _teamColor = Color.red;
-        SetCamArm();
-    }
-    private void Start()
-    {
     }
 
     #region IPlayerMovInfo
@@ -44,16 +40,5 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
             Debug.Log("피격, 현재 체력 = " + this._playerHp);
         }
     }
-
-    protected override void SetCamArm()
-    {
-        if (IsPlayablePrefab(this.gameObject))
-        {
-            Debug.Log("카메라 생성");
-            GameObject CamArm = Instantiate(_camArm);
-            CamArm.transform.parent = _player.transform;
-        }
-    }
-
     #endregion IPlayerMovInfo
 }

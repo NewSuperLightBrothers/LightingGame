@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
     private bool _isRunning;
     private bool _isCrouching;
 
-    [SerializeField] private RectTransform _joystickForeground;
+    public RectTransform joystickForeground;
     private Rect _rect;
 
     private Vector2 _mouseDelta = Vector2.zero;
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
 
     private Vector3 _lookInputWS = Vector3.zero;
 
-    private void Awake() {
+    private void OnEnable() {
         _userInputAssets = new();
         _userInputAssets.Enable();
         EnhancedTouch.EnhancedTouchSupport.Enable();
@@ -133,10 +133,10 @@ public class InputManager : MonoBehaviour
     }
 
     private void Start() {
-        cameraAnchor = GameObject.Find("CamArm(Clone)").transform; 
-        _rect = new Rect(_joystickForeground.rect);
-        Image _image = _joystickForeground.gameObject.GetComponent<Image>();
-        _rect.position = _joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);
+        //cameraAnchor = GameObject.Find("CamArm(Clone)").transform; 
+        _rect = new Rect(joystickForeground.rect);
+        Image _image = joystickForeground.gameObject.GetComponent<Image>();
+        _rect.position = joystickForeground.parent.GetComponent<RectTransform>().anchoredPosition - (_rect.size /2) + new Vector2(_image.raycastPadding.x, _image.raycastPadding.y);
         _rect.size -= new Vector2(_image.raycastPadding.x, _image.raycastPadding.y) * 2;
     }
 
