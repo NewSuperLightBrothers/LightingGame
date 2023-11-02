@@ -6,6 +6,7 @@ public class AnimateController : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] KinematicCharacterMotor kinematicCharacterMotor;
+    [SerializeField] Rigidbody rb;
     static float velocity;
     private void Start()
     {
@@ -13,6 +14,7 @@ public class AnimateController : MonoBehaviour
     private void Update()
     {
         Run();
+        //Jump();
     }
     private void Run()
     {
@@ -22,5 +24,10 @@ public class AnimateController : MonoBehaviour
     public void Atk()
     {
         animator.SetTrigger("Attack");
+    }
+    public void Jump()
+    {
+        Debug.Log("АјСп");
+        animator.SetBool("isJump", true);
     }
 }

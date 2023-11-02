@@ -35,9 +35,11 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log(_bulletColor);
         //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player"))
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player") && _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
+            Debug.Log("피격");
             LaserBulletToPlayer(other);
         }
         else if (other.transform.tag == "Mirror")
@@ -76,7 +78,6 @@ public class LongDistance_LaserBullet : MonoBehaviour
         //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
         other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
         Debug.Log("남은 체력 = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
-        Debug.Log("플레이어 충돌");
     }
 
     private void LaserBulletFire()
