@@ -8,11 +8,12 @@ TagManager:
   - Red
   - Green
   - Blue
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Mirror

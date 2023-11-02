@@ -29,14 +29,21 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletRay.origin = this.transform.position;
         if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance))
         {
-           // print(_bulletHit.collider.GetInstanceID());
+            print(_bulletHit.collider.GetInstanceID());
+            //LaserBulletToPlayer(_bulletHit.collider);
+
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-            //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
+        Debug.Log(_bulletColor);
+        //LaserBulletReflection();
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player") && _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
+        {
+            Debug.Log("ÇÇ°Ý");
+            LaserBulletToPlayer(other);
+        }
         else if (other.transform.tag == "Mirror")
         {
             print("mirror");
@@ -45,12 +52,11 @@ public class LongDistance_LaserBullet : MonoBehaviour
         {
             print(other.transform.tag);
         }
-        /*
         else
         {
             //if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
             LaserBulletDestroy();
-        }*/
+        }
     }
 
 
@@ -76,7 +82,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     {
         //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
         other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
-        Debug.Log("�÷��̾� �浹");
+        Debug.Log("³²Àº Ã¼·Â = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
     }
 
     public EObjectColorType GetbulletTeamtype() => _bulletColorType;
