@@ -2,14 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface WeaponInterface
+public interface MainWeaponInterface 
 {
-
-    /// <summary>
-    /// 총알 발사, 베기 등 공격을 시작할려고 할 때 쓰는 함수
-    /// </summary>
-    public void StartAttack();
-
     /// <summary>
     /// 총알이 날아갈 궤적, 수류탄이 날아갈 궤적, 검의 공격 범위 체크 등 공격 범위를 계산할 때 쓰는 함수
     /// </summary>
@@ -26,4 +20,7 @@ public interface WeaponInterface
     /// </summary>
     /// <returns></returns>
     public int GetWeaponGauge();
+
+    public int GetBulletCount();
+    public int GetBulletMaxCount();
 }

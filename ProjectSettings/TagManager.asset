@@ -8,6 +8,10 @@ TagManager:
   - Red
   - Green
   - Blue
+  - AfterImage
+  - LightObject1
+  - LightObject2
+  - LightObject3
   - Enemy
   layers:
   - Default

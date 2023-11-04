@@ -13,7 +13,7 @@ public class SubWeaponManager : WeaponSystem
 
     [Space]
     [Header("WEAPON SUB DETAIL")]
-    [SerializeField] protected int _weaponCount;
+    [SerializeField] protected short _weaponCount;
     [SerializeField] protected float _weaponRemainTime;
 
 

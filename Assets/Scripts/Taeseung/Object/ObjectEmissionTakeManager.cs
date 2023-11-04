@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class ObjectEmissionTakeManager : MonoBehaviour
+public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInterface
 {
     [SerializeField] private EObjectColorType _team;
-    [SerializeField] private Material _choiceOutLineMaterial;
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
-    [SerializeField] private AudioSource audioSrc;
-    [SerializeField] private int _lightMaxAmount;
+    [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
+    [SerializeField] private int _lightMaxGauge;
+    [SerializeField] private int _lightTakeDistance;
 
-    private int _lightCurrentAmount = 0;
 
+    private int _lightCurrentGauge;
+    
     //input 처리 관련 변수들, 나중에 기능 통합하면 사라질 변수들임
     private Touch _touch;
     private float _duration = 0.5f;
@@ -26,16 +27,12 @@ public class ObjectEmissionTakeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            print(_lightCurrentAmount);
-            GiveTheLightEnergyToGun();
-        }
-        checkChargingmode();
-
+        CheckChargingMode();
     }
 
-    private void checkChargingmode()
+
+
+    private void CheckChargingMode()
     {
         //터치가 시작되었을시
         if (Input.touchCount > 0 && _isTouch == false)
@@ -52,7 +49,6 @@ public class ObjectEmissionTakeManager : MonoBehaviour
             _readyTime = Time.time;
             _isTouch = false;
             _laserGunManager.enabled = true;
-            StopChargingSound();
         }
 
         if (_isTouch == true)
@@ -66,18 +62,9 @@ public class ObjectEmissionTakeManager : MonoBehaviour
         {
             //일정 시간 누른 경우, 해당 위치에 흡수 가능 빛이 있는지 확인
             if (_emissionManager != null) _emissionManager.TurnOffUI();
-
-            if (takeRaycastObject(_touch))
-            {
-                if (_emissionManager.takeLightEnergy(_team))
-                {
-                    PlayChargingSound();
-                    TakeLightEnergy(1);
-                    _laserGunManager.enabled = false;
-                }
-                //현재 색깔로 흡수 가능한 물체가 맞는지 확인
-                //흡수 가능한 물체면 gauge를 채움
-            }
+            //현재 색깔로 흡수 가능한 물체가 맞는지 확인
+            //흡수 가능한 물체면 gauge를 채움
+            TakeRaycastObject(_touch);
         }
         else if (_duration * 5 < _readyEndTime - _readyTime && _isTouch == false)
         {
@@ -89,96 +76,39 @@ public class ObjectEmissionTakeManager : MonoBehaviour
                 _readyTime = 0;
             }
         }
+
     }
 
 
-
-
-
-    private bool takeRaycastObject(Touch touch)
+    private void TakeRaycastObject(Touch touch)
     {
         _emissionManager = null;
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
-            {
-                //Debug.Log("롱 프레스한 오브젝트: " + hit.collider.gameObject.name);
-                if (hit.collider.TryGetComponent<ObjectEmissionManager>(out _emissionManager))
-                {
-        
-                    /* 클릭 오브젝트에 대한 외곽선 표시...
-                    MeshRenderer renderer;
-                    if (hit.collider.TryGetComponent<MeshRenderer>(out renderer))
-                    {
-
-                    }
-                    */
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else return false;
-    }
-
-    private void PlayChargingSound()
-    {
-        /*
-        if (audioSrc.enabled == false)
+        if (Physics.Raycast(ray, out hit, 50, LayerMask.GetMask("LightObject")) && _lightCurrentGauge < _lightMaxGauge)
         {
-            audioSrc.enabled = true;
-            audioSrc.Play();
-            //audioSrc.loop = true;
+            if (_objectEmissionSystem.TakeObjectLight(hit.collider.gameObject.transform.GetInstanceID(), _team))
+            {
+                TakeLightEnergy(1);
+                _laserGunManager.enabled = false;
+            }
         }
         else
         {
-            if (audioSrc.clip.length - 0.5f < audioSrc.time)
-            {
-                audioSrc.time = audioSrc.clip.length - 0.6f;
-            }
-        }*/
+            print("없어요 그냥");
+        }
     }
 
-    private void StopChargingSound()
-    {
-        audioSrc.Stop();
-        audioSrc.loop = false;
-        audioSrc.enabled = false;
-
-    }
 
     private void TakeLightEnergy(int k)
     {
-        if (_lightCurrentAmount<_lightMaxAmount)
-            _lightCurrentAmount += k;
+         _lightCurrentGauge += k;
+
+        print("플레이어 현재 빛 잔량: " + _lightCurrentGauge);
     }
 
-    public void GiveTheLightEnergyToGun()
-    {
-        int maxGauge = _laserGunManager.getWeaponMaxGauge();
-        int remainGauge = _laserGunManager.GetWeaponGauge();
-
-
-        if (_lightCurrentAmount > maxGauge - remainGauge)
-        {
-            print("!");
-            _laserGunManager.SetWeaponGauge(maxGauge - remainGauge);
-            _lightCurrentAmount -= (maxGauge - remainGauge);
-        }
-        else if(_lightCurrentAmount <= 0)
-        {
-            print("no light");
-        }
-        else
-        {
-            print("2");
-            _laserGunManager.SetWeaponGauge(_lightCurrentAmount);
-            _lightCurrentAmount -= _lightCurrentAmount;
-        }
-        
-       
-    }
-    
-
+    public void SetPlayerLightGauge(int newGauge) => _lightCurrentGauge += newGauge;
+    public int getCharacterCurrentGauge() => _lightCurrentGauge;
+    public int getCharacterMaxGauge() => _lightMaxGauge;
 }

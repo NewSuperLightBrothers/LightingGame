@@ -44,4 +44,9 @@ public class ShortDistance_Blade : ShortDistanceWeaponManager, WeaponInterface
 
     public int GetWeaponGauge() => _weaponRemainGauge;
     public void SetWeaponGauge(int newval) => _weaponRemainGauge += newval;
+
+    public void Reloading()
+    {
+        throw new System.NotImplementedException();
+    }
 }
