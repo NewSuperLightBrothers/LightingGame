@@ -39,7 +39,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
-            LaserBulletToPlayer(other);
+            //LaserBulletToPlayer(other);
         }
         else if (other.transform.tag == "Mirror")
         {

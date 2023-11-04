@@ -81,7 +81,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
         Ray ray = Camera.main.ScreenPointToRay(touch.position);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, _lightTakeDistance, LayerMask.GetMask("LightObject")) && _lightCurrentGauge < _lightMaxGauge)
+        if (Physics.Raycast(ray, out hit, _lightTakeDistance) && _lightCurrentGauge < _lightMaxGauge)
         {
             int hitInstanceID = hit.collider.gameObject.transform.GetInstanceID();
 

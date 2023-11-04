@@ -42,7 +42,9 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         if(_dictionary.TryGetValue(objectID, out searchObjData))
         {
-            if (searchObjData.gauge[colortype] > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
+            short gauge = -1;
+
+            if (searchObjData.gauge.TryGetValue(colortype, out gauge) && gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
             {
                 searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType] / 100f;
                 searchObjData.gauge[colortype] -= 1;
