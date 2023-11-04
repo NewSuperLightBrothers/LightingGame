@@ -10,7 +10,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     private float _bulletSpeed;
     private float _bulletDmg;
-    private Color _bulletColor;
+    public Color _bulletColor;
     private GameObject _bulletAfterImage;
     private Vector3[] _bulletPathPoints;
 
@@ -34,11 +34,20 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-            //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) LaserBulletToPlayer(other);
+        Debug.Log(_bulletColor);
+        //LaserBulletReflection();
+
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
+        {
+            //LaserBulletToPlayer(other);
+        }
         else if (other.transform.tag == "Mirror")
         {
-            print("Nothing");
+            print("Mirror");
+        }
+        else if (other.transform.tag == "AfterImage")
+        {
+            print("응 형이야");
         }
         else
         {
@@ -49,7 +58,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType)
     {
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;
@@ -57,6 +66,13 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletDistance = bulletDistance;
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
+
+        foreach(LaserParticleSystem i in l_bulletParticle)
+        {
+            i.ParticleColorSetting(bulletColor);
+        }
+
+
     }
 
     public void SetBulletStartTransform(Vector3 position, Quaternion rotation)
@@ -67,7 +83,9 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     public void LaserBulletToPlayer(Collider other)
     {
-        other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
+        other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
+        Debug.Log("³²Àº Ã¼·Â = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
     }
 
     private void LaserBulletFire()

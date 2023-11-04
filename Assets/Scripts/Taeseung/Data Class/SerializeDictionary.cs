@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class SerializeDictionary<T1, T2>
+public class SerializeDictionary<T1, T2> 
 {
-    [SerializeField] private List<T1> _keys;
-    [SerializeField] private List<T2> _values;
+    [SerializeField] private List<T1> l_key;
+    [SerializeField] private List<T2> l_value;
 
     private Dictionary<T1, T2> _dict = new();
+
+
 
     public void InitializeList()
     {
         _dict = new();
-        if (_keys == null)     _keys = new();
-        if (_values == null)  _values = new();
+        if (l_key == null)     l_key = new();
+        if (l_value == null)  l_value = new();
 
 
-        if (_keys.Count == _values.Count)
+        if (l_key.Count == l_value.Count)
         {
-            int length = _keys.Count;
+            int length = l_key.Count;
             for (int i = 0; i < length; i++)
             {
-                _dict.Add(_keys[i], _values[i]);
+                _dict.Add(l_key[i], l_value[i]);
             }
         }
         else
@@ -41,14 +43,14 @@ public class SerializeDictionary<T1, T2>
 
     public bool TryGetValues(T1 key, T2 value) => _dict.TryGetValue(key, out value);
 
-    public List<T2> Getvalues() => _values;
+    public List<T2> Getvalues() => l_value;
 
     public void AddValue(T1 key, T2 value)
     {
         if (!_dict.ContainsKey(key))
         {
-            _keys.Add(key);
-            _values.Add(value);
+            l_key.Add(key);
+            l_value.Add(value);
             _dict.Add(key, value);
         }
     }
@@ -58,9 +60,9 @@ public class SerializeDictionary<T1, T2>
         if (!_dict.ContainsKey(key))
         {
             _dict.Remove(key);
-            int removeidx = _keys.FindIndex(data => data.ToString() == key.ToString());
-            _keys.RemoveAt(removeidx);
-            _values.RemoveAt(removeidx);
+            int removeidx = l_key.FindIndex(data => data.ToString() == key.ToString());
+            l_key.RemoveAt(removeidx);
+            l_value.RemoveAt(removeidx);
         }
     }
 

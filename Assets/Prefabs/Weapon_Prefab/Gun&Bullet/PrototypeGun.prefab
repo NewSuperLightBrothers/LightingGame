@@ -2742,7 +2742,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3666025442990851036}
   - component: {fileID: 1787973871524621034}
-  - component: {fileID: 3662283403504373286}
   - component: {fileID: 2193688954742874990}
   m_Layer: 2
   m_Name: PrototypeGun
@@ -2794,13 +2793,13 @@ MonoBehaviour:
   - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
   - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
   SD_weaponAttackAnimation:
-    _keys:
+    l_key:
     - GunFire
-    _values:
+    l_value:
     - {fileID: 2193688954742874990}
   SD_weaponLineRenderer:
-    _keys: []
-    _values: []
+    l_key: []
+    l_value: []
   _weaponUsingBullet: {fileID: 4991624656693594560, guid: f2d9cfde9b164bb4483bf090eba5c56c,
     type: 3}
   _weaponAfterImage: {fileID: 6308018242423459397, guid: bc73e544e05db8740b61768a91c0f8d8,
@@ -2810,21 +2809,6 @@ MonoBehaviour:
   _weaponBulletSpeed: 4
   _gunFirePath: {fileID: 4312640782357111138}
   _gunReflectCount: 3
---- !u!114 &3662283403504373286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3666025444731172642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa92cfe0ef4c53940810c6fb04eb8f82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _team: 1
-  _choiceOutLineMaterial: {fileID: 0}
-  _laserGunManager2: {fileID: 1787973871524621034}
 --- !u!95 &2193688954742874990
 Animator:
   serializedVersion: 5

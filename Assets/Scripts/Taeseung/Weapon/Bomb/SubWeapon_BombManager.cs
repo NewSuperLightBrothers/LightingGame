@@ -7,15 +7,17 @@ using UnityEngine.Serialization;
 public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
 {
     [SerializeField] private GameObject _bombPrefab;                
-
     [SerializeField] private float _bombPrefabThrowPower = 1;         // 투척력
-    [SerializeField] private int _bombPrefabPointsCount = 50;         // 궤적을 나타내는 점의 개수
+    [SerializeField] private short _bombPrefabPointsCount = 50;       // 궤적을 나타내는 점의 개수
     [SerializeField] private float _bombPrefabPointsIntervalTime = 0; // 궤적을 나타날때 점과 점의 사이 시간
+    
     [SerializeField] private LineRenderer _bombPrefabLineRenderer;    // 궤적을 나타낼 실제 라인 렌더러
 
     [SerializeField] private Transform _bombPrefabFirePoint;
     private Vector3 _bomblaunchVelocity;
     private Vector3 _bombPrefabFirePointPosition;
+    private GameObject _particleGameObjects;
+    private LaserParticleSystem _particleBomb;
 
     private new void Start()
     {
@@ -26,10 +28,8 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _weaponCount > 0)
-        {
+        if (Input.GetMouseButtonDown(0) && _weaponCount > 0){
             StartAttack();
-
         }
     }
 
@@ -70,23 +70,40 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
 
     public void CheckAttackRange()
     {
+        Ray ray;
         // 궤적 시뮬레이션 및 라인 렌더러에 궤적 좌표 추가
         for (int i = 0; i < _bombPrefabPointsCount; i++)
         {
             float t = i / (float)_bombPrefabPointsCount * _bombPrefabPointsIntervalTime;
             Vector3 position = BombCalculateTrajectoryPoint(t);
             _bombPrefabLineRenderer.SetPosition(i, position);
+            if (i > 0)
+            {
+                Vector3 direction = _bombPrefabLineRenderer.GetPosition(i-1) -_bombPrefabLineRenderer.GetPosition(i);
+                ray = new Ray(_bombPrefabLineRenderer.GetPosition(i-1), direction);
+                RaycastHit hit;
+               if (Physics.Raycast(ray, out hit, 0.1f))
+                {
+                    print(hit.transform.name);
+                    if (_particleGameObjects == null) (_particleGameObjects, _particleBomb) = l_weaponParticleSystem[0].ParticleInstantiate();
+                        Vector3 hitPoint = hit.point;
+                        hitPoint.y = hit.transform.position.y + 1;
+                        _particleGameObjects.transform.position = hitPoint;
+                        _particleGameObjects.transform.forward = hit.normal;
+                        _particleBomb.ParticlePlay();
+                    break;
+                }
+                else
+                {
+                    //if (_particleGameObjects != null) _particleBomb.ParticleStop();
+                }
+            }
         }
+
     }
 
-    public void SetWeaponGauge(float newval)
+    public void Reloading()
     {
-        //not need
+        throw new NotImplementedException();
     }
-
-    public float GetWeaponGauge()
-    {
-        return 0;//not need
-    } 
-
 }

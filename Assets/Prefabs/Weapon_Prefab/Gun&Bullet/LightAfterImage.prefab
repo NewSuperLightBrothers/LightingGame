@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 6308018242423459392}
   - component: {fileID: 6308018242423459455}
   - component: {fileID: 6308018242423459393}
-  - component: {fileID: 8108754683420276989}
+  - component: {fileID: 2502333100326725502}
   m_Layer: 0
   m_Name: LightAfterImage
-  m_TagString: Untagged
+  m_TagString: AfterImage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6308018242423459397}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4870,7 +4870,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8108754683420276989
+--- !u!114 &2502333100326725502
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4879,6 +4879,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6308018242423459397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3cb1dc287fda9a4b84aed3ae3bf2ecf, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a0c0d43e43b5c445850f88df812a2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

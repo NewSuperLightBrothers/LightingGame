@@ -10,8 +10,10 @@ public class TestPlayer : Singleton<TestPlayer>
     public float testHP;
     public GameObject Gun;
     public SubWeapon_BombManager bomb;
-    public Animator animation;
+    public Animator playeranimation;
     public KinematicCharacterMotor motor;
+    public ExampleCharacterController controller;
+    public AudioSource source;
 
     public int bombmode = 0;
 
@@ -33,16 +35,31 @@ public class TestPlayer : Singleton<TestPlayer>
 
     private void Update()
     {
-        animation.SetFloat("Spd", motor.Velocity.magnitude/4);
+        playeranimation.SetFloat("Spd", motor.Velocity.magnitude/4);
         if (motor.Velocity.magnitude/4 > 1)
         {
-            print(animation.GetCurrentAnimatorStateInfo(0).shortNameHash);
-            animation.speed = motor.Velocity.magnitude/4;
+            //print(playeranimation.GetCurrentAnimatorStateInfo(0).shortNameHash);
+            playeranimation.speed = motor.Velocity.magnitude/4;
+            
+            source.enabled = true;
+
         }
         else
         {
-            animation.speed = 1;
+            playeranimation.speed = 1;
+            source.enabled = false;
         }
+
+        if (controller.JumpConsumed)
+        {
+            playeranimation.SetBool("Jump", true);
+        }
+        else
+        {
+            playeranimation.SetBool("Jump", false);
+        }
+
+
     }
 
 

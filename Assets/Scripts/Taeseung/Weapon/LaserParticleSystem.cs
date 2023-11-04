@@ -58,6 +58,17 @@ public class LaserParticleSystem : MonoBehaviour
         return (newObject, newParticleSystem);
     }
 
+    public void ParticleColorSetting(Color color)
+    {
+        foreach(ParticleSystem i in l_particleSystem)
+        {
+            ParticleSystem.MainModule mainModule = i.main;
+            mainModule.startColor = color;
+            i.startColor = color;
+        }
+    }
+
+
     public void ParticleDestroy(GameObject particle)
     {
         Destroy(particle);
