@@ -505,8 +505,10 @@ public class LobbyManager : SingletonPersistent<LobbyManager>
         {
             try
             {
-                string relayCode = await RelayManager.Instance.SetupRelay();
-
+                string relayCode = "error";
+                // string relayCode = await RelayManager.Instance.SetupRelay();
+                Logger.Log("this method is not used");
+                
                 Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(_joinedLobby.Id, new UpdateLobbyOptions
                 {
                     Data = new Dictionary<string, DataObject>
