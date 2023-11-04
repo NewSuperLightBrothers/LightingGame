@@ -3,81 +3,88 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = Utils.Logger;
-using Random = UnityEngine.Random;
 
 public class NCharacter : NetworkBehaviour
 {
     public Joystick joystick;
+    public Transform cameraFollowPoint;
 
-    public NetworkVariable<myStruct> nint = new NetworkVariable<myStruct>(new myStruct(), NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner);
-
-    public struct myStruct : INetworkSerializable
+    // UI
+    public Button jumpBtn;
+    public Button fireBtn;
+    
+    private Rigidbody rb;
+    private Animator animator;
+    
+    // stat
+    public float jumpForce = 10f;
+    public bool isMoving;
+    
+    // weapon
+    public LongDistance_LaserGun gun;
+    
+    private void Awake()
     {
-        public int aint;
-        public bool bbool;
-        public NetworkString sss;
-        
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref aint);
-            serializer.SerializeValue(ref bbool);
-            serializer.SerializeValue(ref sss);
-        }
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
-    public override void OnNetworkSpawn()
+
+    public void ConnectUI()
     {
-        nint.OnValueChanged += ((value, newValue) =>
+        jumpBtn.onClick.AddListener(() =>
         {
-            Logger.Log(OwnerClientId + " / aint : " +  nint.Value.aint + " / bbool : " + nint.Value.bbool + " / sss : " + nint.Value.sss);
+            Logger.Log("Jump");
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        });
+        
+        fireBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("Fire");
+            gun.StartAttack();
         });
     }
 
+    
     private void Update()
     {
-        if (joystick != null)
+        
+        if (joystick == null || !IsOwner) return;
+
+        isMoving = false;
+        if (joystick.Direction != Vector2.zero)
         {
-            if (IsOwner)
-            {
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    // nint.Value = new myStruct
-                    // {
-                    //     aint = Random.Range(0, 100),
-                    //     bbool = !nint.Value.bbool,
-                    //     sss = nint.Value.sss + "1"
-                    // };
-                    
-                    TestServerRPC(new ServerRpcParams());
-                }
+            isMoving = true;
+        }
+        AnimationServerRPC(isMoving);
+        
+        
+        
+        if (joystick.Horizontal > 0.5f)
+        {
+            transform.Translate(Vector3.right * Time.deltaTime * 5f);
+        }
+        else if (joystick.Horizontal < -0.5f)
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * 5f);
+        }
 
-                // Logger.Log("player id : " + OwnerClientId + " random val : " + nint.Value);
-                if (joystick.Horizontal > 0.5f)
-                {
-                    transform.Translate(Vector3.right * Time.deltaTime * 5f);
-                }
-                else if (joystick.Horizontal < -0.5f)
-                {
-                    transform.Translate(Vector3.left * Time.deltaTime * 5f);
-                }
-
-                if (joystick.Vertical > 0.5f)
-                {
-                    transform.Translate(Vector3.forward * Time.deltaTime * 5f);
-                }
-                else if (joystick.Vertical < -0.5f)
-                {
-                    transform.Translate(Vector3.back * Time.deltaTime * 5f);
-                }
-            }
+        if (joystick.Vertical > 0.5f)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * 5f);
+        }
+        else if (joystick.Vertical < -0.5f)
+        {
+            transform.Translate(Vector3.back * Time.deltaTime * 5f);
         }
     }
 
     [ServerRpc]
-    public void TestServerRPC(ServerRpcParams rpcParams)
+    private void AnimationServerRPC(bool isRun, ServerRpcParams rpcParams = default)
     {
-        Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
+        // Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
+        animator.SetBool("isRunning", isRun);
     }
 }
