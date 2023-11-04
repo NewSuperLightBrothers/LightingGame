@@ -64,6 +64,7 @@ public class LaserParticleSystem : MonoBehaviour
         {
             ParticleSystem.MainModule mainModule = i.main;
             mainModule.startColor = color;
+            i.startColor = color;
         }
     }
 

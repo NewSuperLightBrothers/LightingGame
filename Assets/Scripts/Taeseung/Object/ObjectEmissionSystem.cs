@@ -14,10 +14,10 @@ public class ObjectEmissionSystem : MonoBehaviour
     struct ObjectEmissionData
     {
         public MeshRenderer meshRenderer;
+        public Dictionary<EObjectColorType, short> gauge;
         public EObjectColorType objectColorType;
         public Color color;
         public short maxgauge;
-        public short gauge;
     }
     private Dictionary<int, ObjectEmissionData> _dictionary = new();
 
@@ -42,14 +42,15 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         if(_dictionary.TryGetValue(objectID, out searchObjData))
         {
-            if (searchObjData.color != Color.black && searchObjData.gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
+            if (searchObjData.gauge[colortype] > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
             {
                 searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType] / 100f;
-                searchObjData.gauge -= 1;
+                searchObjData.gauge[colortype] -= 1;
                 searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
                 _dictionary[objectID] = searchObjData;
                 return true;
             }
+
             else
                 return false;
         }
@@ -75,13 +76,13 @@ public class ObjectEmissionSystem : MonoBehaviour
         if (Assoication)
         {
             Color MixColor = ObjectData.d_objectColor[teamColor] + ObjectData.d_objectColor[_notChoiceTeamColor];
-            MakeAvailableColor(ObjectData.d_objectColor[teamColor], MixColor, ref l_colors);
+            MakeAvailableColor(ObjectData.d_objectColor[teamColor], MixColor, ref l_colors, 2,1);
         }
         else
         {
-            if(Mathf.Abs(sTC - aTC) == 5) MakeAvailableColor(Color.cyan, Color.red, ref l_colors);
-            else if(Mathf.Abs(sTC - aTC) == 3) MakeAvailableColor(Color.magenta, Color.green, ref l_colors);
-            else if(Mathf.Abs(sTC - aTC) == 1) MakeAvailableColor(Color.yellow, Color.blue, ref l_colors);
+            if(Mathf.Abs(sTC - aTC) == 5) MakeAvailableColor(Color.cyan, Color.red, ref l_colors, 1, 2);
+            else if(Mathf.Abs(sTC - aTC) == 3) MakeAvailableColor(Color.magenta, Color.green, ref l_colors, 1, 2);
+            else if(Mathf.Abs(sTC - aTC) == 1) MakeAvailableColor(Color.yellow, Color.blue, ref l_colors, 1, 2);
             else Debug.LogError("Wrong Team Color Setting");
         }
 
@@ -89,11 +90,13 @@ public class ObjectEmissionSystem : MonoBehaviour
     }
 
 
-    private void MakeAvailableColor(Color pureColor, Color mixColor, ref List<Color> l_colors)
+    private void MakeAvailableColor(Color pureColor, Color mixColor, ref List<Color> l_colors, short w1, short w2)
     {
-        l_colors.Add(pureColor);
-        l_colors.Add(pureColor);
-        l_colors.Add(mixColor);
+        for(int i=0; i<w1; i++)
+            l_colors.Add(pureColor);
+
+        for(int j=0; j<w2; j++)
+            l_colors.Add(mixColor);
     }
 
 
@@ -104,7 +107,11 @@ public class ObjectEmissionSystem : MonoBehaviour
             ObjectEmissionData objData = new();
             objData.color = l_colors[Random.Range(0, l_colors.Count)];
             objData.maxgauge = 100;
-            objData.gauge = 100;
+
+            objData.gauge = new();
+            foreach(EObjectColorType j in ObjectData.DivideColorList(colorType)) 
+                objData.gauge[j] = objData.maxgauge;
+
             objData.objectColorType = colorType;
             objData.meshRenderer = _gameObjects[i].GetComponentInChildren<MeshRenderer>(true);
             objData.meshRenderer.material.SetColor("_EmissionColor", objData.color * Mathf.Pow(2, _objectEmissionStrength));

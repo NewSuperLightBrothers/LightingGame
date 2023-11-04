@@ -36,14 +36,18 @@ public class LongDistance_LaserBullet : MonoBehaviour
     {
         Debug.Log(_bulletColor);
         //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player") && _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
+
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
-            Debug.Log("ÇÇ°Ý");
             LaserBulletToPlayer(other);
         }
         else if (other.transform.tag == "Mirror")
         {
-            print("Nothing");
+            print("Mirror");
+        }
+        else if (other.transform.tag == "AfterImage")
+        {
+            print("응 형이야");
         }
         else
         {
@@ -62,6 +66,13 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletDistance = bulletDistance;
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
+
+        foreach(LaserParticleSystem i in l_bulletParticle)
+        {
+            i.ParticleColorSetting(bulletColor);
+        }
+
+
     }
 
     public void SetBulletStartTransform(Vector3 position, Quaternion rotation)

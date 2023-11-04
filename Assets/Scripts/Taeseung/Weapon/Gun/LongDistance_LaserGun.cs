@@ -26,18 +26,16 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     new void Start()
     {
         base.Start();
-        _weaponDistance = Vector3.Distance(_weaponShotPoint.position, _weaponShotEndPoint.position);
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(1)) Reloading();
-
         _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
         //총알 궤적 계산
         CheckAttackRange();
         //발사 함수
-        StartAttack();
+       // StartAttack();
     }
 
     void FixedUpdate()
@@ -67,7 +65,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
                 _weaponRay.origin = Beforepoint;
 
                 //Raycast 시도
-                if (Physics.Raycast(_weaponRay, out _weaponRayHit, distance))
+                if (Physics.Raycast(_weaponRay, out _weaponRayHit, distance, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
                 {
                     //Mirror가 맞는 경우
                     if (_weaponRayHit.collider.tag == "Mirror")
@@ -140,15 +138,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
 
     public void StartAttack()
     {
-        /*
-        if (Input.GetButtonDown("FireButton") && _isShoot && _gunBulletCount >= 0)
-        {
-            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
-            SetWeaponGauge(-_weaponAttackConsumeGauge);
-            FireEffect();
-            AttackReset();
-        }*/
-        if (Input.GetMouseButtonDown(0) && _isShoot && _gunBulletCount > 0)
+        if (_isShoot && _gunBulletCount >= 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);

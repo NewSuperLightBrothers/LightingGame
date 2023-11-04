@@ -10,6 +10,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
     [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
     [SerializeField] private int _lightMaxGauge;
     [SerializeField] private int _lightTakeDistance;
+    [SerializeField] private UserInputAssets _inputAsset;
 
 
     private int _lightCurrentGauge;
@@ -61,20 +62,14 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
         if (_duration < _endTime - _startTime && _isTouch == true)
         {
             //일정 시간 누른 경우, 해당 위치에 흡수 가능 빛이 있는지 확인
-            if (_emissionManager != null) _emissionManager.TurnOffUI();
             //현재 색깔로 흡수 가능한 물체가 맞는지 확인
             //흡수 가능한 물체면 gauge를 채움
             TakeRaycastObject(_touch);
         }
         else if (_duration * 5 < _readyEndTime - _readyTime && _isTouch == false)
         {
-            if (_emissionManager != null)
-            {
-                _emissionManager.TurnOffUI();
-                _emissionManager = null;
-                _readyEndTime = 0;
-                _readyTime = 0;
-            }
+            _readyEndTime = 0;
+            _readyTime = 0;
         }
 
     }
@@ -86,9 +81,11 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
         Ray ray = Camera.main.ScreenPointToRay(touch.position);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 50, LayerMask.GetMask("LightObject")) && _lightCurrentGauge < _lightMaxGauge)
+        if (Physics.Raycast(ray, out hit, _lightTakeDistance, LayerMask.GetMask("LightObject")) && _lightCurrentGauge < _lightMaxGauge)
         {
-            if (_objectEmissionSystem.TakeObjectLight(hit.collider.gameObject.transform.GetInstanceID(), _team))
+            int hitInstanceID = hit.collider.gameObject.transform.GetInstanceID();
+
+            if (_objectEmissionSystem.TakeObjectLight(hitInstanceID, _team))
             {
                 TakeLightEnergy(1);
                 _laserGunManager.enabled = false;

@@ -4987,3 +4987,4 @@ MonoBehaviour:
   - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
   - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
   _emissionStrength: 2
+  _bulletColor: {r: 0, g: 0, b: 0, a: 0}
