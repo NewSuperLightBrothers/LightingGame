@@ -20,7 +20,6 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         InitPlayerDic();
         _teamColor = Color.red;
     }
-
     #region IPlayerMovInfo
     void IPlayerMovInfo.FireGun()
     {
@@ -38,6 +37,13 @@ public class PlayerManager : PlayerInfo, IPlayerMovInfo
         {
             obj.GetComponent<LongDistance_LaserBullet>().LaserBulletToPlayer(this.GetComponent<Collider>());
             Debug.Log("피격, 현재 체력 = " + this._playerHp);
+        }
+    }
+    public void Dead()
+    {
+        if(this._playerHp <= 0)
+        {
+            DestroyImmediate(this.gameObject);
         }
     }
     #endregion IPlayerMovInfo
