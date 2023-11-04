@@ -30,7 +30,7 @@ public abstract class PlayerInfo : MonoBehaviour
     #region Ω∫≈» º≥¡§
     protected void InitPlayerDic()
     {
-        _playerStat.Add(0, 100);
+        _playerStat.Add(0, 10);
         _playerStat.Add(1, 100);
         _playerStat.Add(2, 100);
         _playerStat.Add(3, 100);

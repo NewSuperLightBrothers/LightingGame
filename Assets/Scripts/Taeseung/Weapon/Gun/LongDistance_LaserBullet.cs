@@ -78,6 +78,10 @@ public class LongDistance_LaserBullet : MonoBehaviour
         //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
         other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
         Debug.Log("남은 체력 = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
+        if (other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] <= 0)
+        {
+            DestroyImmediate(other.GetComponentInParent<GameObject>());
+        }
     }
 
     private void LaserBulletFire()

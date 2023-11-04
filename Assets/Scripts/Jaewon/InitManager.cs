@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PackageManager : MonoBehaviour
+public class InitManager : MonoBehaviour
 {
     public GameObject camArm;
     public Button fireButton;
@@ -12,7 +12,7 @@ public class PackageManager : MonoBehaviour
     public Canvas inputCanvas;
     public GameObject player;
     [SerializeField] bool isOwner;
-
+    
     private void SetObj(GameObject player,bool isOwner)
     {
         if (isOwner)
@@ -21,7 +21,6 @@ public class PackageManager : MonoBehaviour
             jumpButton.gameObject.SetActive(true);
             joystickForeGround.gameObject.SetActive(true);
             fireButton.gameObject.SetActive(true);
-            Debug.Log("¿Œ«≤∏≈¥œ¿˙ = " + player.GetComponentInChildren<InputManager>().transform);
             GameObject camPredfab = GameObject.Instantiate(camArm, player.GetComponentInChildren<PlayerManager>().transform);
             player.GetComponentInChildren<InputManager>().joystickForeground = joystickForeGround;
             player.GetComponentInChildren<InputManager>().cameraAnchor = camPredfab.transform;
