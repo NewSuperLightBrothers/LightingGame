@@ -14,7 +14,9 @@ public class ObjectEmissionSystem : MonoBehaviour
     struct ObjectEmissionData
     {
         public MeshRenderer meshRenderer;
+        public EObjectColorType objectColorType;
         public Color color;
+        public short maxgauge;
         public short gauge;
     }
     private Dictionary<int, ObjectEmissionData> _dictionary = new();
@@ -26,23 +28,32 @@ public class ObjectEmissionSystem : MonoBehaviour
 
     private void Awake()
     {
-        (_notChoiceTeamColor,_mixChoiceTeamColor) = NoChoiceColor(_objectTeamColor1, _objectTeamColor2);
+        (_notChoiceTeamColor,_mixChoiceTeamColor) = ObjectData.NoChoiceColor(_objectTeamColor1, _objectTeamColor2);
         InitializeLightObjectProcess("LightObject1", _objectTeamColor1, _objectTeamColor2, true);
         InitializeLightObjectProcess("LightObject2", _objectTeamColor2, _objectTeamColor1, true);
         InitializeLightObjectProcess("LightObject3", _mixChoiceTeamColor, _notChoiceTeamColor, false);
-
     }
 
 
 
-    public void TakeObjectLight(int objectID)
+    public bool TakeObjectLight(int objectID, EObjectColorType colortype)
     {
-        ObjectEmissionData searchObjData= new();
+        ObjectEmissionData searchObjData;
+
         if(_dictionary.TryGetValue(objectID, out searchObjData))
         {
-            searchObjData.color -= (searchObjData.color / 10);
-            searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
+            if (searchObjData.color != Color.black && searchObjData.gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
+            {
+                searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType] / 100f;
+                searchObjData.gauge -= 1;
+                searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
+                _dictionary[objectID] = searchObjData;
+                return true;
+            }
+            else
+                return false;
         }
+        return false;
 
     }
 
@@ -51,7 +62,7 @@ public class ObjectEmissionSystem : MonoBehaviour
     {
         List<Color> l_colors = AvailableColor(color1, color2, ColorAssoiciation);
         _gameObjects = GameObject.FindGameObjectsWithTag(FindObjectstr);
-        AddNewLightObject(_gameObjects, l_colors);
+        AddNewLightObject(_gameObjects, l_colors, color1);
     }
 
 
@@ -63,13 +74,8 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         if (Assoication)
         {
-            if (sTC - aTC < 0 && sTC + aTC == 1) MakeAvailableColor(Color.green, Color.cyan, ref l_colors);
-            else if (sTC - aTC < 0 && sTC + aTC == 2) MakeAvailableColor(Color.blue, Color.cyan, ref l_colors);
-            else if (sTC - aTC < 0 && sTC + aTC == 3) MakeAvailableColor(Color.blue, Color.magenta, ref l_colors);
-            else if (sTC - aTC > 0 && sTC + aTC == 1) MakeAvailableColor(Color.red, Color.magenta, ref l_colors);
-            else if (sTC - aTC > 0 && sTC + aTC == 2) MakeAvailableColor(Color.red, Color.yellow, ref l_colors);
-            else if (sTC - aTC > 0 && sTC + aTC == 3) MakeAvailableColor(Color.green, Color.yellow, ref l_colors);
-            else Debug.LogError("Wrong Team Color Setting");
+            Color MixColor = ObjectData.d_objectColor[teamColor] + ObjectData.d_objectColor[_notChoiceTeamColor];
+            MakeAvailableColor(ObjectData.d_objectColor[teamColor], MixColor, ref l_colors);
         }
         else
         {
@@ -90,20 +96,16 @@ public class ObjectEmissionSystem : MonoBehaviour
         l_colors.Add(mixColor);
     }
 
-    private (EObjectColorType, EObjectColorType) NoChoiceColor(EObjectColorType teamColor1, EObjectColorType teamColor2){
 
-        short sTC1 = (short)teamColor1;
-        short sTC2 = (short)teamColor2;
-        return ((EObjectColorType)(3 - (sTC1 + sTC2)), (EObjectColorType)sTC1 + sTC2 + 2);
-    }
-
-    private void AddNewLightObject(GameObject[] _gameObjects, List<Color> l_colors)
+    private void AddNewLightObject(GameObject[] _gameObjects, List<Color> l_colors, EObjectColorType colorType)
     {
         for (int i = 0; i < _gameObjects.Length; i++)
         {
             ObjectEmissionData objData = new();
             objData.color = l_colors[Random.Range(0, l_colors.Count)];
+            objData.maxgauge = 100;
             objData.gauge = 100;
+            objData.objectColorType = colorType;
             objData.meshRenderer = _gameObjects[i].GetComponentInChildren<MeshRenderer>(true);
             objData.meshRenderer.material.SetColor("_EmissionColor", objData.color * Mathf.Pow(2, _objectEmissionStrength));
             dictionkey.Add(_gameObjects[i].transform.GetInstanceID());

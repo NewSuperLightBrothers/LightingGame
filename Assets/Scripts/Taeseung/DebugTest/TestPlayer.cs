@@ -13,6 +13,7 @@ public class TestPlayer : Singleton<TestPlayer>
     public Animator animation;
     public KinematicCharacterMotor motor;
     public ExampleCharacterController controller;
+    public AudioSource source;
 
     public int bombmode = 0;
 
@@ -39,10 +40,14 @@ public class TestPlayer : Singleton<TestPlayer>
         {
             //print(animation.GetCurrentAnimatorStateInfo(0).shortNameHash);
             animation.speed = motor.Velocity.magnitude/4;
+            
+            source.enabled = true;
+
         }
         else
         {
             animation.speed = 1;
+            source.enabled = false;
         }
 
         if (controller.JumpConsumed)

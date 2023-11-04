@@ -54,7 +54,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType)
     {
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;

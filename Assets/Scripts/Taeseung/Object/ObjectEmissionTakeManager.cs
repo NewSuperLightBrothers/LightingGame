@@ -6,12 +6,13 @@ using UnityEngine.Serialization;
 public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInterface
 {
     [SerializeField] private EObjectColorType _team;
-    [SerializeField] private Material _choiceOutLineMaterial;
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
-    [SerializeField] private int _lightMaxGauge;
     [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
+    [SerializeField] private int _lightMaxGauge;
+    [SerializeField] private int _lightTakeDistance;
 
-    private int _lightCurrentGauge = 100;
+
+    private int _lightCurrentGauge;
     
     //input 처리 관련 변수들, 나중에 기능 통합하면 사라질 변수들임
     private Touch _touch;
@@ -61,17 +62,9 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
         {
             //일정 시간 누른 경우, 해당 위치에 흡수 가능 빛이 있는지 확인
             if (_emissionManager != null) _emissionManager.TurnOffUI();
-
-            if (TakeRaycastObject(_touch))
-            {
-                if (_emissionManager.takeLightEnergy(_team))
-                {
-                    TakeLightEnergy(1);
-                    _laserGunManager.enabled = false;
-                }
-                //현재 색깔로 흡수 가능한 물체가 맞는지 확인
-                //흡수 가능한 물체면 gauge를 채움
-            }
+            //현재 색깔로 흡수 가능한 물체가 맞는지 확인
+            //흡수 가능한 물체면 gauge를 채움
+            TakeRaycastObject(_touch);
         }
         else if (_duration * 5 < _readyEndTime - _readyTime && _isTouch == false)
         {
@@ -87,41 +80,30 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
     }
 
 
-    private bool TakeRaycastObject(Touch touch)
+    private void TakeRaycastObject(Touch touch)
     {
         _emissionManager = null;
+        Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        RaycastHit hit;
 
-        
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 300, LayerMask.GetMask("LightObject")))
+        if (Physics.Raycast(ray, out hit, 50, LayerMask.GetMask("LightObject")) && _lightCurrentGauge < _lightMaxGauge)
+        {
+            if (_objectEmissionSystem.TakeObjectLight(hit.collider.gameObject.transform.GetInstanceID(), _team))
             {
-                _objectEmissionSystem.TakeObjectLight (hit.collider.gameObject.transform.GetInstanceID());
-
-                if (hit.collider.TryGetComponent<ObjectEmissionManager>(out _emissionManager))
-                {
-        
-                    /* 클릭 오브젝트에 대한 외곽선 표시...
-                    MeshRenderer renderer;
-                    if (hit.collider.TryGetComponent<MeshRenderer>(out renderer))
-                    {
-
-                    }
-                    */
-                    return true;
-                }
-                else
-                    return false;
+                TakeLightEnergy(1);
+                _laserGunManager.enabled = false;
             }
-            else return false;
+        }
+        else
+        {
+            print("없어요 그냥");
+        }
     }
 
 
     private void TakeLightEnergy(int k)
     {
-        if (_lightCurrentGauge <_lightMaxGauge)
-            _lightCurrentGauge += k;
+         _lightCurrentGauge += k;
 
         print("플레이어 현재 빛 잔량: " + _lightCurrentGauge);
     }

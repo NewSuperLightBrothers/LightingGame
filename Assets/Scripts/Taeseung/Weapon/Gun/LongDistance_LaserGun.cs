@@ -166,7 +166,6 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     }
     public int GetWeaponGauge() => _weaponRemainGauge;
 
-
     private void AttackReset()
     {
         _gunDelayInterval = 0;
