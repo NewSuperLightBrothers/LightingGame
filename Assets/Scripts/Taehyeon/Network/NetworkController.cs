@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Logger = Utils.Logger;
 
@@ -37,6 +38,18 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
             // Move to next scene when all players are connected
             if (GameData.currentConnectedPlayerNum == GameData.playerNumPerTeam * 2)
             {
+                int pos = 0;
+                int dx = 100;
+                var playerList = NetworkManager.Singleton.ConnectedClientsList;
+                
+                foreach (NetworkClient client in playerList)
+                {
+                    client.PlayerObject.transform.position = new Vector3(0, 0, pos * dx);
+                    dx++;
+                    Logger.Log("player pos set");
+                }
+
+                
                 NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
             }
         }

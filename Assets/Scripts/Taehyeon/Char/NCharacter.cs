@@ -3,75 +3,58 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = Utils.Logger;
-using Random = UnityEngine.Random;
 
 public class NCharacter : NetworkBehaviour
 {
     public Joystick joystick;
+    public Transform cameraFollowPoint;
 
-    public NetworkVariable<myStruct> nint = new NetworkVariable<myStruct>(new myStruct(), NetworkVariableReadPermission.Everyone,
-        NetworkVariableWritePermission.Owner);
+    // UI
+    public Button jumpBtn;
 
-    public struct myStruct : INetworkSerializable
+    private Rigidbody rb;
+
+    // stat
+    public float jumpForce = 10f;
+    
+    private void Awake()
     {
-        public int aint;
-        public bool bbool;
-        public NetworkString sss;
-        
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref aint);
-            serializer.SerializeValue(ref bbool);
-            serializer.SerializeValue(ref sss);
-        }
+        rb = GetComponent<Rigidbody>();
     }
 
-    public override void OnNetworkSpawn()
+
+    public void ConnectUI()
     {
-        nint.OnValueChanged += ((value, newValue) =>
+        jumpBtn.onClick.AddListener(() =>
         {
-            Logger.Log(OwnerClientId + " / aint : " +  nint.Value.aint + " / bbool : " + nint.Value.bbool + " / sss : " + nint.Value.sss);
+            Logger.Log("Jump");
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         });
     }
 
+    
     private void Update()
     {
-        if (joystick != null)
+        if (joystick == null || !IsOwner) return;
+
+        if (joystick.Horizontal > 0.5f)
         {
-            if (IsOwner)
-            {
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    // nint.Value = new myStruct
-                    // {
-                    //     aint = Random.Range(0, 100),
-                    //     bbool = !nint.Value.bbool,
-                    //     sss = nint.Value.sss + "1"
-                    // };
-                    
-                    TestServerRPC(new ServerRpcParams());
-                }
+            transform.Translate(Vector3.right * Time.deltaTime * 5f);
+        }
+        else if (joystick.Horizontal < -0.5f)
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * 5f);
+        }
 
-                // Logger.Log("player id : " + OwnerClientId + " random val : " + nint.Value);
-                if (joystick.Horizontal > 0.5f)
-                {
-                    transform.Translate(Vector3.right * Time.deltaTime * 5f);
-                }
-                else if (joystick.Horizontal < -0.5f)
-                {
-                    transform.Translate(Vector3.left * Time.deltaTime * 5f);
-                }
-
-                if (joystick.Vertical > 0.5f)
-                {
-                    transform.Translate(Vector3.forward * Time.deltaTime * 5f);
-                }
-                else if (joystick.Vertical < -0.5f)
-                {
-                    transform.Translate(Vector3.back * Time.deltaTime * 5f);
-                }
-            }
+        if (joystick.Vertical > 0.5f)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * 5f);
+        }
+        else if (joystick.Vertical < -0.5f)
+        {
+            transform.Translate(Vector3.back * Time.deltaTime * 5f);
         }
     }
 
