@@ -13,6 +13,11 @@ TagManager:
   - LightObject2
   - LightObject3
   - Enemy
+  - Ally
+  - LightObject1
+  - LightObject2
+  - LightObject3
+  - DeadZone
   layers:
   - Default
   - TransparentFX
