@@ -10,6 +10,7 @@ TagManager:
   - LightObject1
   - LightObject2
   - LightObject3
+  - DeadZone
   layers:
   - Default
   - TransparentFX
