@@ -7,6 +7,9 @@ TagManager:
   - Mirror
   - Enemy
   - Ally
+  - LightObject1
+  - LightObject2
+  - LightObject3
   layers:
   - Default
   - TransparentFX
