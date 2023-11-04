@@ -148,12 +148,13 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
             FireEffect();
             AttackReset();
         }*/
-        if (Input.GetMouseButtonDown(0) && _isShoot && _gunBulletCount > 0)
+        if (_isShoot && _gunBulletCount > 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
             FireEffect();
             AttackReset();
+            Debug.Log("fire");
         }
     }
 

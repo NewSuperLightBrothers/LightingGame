@@ -36,7 +36,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     {
         Debug.Log(_bulletColor);
         //LaserBulletReflection();
-        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player") && _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
+        if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player") && _bulletColor != other.GetComponentInChildren<PlayerManager>().teamColor)
         {
             Debug.Log("ÇÇ°Ý");
             LaserBulletToPlayer(other);
@@ -73,8 +73,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
     public void LaserBulletToPlayer(Collider other)
     {
         //other.GetComponent<TestPlayer>().testHP -= _bulletDmg;
-        other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp] -= _bulletDmg;
-        Debug.Log("³²Àº Ã¼·Â = " + other.GetComponent<PlayerManager>()._playerStat[(int)StatInfo._playerHp]);
+        other.GetComponent<PlayerManager>().playerHp -= _bulletDmg;
+        Debug.Log("³²Àº Ã¼·Â = " + other.GetComponent<PlayerManager>().playerHp);
     }
 
     private void LaserBulletFire()

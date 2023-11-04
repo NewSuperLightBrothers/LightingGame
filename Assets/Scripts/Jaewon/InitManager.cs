@@ -26,7 +26,7 @@ public class InitManager : MonoBehaviour
             player.GetComponentInChildren<InputManager>().cameraAnchor = camPredfab.transform;
         }
     }
-    private void Start()
+    private void Awake()
     {
         Debug.Log("Á¢±Ù");
         SetObj(player,isOwner);

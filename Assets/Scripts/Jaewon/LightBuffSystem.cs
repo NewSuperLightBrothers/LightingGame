@@ -44,7 +44,7 @@ public class LightBuffSystem : MonoBehaviour
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
         playerManager = this.gameObject.GetComponent<PlayerManager>();
-        Debug.Log(playerManager._teamColor);
+        Debug.Log(playerManager.teamColor);
     }
     #region LateUpdate
     //RGB동시에 고려하니까 뭔가 말이안되는 부분이 있어서 같은 팀 영역에 들어갈때만 버프를 받도록 하였습니다.
@@ -131,11 +131,11 @@ public class LightBuffSystem : MonoBehaviour
     #region Buff
     private void Buff()
     {
-        if (playerManager._teamColor == GetState() && isOnArea)
+        if (playerManager.teamColor == GetState() && isOnArea)
         {
             StartCoroutine(EndBuff());
         }
-        else if(playerManager._teamColor == GetState() && !isOnArea)
+        else if(playerManager.teamColor == GetState() && !isOnArea)
         {
             Debug.Log("영역 밖");
         }
@@ -162,7 +162,7 @@ public class LightBuffSystem : MonoBehaviour
     #region DeBuff
     private void DeBuff()
     {
-        if (playerManager._teamColor != GetState() && isOnArea)
+        if (playerManager.teamColor != GetState() && isOnArea)
         {
             if(GetState() == Neutrality)
             {
@@ -170,7 +170,7 @@ public class LightBuffSystem : MonoBehaviour
             }
             StartCoroutine(EndDeBuff());
         }
-        else if (playerManager._teamColor != GetState() && !isOnArea)
+        else if (playerManager.teamColor != GetState() && !isOnArea)
         {
             return;        
         }
