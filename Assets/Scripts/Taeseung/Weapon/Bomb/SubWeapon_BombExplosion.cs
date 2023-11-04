@@ -9,7 +9,6 @@ public class SubWeapon_BombExplosion : MonoBehaviour
     [SerializeField] Animator _explosionAnimation;
     public Rigidbody a;
 
-    private bool _isMaxsize = false;
     private float _time = 0;
     private float _anitime = 0;
 
