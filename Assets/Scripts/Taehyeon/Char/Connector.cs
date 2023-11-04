@@ -15,7 +15,8 @@ public class Connector : MonoBehaviour
     
     // UI
     public Button jumpBtn;
-
+    public Button fireBtn;
+    
     private void Awake()
     {
         allPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -30,6 +31,7 @@ public class Connector : MonoBehaviour
                 
                 // UI
                 myCharacter.jumpBtn = jumpBtn;
+                myCharacter.fireBtn = fireBtn;
                 
                 myCharacter.ConnectUI();
             }

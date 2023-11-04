@@ -13,15 +13,22 @@ public class NCharacter : NetworkBehaviour
 
     // UI
     public Button jumpBtn;
-
+    public Button fireBtn;
+    
     private Rigidbody rb;
-
+    private Animator animator;
+    
     // stat
     public float jumpForce = 10f;
+    public bool isMoving;
+    
+    // weapon
+    public LongDistance_LaserGun gun;
     
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
 
@@ -32,13 +39,29 @@ public class NCharacter : NetworkBehaviour
             Logger.Log("Jump");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         });
+        
+        fireBtn.onClick.AddListener(() =>
+        {
+            Logger.Log("Fire");
+            gun.StartAttack();
+        });
     }
 
     
     private void Update()
     {
+        
         if (joystick == null || !IsOwner) return;
 
+        isMoving = false;
+        if (joystick.Direction != Vector2.zero)
+        {
+            isMoving = true;
+        }
+        AnimationServerRPC(isMoving);
+        
+        
+        
         if (joystick.Horizontal > 0.5f)
         {
             transform.Translate(Vector3.right * Time.deltaTime * 5f);
@@ -59,8 +82,9 @@ public class NCharacter : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void TestServerRPC(ServerRpcParams rpcParams)
+    private void AnimationServerRPC(bool isRun, ServerRpcParams rpcParams = default)
     {
-        Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
+        // Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
+        animator.SetBool("isRunning", isRun);
     }
 }
