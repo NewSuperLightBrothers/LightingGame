@@ -152,7 +152,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         _weaponRemainGauge += newVal;
         _gunBulletCount -= 1;
         print(_gunBulletCount);
-        SetWeaponUIGaugeBar();
+        //SetWeaponUIGaugeBar();
     }
     public int GetWeaponGauge() => _weaponRemainGauge;
 
