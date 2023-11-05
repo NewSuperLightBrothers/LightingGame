@@ -44,10 +44,18 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
 
                 for (int i = 0; i < playerList.Count; i++)
                 {
+                    NCharacter myCharacter = playerList[i].PlayerObject.GetComponent<NCharacter>();
                     if (i % 2 == 0)
-                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Red;
+                    {
+                        myCharacter.teamColor.Value = EObjectColorType.Red;
+                        myCharacter.SetPosClientRPC(new Vector3(pos + dx, 0, pos + dx));
+                    }
                     else
-                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Blue;
+                    {
+                        myCharacter.teamColor.Value = EObjectColorType.Blue;
+                        myCharacter.SetPosClientRPC(new Vector3(pos + 2 * dx, 0, pos + 2 * dx));
+                    }
+
                 }
 
                 

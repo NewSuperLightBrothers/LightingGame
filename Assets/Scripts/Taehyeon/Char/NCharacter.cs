@@ -89,4 +89,11 @@ public class NCharacter : NetworkBehaviour
         // Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
         animator.SetBool("isRunning", isRun);
     }
+    
+    [ClientRpc]
+    public void SetPosClientRPC(Vector3 pos)
+    {
+        Logger.Log("SetPosClientRPC called");
+        transform.position = pos;
+    }
 }
