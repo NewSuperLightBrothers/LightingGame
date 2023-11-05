@@ -11,6 +11,8 @@ public class NCharacter : NetworkBehaviour
     public Joystick joystick;
     public Transform cameraFollowPoint;
 
+    public NetworkVariable<EObjectColorType> teamColor;
+    
     // UI
     public Button jumpBtn;
     public Button fireBtn;
