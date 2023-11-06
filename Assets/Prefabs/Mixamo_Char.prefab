@@ -446,37 +446,6 @@ Transform:
   m_Father: {fileID: 1032828337587623148}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2972176284517453721
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 397878710219653284}
-  m_Layer: 0
-  m_Name: Virtual camera follow point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &397878710219653284
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2972176284517453721}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.247, z: 0.222}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6044827185313867460}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2973205180805967144
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1418,7 @@ Transform:
   m_Children:
   - {fileID: 7272743684441266204}
   - {fileID: 2284407484276770384}
-  - {fileID: 397878710219653284}
+  - {fileID: 2313536913260099435}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1486,12 +1455,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
-  cameraFollowPoint: {fileID: 397878710219653284}
+  LookJoystick: {fileID: 0}
+  cameraHolder: {fileID: 2313536913260099435}
+  teamColor:
+    m_InternalValue: 0
   jumpBtn: {fileID: 0}
   fireBtn: {fileID: 0}
   jumpForce: 10
   isMoving: 0
+  lookSensitivity: 100
   gun: {fileID: 1272766936539568935}
+  curYRot: 0
 --- !u!114 &7904571199681454379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1664,6 +1638,37 @@ Transform:
   m_Father: {fileID: 6044827185313867460}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6665944023066025501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2313536913260099435}
+  m_Layer: 0
+  m_Name: Camera Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2313536913260099435
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6665944023066025501}
+  m_LocalRotation: {x: 0.11344842, y: 2.019484e-28, z: 1.250587e-22, w: 0.9935439}
+  m_LocalPosition: {x: 0.519, y: 1.671, z: -2.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6044827185313867460}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 13.028, y: 0, z: 0}
 --- !u!1 &7028910445380581916
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,6 +2527,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 4192469400581714514, guid: 6a898d410598c4c278ca14aaa653f319,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a898d410598c4c278ca14aaa653f319, type: 3}

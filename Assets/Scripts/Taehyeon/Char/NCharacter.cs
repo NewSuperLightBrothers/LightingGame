@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Logger = Utils.Logger;
 
 public class NCharacter : NetworkBehaviour
 {
     public Joystick joystick;
-    public Transform cameraFollowPoint;
-
+    public Joystick LookJoystick;
+    public Transform cameraHolder;
+    
     public NetworkVariable<EObjectColorType> teamColor;
     
     // UI
@@ -23,9 +25,12 @@ public class NCharacter : NetworkBehaviour
     // stat
     public float jumpForce = 10f;
     public bool isMoving;
-    
+
+    public float lookSensitivity;
     // weapon
     public LongDistance_LaserGun gun;
+
+    public float curYRot;
     
     private void Awake()
     {
@@ -45,7 +50,7 @@ public class NCharacter : NetworkBehaviour
         fireBtn.onClick.AddListener(() =>
         {
             Logger.Log("Fire");
-            gun.StartAttack();
+            // gun.StartAttack();
         });
     }
 
@@ -62,7 +67,11 @@ public class NCharacter : NetworkBehaviour
         }
         AnimationServerRPC(isMoving);
         
-        
+        if (LookJoystick.Horizontal != 0)
+        {
+            curYRot += LookJoystick.Horizontal * lookSensitivity * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0, curYRot, 0);
+        }
         
         if (joystick.Horizontal > 0.5f)
         {
