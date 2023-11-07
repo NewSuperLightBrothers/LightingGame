@@ -15,6 +15,15 @@ public enum EObjectColorType
 }
 
 
+//공격 타입 (타입에 따라 파티클 처리 방식이 달라지기 때문, LaserParticleSystem에서 각 파티클마다 설정)
+public enum ELaserGunType
+{
+    Beam,       //빔
+    Bullet,     //탄알
+    Blade,      //근접공격
+}
+
+
 public static class ObjectData 
 {
     public static Dictionary<EObjectColorType, Color> d_objectColor
@@ -109,11 +118,17 @@ public static class ObjectData
 
     public static (EObjectColorType, EObjectColorType) NoChoiceColor(EObjectColorType teamColor1, EObjectColorType teamColor2)
     {
-
         short sTC1 = (short)teamColor1;
         short sTC2 = (short)teamColor2;
         return ((EObjectColorType)(3 - (sTC1 + sTC2)), (EObjectColorType)sTC1 + sTC2 + 2);
     }
+
+
+    public static void SetColorType(ref EObjectColorType colorType, ref EObjectColorType setColorType)
+    {
+        colorType = setColorType;
+    }
+    
 
 }
 

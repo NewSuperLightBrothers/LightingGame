@@ -21,18 +21,12 @@ public class ShortDistance_Blade : ShortDistanceWeaponManager, WeaponInterface
         }
     }
 
-
     void OnTriggerEnter(Collider other)
     {
         print("헉!");   
     }
 
 
-
-    public void CheckAttackRange()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void StartAttack()
     {
