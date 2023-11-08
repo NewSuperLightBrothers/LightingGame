@@ -147,7 +147,8 @@ public class NCharacter : NetworkBehaviour
         fireBtn.onClick.AddListener(() =>
         {
             Logger.Log("Fire");
-            gun.StartAttack();
+            Vector3 endPoint = CalcBulletEndPoint();
+            gun.StartAttack(endPoint);
         });
     }
 
@@ -228,8 +229,6 @@ public class NCharacter : NetworkBehaviour
 
             AnimationServerRPC(_animIDJump, false);
             AnimationServerRPC(_animIDFreeFall, false);
-            // animator.SetBool(_animIDJump, false);
-            // animator.SetBool(_animIDFreeFall, false);
 
             // stop our velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
@@ -244,7 +243,6 @@ public class NCharacter : NetworkBehaviour
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
                 AnimationServerRPC(_animIDJump, true);
-                // animator.SetBool(_animIDJump, true);
             }
 
             // jump timeout
@@ -266,7 +264,6 @@ public class NCharacter : NetworkBehaviour
             else
             {
                 AnimationServerRPC(_animIDFreeFall, true);
-                // animator.SetBool(_animIDFreeFall, true);
             }
 
             // if we are not grounded, do not jump
@@ -340,8 +337,6 @@ public class NCharacter : NetworkBehaviour
 
         AnimationServerRPC(_animIDSpeed, _animationBlend);
         AnimationServerRPC(_animIDMotionSpeed, inputMagnitude);
-        // animator.SetFloat(_animIDSpeed, _animationBlend);
-        // animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
     
     private void CameraRotation()
@@ -392,5 +387,25 @@ public class NCharacter : NetworkBehaviour
         // {
         //     AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
         // }
+    }
+
+    private Vector3 CalcBulletEndPoint()
+    {
+        // 메인 카메라의 중앙 화면 좌표 (0.5, 0.5)로 레이를 발사
+        Ray ray = mainCamera.GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+
+        int layerMask = 1 << LayerMask.NameToLayer("Player"); // "Player" 레이어를 무시
+        // 레이캐스트를 사용하여 부딫힌 지점 찾기
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~layerMask))
+        {
+            Vector3 hitPoint = hit.point; // 부딫힌 지점
+            Debug.Log("camera ray collision point: " + hitPoint);
+
+            // 총알 발사 로직을 추가하려면 hitPoint를 사용
+            return hitPoint;
+        }
+
+        return Vector3.zero;
     }
 }

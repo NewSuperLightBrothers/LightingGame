@@ -1395,6 +1395,7 @@ GameObject:
   - component: {fileID: 1470548940952783667}
   - component: {fileID: 629307402585925749}
   - component: {fileID: 988950715527323650}
+  - component: {fileID: 5254739093221397148}
   m_Layer: 3
   m_Name: Mixamo_Char
   m_TagString: Player
@@ -1568,6 +1569,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.81, z: 0}
+--- !u!114 &5254739093221397148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6388455993032948862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa92cfe0ef4c53940810c6fb04eb8f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _team: 0
+  _laserGunManager: {fileID: 1272766936539568935}
+  _objectEmissionSystem: {fileID: 0}
+  _lightMaxGauge: 0
+  _lightTakeDistance: 0
 --- !u!1 &6487256903998285914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,6 +2541,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3958608430844022558, guid: 6a898d410598c4c278ca14aaa653f319,
+        type: 3}
+      propertyPath: _weaponObjectTakingManager
+      value: 
+      objectReference: {fileID: 5254739093221397148}
     - target: {fileID: 3958608431132614579, guid: 6a898d410598c4c278ca14aaa653f319,
         type: 3}
       propertyPath: m_Layer
@@ -2541,7 +2564,7 @@ PrefabInstance:
     - target: {fileID: 4192469400581714514, guid: 6a898d410598c4c278ca14aaa653f319,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a898d410598c4c278ca14aaa653f319, type: 3}

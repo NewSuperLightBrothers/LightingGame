@@ -2154,6 +2154,7 @@ MonoBehaviour:
   - {fileID: 793516020}
   - {fileID: 329001880}
   - {fileID: 1504275449}
+  objectEmissionSystem: {fileID: 1917713691}
 --- !u!1 &1062540160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,7 +3800,6 @@ MonoBehaviour:
   _objectTeamColor1: 0
   _objectTeamColor2: 2
   _objectEmissionStrength: 3
-  dictionkey: 
 --- !u!4 &1917713692
 Transform:
   m_ObjectHideFlags: 0

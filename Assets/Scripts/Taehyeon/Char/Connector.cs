@@ -40,8 +40,6 @@ public class Connector : MonoBehaviour
                 
                 touchZone.touchZoneOutputEvent.AddListener(myCharacter.OnTouchLookEvent);
                 myCharacter.ConnectUI();
-                
-                
             }
         }
     }

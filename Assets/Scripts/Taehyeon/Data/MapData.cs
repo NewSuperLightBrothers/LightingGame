@@ -10,6 +10,8 @@ public class MapData : MonoBehaviour
 
     public List<Transform> targetList;
     
+    public ObjectEmissionSystem objectEmissionSystem;
+    
     private void Awake()
     {
         BattleManager.Instance.mapData = this;

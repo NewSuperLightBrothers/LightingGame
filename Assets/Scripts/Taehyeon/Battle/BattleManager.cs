@@ -22,6 +22,12 @@ public class BattleManager : SingletonNetwork<BattleManager>
 
     public void InitializeCharacterPos()
     {
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject playerObject in playerObjects)
+        {
+            playerObject.GetComponent<ObjectEmissionTakeManager>()._objectEmissionSystem = mapData.objectEmissionSystem;
+        }
+        
         if(!IsServer) return;
         
         IReadOnlyList<NetworkClient> playerList = NetworkManager.Singleton.ConnectedClientsList;
@@ -39,6 +45,7 @@ public class BattleManager : SingletonNetwork<BattleManager>
                 playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Blue;
                 playerList[i].PlayerObject.GetComponent<NCharacter>().SetPosClientRPC(mapData.respawnPoints_client[i / 2].position);
             }
+
         }
     }
 }

@@ -19,7 +19,7 @@ public class ObjectEmission : NetworkBehaviour
     }
 
       public Dictionary<EObjectColorType, short> gauge;
-      public NetworkVariable<EObjectColorType> objectColorType;
+      public NetworkVariable<EObjectColorType> objectColorType = new NetworkVariable<EObjectColorType>(EObjectColorType.White);
       public NetworkVariable<NetworkColor> color;
       public NetworkVariable<short> maxgauge;
 }

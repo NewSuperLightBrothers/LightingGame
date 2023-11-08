@@ -7,7 +7,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
 {
     [SerializeField] private EObjectColorType _team;
     [SerializeField] private LongDistance_LaserGun _laserGunManager;
-    [SerializeField] private ObjectEmissionSystem _objectEmissionSystem;
+    [SerializeField] public ObjectEmissionSystem _objectEmissionSystem;
     [SerializeField] private int _lightMaxGauge;
     [SerializeField] private int _lightTakeDistance;
     [SerializeField] private UserInputAssets _inputAsset;

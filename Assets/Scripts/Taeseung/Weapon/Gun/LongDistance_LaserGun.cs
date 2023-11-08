@@ -135,8 +135,9 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
 
     }
 
-    public void StartAttack()
+    public void StartAttack(Vector3 endPoint)
     {
+        _weaponShotEndPoint.position = endPoint;
         if (_isShoot && _gunBulletCount > 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
