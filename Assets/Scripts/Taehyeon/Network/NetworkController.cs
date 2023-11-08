@@ -7,6 +7,8 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
 {
     public string joinCode;
 
+    private int startPlayerNum = 2;
+    
     public override void OnNetworkSpawn()
     {
         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
@@ -36,7 +38,7 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
             Logger.Log($"player {clientId} connected");
             
             // Move to next scene when all players are connected
-            if (GameData.currentConnectedPlayerNum == GameData.playerNumPerTeam * 2)
+            if (GameData.currentConnectedPlayerNum == startPlayerNum)
             {
                 NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
                 Invoke(nameof(LoadBattleBGScene), 1f);

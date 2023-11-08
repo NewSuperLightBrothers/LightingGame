@@ -13,7 +13,9 @@ public class Connector : MonoBehaviour
     public Joystick LookJoystick;
     public GameObject[] allPlayers;
 
-    public GameObject mainCamera;
+    public CinemachineVirtualCamera playerFollowCamera;
+    public TouchZone touchZone;
+    
     // UI
     public Button jumpBtn;
     public Button fireBtn;
@@ -28,18 +30,18 @@ public class Connector : MonoBehaviour
             {
                 NCharacter myCharacter = allPlayers[i].GetComponent<NCharacter>();
                 myCharacter.joystick = joystick;
-                myCharacter.LookJoystick = LookJoystick;
-                mainCamera.transform.SetParent(myCharacter.cameraHolder);
-                mainCamera.transform.localPosition = Vector3.zero;
-                mainCamera.transform.localRotation = Quaternion.identity;
                 
-                // vCam.Follow = myCharacter.cameraFollowPoint;
+                playerFollowCamera.Follow = myCharacter.cinemachineCameraTarget;
+                
                 
                 // UI
                 myCharacter.jumpBtn = jumpBtn;
                 myCharacter.fireBtn = fireBtn;
                 
+                touchZone.touchZoneOutputEvent.AddListener(myCharacter.OnTouchLookEvent);
                 myCharacter.ConnectUI();
+                
+                
             }
         }
     }
