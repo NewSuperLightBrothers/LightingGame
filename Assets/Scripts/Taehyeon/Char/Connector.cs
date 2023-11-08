@@ -10,9 +10,10 @@ using Logger = Utils.Logger;
 public class Connector : MonoBehaviour
 {
     public Joystick joystick;
+    public Joystick LookJoystick;
     public GameObject[] allPlayers;
-    public CinemachineVirtualCamera vCam;
-    
+
+    public GameObject mainCamera;
     // UI
     public Button jumpBtn;
     public Button fireBtn;
@@ -27,7 +28,12 @@ public class Connector : MonoBehaviour
             {
                 NCharacter myCharacter = allPlayers[i].GetComponent<NCharacter>();
                 myCharacter.joystick = joystick;
-                vCam.Follow = myCharacter.cameraFollowPoint;
+                myCharacter.LookJoystick = LookJoystick;
+                mainCamera.transform.SetParent(myCharacter.cameraHolder);
+                mainCamera.transform.localPosition = Vector3.zero;
+                mainCamera.transform.localRotation = Quaternion.identity;
+                
+                // vCam.Follow = myCharacter.cameraFollowPoint;
                 
                 // UI
                 myCharacter.jumpBtn = jumpBtn;
