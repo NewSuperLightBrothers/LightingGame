@@ -115,10 +115,24 @@ public class NCharacter : NetworkBehaviour
 
     #endregion
     
+    // animation IDs
+    private int _animIDSpeed;
+    private int _animIDGrounded;
+    private int _animIDJump;
+    private int _animIDFreeFall;
+    private int _animIDMotionSpeed;
+    
     private void Awake()
     {
+        _cinemachineTargetYaw = cinemachineCameraTarget.transform.rotation.eulerAngles.y;
+
         animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
+        
+        AssignAnimationIDs();
+        
+        _jumpTimeoutDelta = JumpTimeout;
+        _fallTimeoutDelta = FallTimeout;
     }
 
 
@@ -138,22 +152,20 @@ public class NCharacter : NetworkBehaviour
     }
 
     
+    private void AssignAnimationIDs()
+    {
+        _animIDSpeed = Animator.StringToHash("Speed");
+        _animIDGrounded = Animator.StringToHash("Grounded");
+        _animIDJump = Animator.StringToHash("Jump");
+        _animIDFreeFall = Animator.StringToHash("FreeFall");
+        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+    }
+    
     private void Update()
     {
         if (joystick == null || !IsOwner) return;
 
-        isMoving = false;
-        if (joystick.Direction != Vector2.zero)
-        {
-            isMoving = true;
-            move.x = joystick.Horizontal;
-            move.y = joystick.Vertical;
-        }
-        else
-        {
-            move = Vector2.zero;
-        }
-        AnimationServerRPC(isMoving);
+        move = joystick.Direction;
 
         GroundedCheck();
         JumpAndGravity();
@@ -166,10 +178,21 @@ public class NCharacter : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void AnimationServerRPC(bool isRun, ServerRpcParams rpcParams = default)
+    private void AnimationServerRPC(int animationID, float value,  ServerRpcParams rpcParams = default)
     {
-        // Logger.Log(OwnerClientId + " / " + rpcParams.Receive.SenderClientId);
-        animator.SetBool("isRunning", isRun);
+        if (animationID == _animIDMotionSpeed || animationID == _animIDSpeed)
+        {
+            animator.SetFloat(animationID, value);
+        }
+    }
+    
+    [ServerRpc]
+    private void AnimationServerRPC(int animationID, bool value,  ServerRpcParams rpcParams = default)
+    {
+        if (animationID == _animIDJump || animationID == _animIDFreeFall || animationID == _animIDGrounded)
+        {
+            animator.SetBool(animationID, value);
+        }
     }
     
     [ClientRpc]
@@ -183,17 +206,7 @@ public class NCharacter : NetworkBehaviour
     {
         look = newLook;
     }
-    
-    public void MoveInput(Vector2 newMoveDirection)
-    {
-        move = newMoveDirection;
-    } 
-    
-    public void JumpInput(bool newJumpState)
-    {
-        jump = newJumpState;
-    }
-    
+
     private void GroundedCheck()
     {
         // set sphere position, with offset
@@ -202,11 +215,8 @@ public class NCharacter : NetworkBehaviour
         Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
             QueryTriggerInteraction.Ignore);
 
-        // update animator if using character
-        // if (_hasAnimator)
-        // {
-        //     _animator.SetBool(_animIDGrounded, Grounded);
-        // }
+        AnimationServerRPC(_animIDGrounded, Grounded);
+        // animator.SetBool(_animIDGrounded, Grounded);
     }
     
     private void JumpAndGravity()
@@ -216,12 +226,10 @@ public class NCharacter : NetworkBehaviour
             // reset the fall timeout timer
             _fallTimeoutDelta = FallTimeout;
 
-            // update animator if using character
-            // if (_hasAnimator)
-            // {
-            //     _animator.SetBool(_animIDJump, false);
-            //     _animator.SetBool(_animIDFreeFall, false);
-            // }
+            AnimationServerRPC(_animIDJump, false);
+            AnimationServerRPC(_animIDFreeFall, false);
+            // animator.SetBool(_animIDJump, false);
+            // animator.SetBool(_animIDFreeFall, false);
 
             // stop our velocity dropping infinitely when grounded
             if (_verticalVelocity < 0.0f)
@@ -235,11 +243,8 @@ public class NCharacter : NetworkBehaviour
                 // the square root of H * -2 * G = how much velocity needed to reach desired height
                 _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
-                // update animator if using character
-                // if (_hasAnimator)
-                // {
-                //     _animator.SetBool(_animIDJump, true);
-                // }
+                AnimationServerRPC(_animIDJump, true);
+                // animator.SetBool(_animIDJump, true);
             }
 
             // jump timeout
@@ -260,11 +265,8 @@ public class NCharacter : NetworkBehaviour
             }
             else
             {
-                // update animator if using character
-                // if (_hasAnimator)
-                // {
-                //     _animator.SetBool(_animIDFreeFall, true);
-                // }
+                AnimationServerRPC(_animIDFreeFall, true);
+                // animator.SetBool(_animIDFreeFall, true);
             }
 
             // if we are not grounded, do not jump
@@ -284,10 +286,6 @@ public class NCharacter : NetworkBehaviour
         // set target speed based on move speed, sprint speed and if sprint is pressed
         float targetSpeed = moveSpeed;
 
-        // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
-
-        // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-        // if there is no input, set the target speed to 0
         if (move == Vector2.zero) targetSpeed = 0.0f;
 
         // a reference to the players current horizontal velocity
@@ -314,8 +312,8 @@ public class NCharacter : NetworkBehaviour
             _speed = targetSpeed;
         }
 
-        // _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-        // if (_animationBlend < 0.01f) _animationBlend = 0f;
+        _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+        if (_animationBlend < 0.01f) _animationBlend = 0f;
 
         // normalise input direction
         Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
@@ -340,12 +338,10 @@ public class NCharacter : NetworkBehaviour
         _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                          new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
-        // update animator if using character
-        // if (_hasAnimator)
-        // {
-        //     _animator.SetFloat(_animIDSpeed, _animationBlend);
-        //     _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-        // }
+        AnimationServerRPC(_animIDSpeed, _animationBlend);
+        AnimationServerRPC(_animIDMotionSpeed, inputMagnitude);
+        // animator.SetFloat(_animIDSpeed, _animationBlend);
+        // animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
     }
     
     private void CameraRotation()
@@ -374,5 +370,27 @@ public class NCharacter : NetworkBehaviour
         if (lfAngle < -360f) lfAngle += 360f;
         if (lfAngle > 360f) lfAngle -= 360f;
         return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+    
+    private void OnFootstep(AnimationEvent animationEvent)
+    {
+        Logger.Log("OnFootstep called");
+        // if (animationEvent.animatorClipInfo.weight > 0.5f)
+        // {
+        //     if (FootstepAudioClips.Length > 0)
+        //     {
+        //         var index = Random.Range(0, FootstepAudioClips.Length);
+        //         AudioSource.PlayClipAtPoint(FootstepAudioClips[index], transform.TransformPoint(_controller.center), FootstepAudioVolume);
+        //     }
+        // }
+    }
+
+    private void OnLand(AnimationEvent animationEvent)
+    {
+        Logger.Log("OnLand called");
+        // if (animationEvent.animatorClipInfo.weight > 0.5f)
+        // {
+        //     AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
+        // }
     }
 }
