@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using Logger = Utils.Logger;
 
 public class TouchZone : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -20,7 +21,8 @@ public class TouchZone : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
     //Stored Pointer Values
     private Vector2 pointerDownPosition;
     private Vector2 currentPointerPosition;
-
+    private Vector2 oldPosition;
+    
     [Header("Output")]
     public Event touchZoneOutputEvent;
 
@@ -54,12 +56,19 @@ public class TouchZone : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoin
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(containerRect, eventData.position, eventData.pressEventCamera, out currentPointerPosition);
         
-        Vector2 positionDelta = GetDeltaBetweenPositions(pointerDownPosition, currentPointerPosition);
+        Vector2 positionDelta = GetDeltaBetweenPositions(oldPosition, currentPointerPosition);
+        oldPosition = currentPointerPosition;
 
+        if (positionDelta.magnitude < 3f)
+        {
+            OutputPointerEventValue(Vector2.zero);
+            return;
+        }
+        
         Vector2 clampedPosition = ClampValuesToMagnitude(positionDelta);
         
         Vector2 outputPosition = ApplyInversionFilter(clampedPosition);
-
+        oldPosition = currentPointerPosition;
         OutputPointerEventValue(outputPosition * magnitudeMultiplier);
     }
 

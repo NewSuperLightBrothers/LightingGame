@@ -32,7 +32,7 @@ public class Connector : MonoBehaviour
                 myCharacter.joystick = joystick;
                 
                 playerFollowCamera.Follow = myCharacter.cinemachineCameraTarget;
-                
+                myCharacter.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
                 
                 // UI
                 myCharacter.jumpBtn = jumpBtn;

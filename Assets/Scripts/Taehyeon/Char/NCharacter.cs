@@ -19,6 +19,15 @@ public class NCharacter : NetworkBehaviour
     // Components
     private Animator animator;
     private CharacterController _controller;
+    [HideInInspector] public GameObject mainCamera;
+    
+    // player
+    private float _speed;
+    private float _animationBlend;
+    private float _targetRotation = 0.0f;
+    private float _rotationVelocity;
+    private float _verticalVelocity;
+    private float _terminalVelocity = 53.0f;
     
     // stat
     public float jumpForce = 10f;
@@ -39,7 +48,7 @@ public class NCharacter : NetworkBehaviour
     private float _cinemachineTargetPitch;
     
     // input
-    private const float _threshold = 0.01f;
+    public float _threshold = 0.02f;
     
     public float curYRot;
     
@@ -59,6 +68,13 @@ public class NCharacter : NetworkBehaviour
 
     [Tooltip("For locking the camera position on all axis")]
     public bool LockCameraPosition = false;
+    
+    [Tooltip("Acceleration and deceleration")]
+    public float SpeedChangeRate = 10.0f;
+    
+    [Tooltip("How fast the character turns to face movement direction")]
+    [Range(0.0f, 0.3f)]
+    public float RotationSmoothTime = 0.12f;
     
     private void Awake()
     {
@@ -91,10 +107,17 @@ public class NCharacter : NetworkBehaviour
         if (joystick.Direction != Vector2.zero)
         {
             isMoving = true;
+            move.x = joystick.Horizontal;
+            move.y = joystick.Vertical;
+        }
+        else
+        {
+            move = Vector2.zero;
         }
         AnimationServerRPC(isMoving);
 
-        _controller.Move(new Vector3(joystick.Horizontal, 0, joystick.Vertical) * Time.deltaTime * moveSpeed);
+        Move();
+        // _controller.Move(new Vector3(joystick.Horizontal, 0, joystick.Vertical) * Time.deltaTime * moveSpeed);
     }
 
     private void LateUpdate()
@@ -121,7 +144,11 @@ public class NCharacter : NetworkBehaviour
         look = newLook;
     }
     
-    /*
+    public void MoveInput(Vector2 newMoveDirection)
+    {
+        move = newMoveDirection;
+    } 
+    
     private void Move()
     {
         // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -137,7 +164,8 @@ public class NCharacter : NetworkBehaviour
         float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
-        float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+        // float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+        float inputMagnitude = move.magnitude;
 
         // accelerate or decelerate to target speed
         if (currentHorizontalSpeed < targetSpeed - speedOffset ||
@@ -156,18 +184,18 @@ public class NCharacter : NetworkBehaviour
             _speed = targetSpeed;
         }
 
-        _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
-        if (_animationBlend < 0.01f) _animationBlend = 0f;
+        // _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
+        // if (_animationBlend < 0.01f) _animationBlend = 0f;
 
         // normalise input direction
-        Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(move.x, 0.0f, move.y).normalized;
 
         // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
         // if there is a move input rotate player when the player is moving
-        if (_input.move != Vector2.zero)
+        if (move != Vector2.zero)
         {
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                              _mainCamera.transform.eulerAngles.y;
+                              mainCamera.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                 RotationSmoothTime);
 
@@ -183,13 +211,13 @@ public class NCharacter : NetworkBehaviour
                          new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
         // update animator if using character
-        if (_hasAnimator)
-        {
-            _animator.SetFloat(_animIDSpeed, _animationBlend);
-            _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-        }
+        // if (_hasAnimator)
+        // {
+        //     _animator.SetFloat(_animIDSpeed, _animationBlend);
+        //     _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+        // }
     }
-    */
+    
     private void CameraRotation()
     {
         // if there is an input and camera position is not fixed

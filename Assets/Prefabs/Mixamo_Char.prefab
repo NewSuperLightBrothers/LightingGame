@@ -1457,9 +1457,10 @@ MonoBehaviour:
     m_InternalValue: 0
   jumpBtn: {fileID: 0}
   fireBtn: {fileID: 0}
+  mainCamera: {fileID: 0}
   jumpForce: 10
   isMoving: 0
-  moveSpeed: 2
+  moveSpeed: 10
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
   lookSensitivity: 100
@@ -1470,6 +1471,8 @@ MonoBehaviour:
   BottomClamp: -20
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  SpeedChangeRate: 10
+  RotationSmoothTime: 0.12
 --- !u!114 &7904571199681454379
 MonoBehaviour:
   m_ObjectHideFlags: 0
