@@ -10,7 +10,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     [SerializeField] private int _gunReflectCount;
 
     //총알 갯수
-    private int _gunBulletCount = 0;
+    public int _gunBulletCount = 100;
 
     //총알 궤적 포인트 리스트
     private List<Vector3> l_gunPathPoints = new();

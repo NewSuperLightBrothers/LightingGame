@@ -29,6 +29,10 @@ public class NCharacter : NetworkBehaviour
     private float _verticalVelocity;
     private float _terminalVelocity = 53.0f;
     
+    // timeout deltatime
+    private float _jumpTimeoutDelta;
+    private float _fallTimeoutDelta;
+    
     // stat
     public float jumpForce = 10f;
     public bool isMoving;
@@ -36,6 +40,9 @@ public class NCharacter : NetworkBehaviour
     
     // move
     public Vector2 move;
+    
+    // jump
+    public bool jump;
     
     // look
     public Vector2 look;
@@ -51,6 +58,20 @@ public class NCharacter : NetworkBehaviour
     public float _threshold = 0.02f;
     
     public float curYRot;
+    
+    [Space(10)]
+    [Tooltip("The height the player can jump")]
+    public float JumpHeight = 1.2f;
+
+    [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
+    public float Gravity = -15.0f;
+
+    [Space(10)]
+    [Tooltip("Time required to pass before being able to jump again. Set to 0f to instantly jump again")]
+    public float JumpTimeout = 0.50f;
+
+    [Tooltip("Time required to pass before entering the fall state. Useful for walking down stairs")]
+    public float FallTimeout = 0.15f;
     
     [FormerlySerializedAs("CinemachineCameraTarget")]
     [Header("Cinemachine")]
@@ -75,6 +96,24 @@ public class NCharacter : NetworkBehaviour
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)]
     public float RotationSmoothTime = 0.12f;
+
+    #region Ground
+
+    [Header("Player Grounded")]
+    [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
+    public bool Grounded = true;
+
+    [Tooltip("Useful for rough ground")]
+    public float GroundedOffset = -0.14f;
+
+    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
+    public float GroundedRadius = 0.28f;
+
+    [Tooltip("What layers the character uses as ground")]
+    public LayerMask GroundLayers;
+
+
+    #endregion
     
     private void Awake()
     {
@@ -88,19 +127,19 @@ public class NCharacter : NetworkBehaviour
         jumpBtn.onClick.AddListener(() =>
         {
             Logger.Log("Jump");
+            jump = true;
         });
         
         fireBtn.onClick.AddListener(() =>
         {
             Logger.Log("Fire");
-            // gun.StartAttack();
+            gun.StartAttack();
         });
     }
 
     
     private void Update()
     {
-        
         if (joystick == null || !IsOwner) return;
 
         isMoving = false;
@@ -116,8 +155,9 @@ public class NCharacter : NetworkBehaviour
         }
         AnimationServerRPC(isMoving);
 
+        GroundedCheck();
+        JumpAndGravity();
         Move();
-        // _controller.Move(new Vector3(joystick.Horizontal, 0, joystick.Vertical) * Time.deltaTime * moveSpeed);
     }
 
     private void LateUpdate()
@@ -148,6 +188,96 @@ public class NCharacter : NetworkBehaviour
     {
         move = newMoveDirection;
     } 
+    
+    public void JumpInput(bool newJumpState)
+    {
+        jump = newJumpState;
+    }
+    
+    private void GroundedCheck()
+    {
+        // set sphere position, with offset
+        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset,
+            transform.position.z);
+        Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers,
+            QueryTriggerInteraction.Ignore);
+
+        // update animator if using character
+        // if (_hasAnimator)
+        // {
+        //     _animator.SetBool(_animIDGrounded, Grounded);
+        // }
+    }
+    
+    private void JumpAndGravity()
+    {
+        if (Grounded)
+        {
+            // reset the fall timeout timer
+            _fallTimeoutDelta = FallTimeout;
+
+            // update animator if using character
+            // if (_hasAnimator)
+            // {
+            //     _animator.SetBool(_animIDJump, false);
+            //     _animator.SetBool(_animIDFreeFall, false);
+            // }
+
+            // stop our velocity dropping infinitely when grounded
+            if (_verticalVelocity < 0.0f)
+            {
+                _verticalVelocity = -2f;
+            }
+
+            // Jump
+            if (jump && _jumpTimeoutDelta <= 0.0f)
+            {
+                // the square root of H * -2 * G = how much velocity needed to reach desired height
+                _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+
+                // update animator if using character
+                // if (_hasAnimator)
+                // {
+                //     _animator.SetBool(_animIDJump, true);
+                // }
+            }
+
+            // jump timeout
+            if (_jumpTimeoutDelta >= 0.0f)
+            {
+                _jumpTimeoutDelta -= Time.deltaTime;
+            }
+        }
+        else
+        {
+            // reset the jump timeout timer
+            _jumpTimeoutDelta = JumpTimeout;
+
+            // fall timeout
+            if (_fallTimeoutDelta >= 0.0f)
+            {
+                _fallTimeoutDelta -= Time.deltaTime;
+            }
+            else
+            {
+                // update animator if using character
+                // if (_hasAnimator)
+                // {
+                //     _animator.SetBool(_animIDFreeFall, true);
+                // }
+            }
+
+            // if we are not grounded, do not jump
+            jump = false;
+        }
+
+        // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
+        if (_verticalVelocity < _terminalVelocity)
+        {
+            _verticalVelocity += Gravity * Time.deltaTime;
+        }
+    }
+
     
     private void Move()
     {

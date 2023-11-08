@@ -1462,10 +1462,16 @@ MonoBehaviour:
   isMoving: 0
   moveSpeed: 10
   move: {x: 0, y: 0}
+  jump: 0
   look: {x: 0, y: 0}
   lookSensitivity: 100
   gun: {fileID: 1272766936539568935}
+  _threshold: 0.02
   curYRot: 0
+  JumpHeight: 1.2
+  Gravity: -15
+  JumpTimeout: 0.5
+  FallTimeout: 0.15
   cinemachineCameraTarget: {fileID: 2313536913260099435}
   TopClamp: 30
   BottomClamp: -20
@@ -1473,6 +1479,12 @@ MonoBehaviour:
   LockCameraPosition: 0
   SpeedChangeRate: 10
   RotationSmoothTime: 0.12
+  Grounded: 1
+  GroundedOffset: -0.14
+  GroundedRadius: 0.28
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &7904571199681454379
 MonoBehaviour:
   m_ObjectHideFlags: 0
