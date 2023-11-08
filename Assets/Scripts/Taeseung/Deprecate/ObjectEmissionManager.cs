@@ -133,24 +133,22 @@ public class ObjectEmissionManager : MonoBehaviour
 
                 if (colorType == EObjectColorType.Red)
                 {
-                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.r -= (tempColorVal / _gauge);
+                        _initialColor.r -= 0.01f;
 
                     _emissionUI.SetProgressbarFill(Color.red, _initialColor.r, 1);
 
                 }
                 else if (colorType == EObjectColorType.Green)
                 {
-                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.g -= (tempColorVal / _gauge);
+
+                        _initialColor.g -= 0.01f;
 
                     _emissionUI.SetProgressbarFill(Color.green, _initialColor.g, 1);
                 }
 
                 else if (colorType == EObjectColorType.Blue)
                 {
-                    if (_d_colorInitialValue.TryGetValue(colorType, out tempColorVal))
-                        _initialColor.b -= (tempColorVal / _gauge);
+                        _initialColor.b -= 0.01f;
 
                     _emissionUI.SetProgressbarFill(Color.blue, _initialColor.b, 1);
 

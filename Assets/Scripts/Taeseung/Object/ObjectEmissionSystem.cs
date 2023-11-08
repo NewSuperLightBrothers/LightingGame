@@ -10,19 +10,6 @@ public class ObjectEmissionSystem : MonoBehaviour
     [SerializeField] private EObjectColorType _objectTeamColor2;
     [SerializeField] private float _objectEmissionStrength;
 
-    public List<int> dictionkey;
-
-
-
-    struct ObjectEmissionData
-    {
-        public MeshRenderer meshRenderer;
-        public Dictionary<EObjectColorType, short> gauge;
-        public EObjectColorType objectColorType;
-        public Color color;
-        public short maxgauge;
-    }
-    private Dictionary<int, ObjectEmissionData> _dictionary = new();
 
     private GameObject[] _gameObjects;
     private EObjectColorType _notChoiceTeamColor;
@@ -42,20 +29,19 @@ public class ObjectEmissionSystem : MonoBehaviour
 
 
 
-    public bool TakeObjectLight(int objectID, EObjectColorType colortype)
+    public bool TakeObjectLight(GameObject gObject, EObjectColorType colortype)
     {
-        ObjectEmissionData searchObjData;
+        ObjectEmission searchObjData;
 
-        if(_dictionary.TryGetValue(objectID, out searchObjData))
+        if(gObject.TryGetComponent<ObjectEmission>(out searchObjData))
         {
             short gauge = -1;
 
-            if (searchObjData.gauge.TryGetValue(colortype, out gauge) && gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType))
+            if (searchObjData.gauge.TryGetValue(colortype, out gauge) && gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType.Value))
             {
-                searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType] / 100f;
+                //searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType.Value] / 100f;
                 searchObjData.gauge[colortype] -= 1;
-                searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
-                _dictionary[objectID] = searchObjData;
+                //searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
                 return true;
             }
 
@@ -112,19 +98,19 @@ public class ObjectEmissionSystem : MonoBehaviour
     {
         for (int i = 0; i < _gameObjects.Length; i++)
         {
-            ObjectEmissionData objData = new();
-            objData.color = l_colors[Random.Range(0, l_colors.Count)];
-            objData.maxgauge = 100;
+            ObjectEmission objData = _gameObjects[i].AddComponent<ObjectEmission>();
 
+            //objData.color = l_colors[Random.Range(0, l_colors.Count)];
+            //objData.maxgauge = 100;
             objData.gauge = new();
-            foreach(EObjectColorType j in ObjectData.DivideColorList(colorType)) 
-                objData.gauge[j] = objData.maxgauge;
+            //foreach(EObjectColorType j in ObjectData.DivideColorList(colorType))  objData.gauge[j] = objData.maxgauge;
 
-            objData.objectColorType = colorType;
-            objData.meshRenderer = _gameObjects[i].GetComponentInChildren<MeshRenderer>(true);
-            objData.meshRenderer.material.SetColor("_EmissionColor", objData.color * Mathf.Pow(2, _objectEmissionStrength));
-            dictionkey.Add(_gameObjects[i].transform.GetInstanceID());
-            _dictionary.Add(_gameObjects[i].transform.GetInstanceID(), objData);
+            //objData.objectColorType = colorType;
+ 
+           // objData.meshRenderer = _gameObjects[i].GetComponentInChildren<MeshRenderer>(true);
+           // objData.meshRenderer.material.SetColor("_EmissionColor", objData.color * Mathf.Pow(2, _objectEmissionStrength));
+
+
         }
     }
 

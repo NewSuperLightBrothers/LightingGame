@@ -6552,7 +6552,6 @@ GameObject:
   - component: {fileID: 7758973225892772609}
   - component: {fileID: 8519489096629211682}
   - component: {fileID: 8682958899580649471}
-  - component: {fileID: 4950790877365043300}
   m_Layer: 3
   m_Name: Main Character
   m_TagString: Player
@@ -6693,31 +6692,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 1
-  _laserGunManager: {fileID: 0}
+  _laserGunManager: {fileID: 3401846160353267431}
   _objectEmissionSystem: {fileID: 0}
   _lightMaxGauge: 500
   _lightTakeDistance: 100
---- !u!114 &4950790877365043300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4545080032183422808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 076051c7e117ac2418933b6b1c2273c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnemy: 0
-  isAlly: 0
-  _defaultVelocity: 6
-  _buffVelocity: 10
-  _debuffVelocity: 3
-  _defaultJump: 10
-  _buffJump: 15
-  _debuffJump: 6
-  _buffTime: 1
 --- !u!1 &4599243391691407623
 GameObject:
   m_ObjectHideFlags: 0
@@ -14456,6 +14434,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46571416025636b4cb0be64e4540b814, type: 3}
+--- !u!114 &3401846160353267431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7656291768888260968, guid: 46571416025636b4cb0be64e4540b814,
+    type: 3}
+  m_PrefabInstance: {fileID: 5005000859805218703}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ede7d6c8efd4b84291842d36ae3baae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5083187631898463717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 287748770878290538, guid: 46571416025636b4cb0be64e4540b814,
