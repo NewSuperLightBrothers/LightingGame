@@ -31,11 +31,10 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     void Update()
     {
         if (Input.GetMouseButtonDown(1)) Reloading();
+        
         _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
         //총알 궤적 계산
         CheckAttackRange();
-        //발사 함수
-       // StartAttack();
     }
 
     void FixedUpdate()
@@ -131,14 +130,14 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         if (reloadGauge < playerLightGauge) updateGauge(reloadGauge);
         else updateGauge(playerLightGauge);
 
-        print("플레이어 잔량:"+ _weaponObjectTakingManager.getCharacterCurrentGauge());
+
+        Debug.Log("플레이어 잔량:"+ _weaponObjectTakingManager.getCharacterCurrentGauge());
 
     }
 
-
     public void StartAttack()
     {
-        if (_isShoot && _gunBulletCount >= 0)
+        if (_isShoot && _gunBulletCount > 0)
         {
             MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
@@ -151,7 +150,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     {
         _weaponRemainGauge += newVal;
         _gunBulletCount -= 1;
-        print(_gunBulletCount);
+        Debug.Log(_gunBulletCount);
         //SetWeaponUIGaugeBar();
     }
     public int GetWeaponGauge() => _weaponRemainGauge;
@@ -164,8 +163,11 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
 
     private void FireEffect()
     {
-        SD_weaponAttackAnimation.GetValue("GunFire").Play(0);
-        l_weaponSound[0].Play();
+        if(SD_weaponSound.TryGetValues("FireSound", out AudioSource audio))
+            audio.Play();
+
+        if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
+            animator.Play(0);
     }
 
     private void updateGauge(int enterGauge)
@@ -175,8 +177,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         _gunBulletCount += newBulletCount;
         _weaponRemainGauge += newGauge;
         _weaponObjectTakingManager.SetPlayerLightGauge(-newGauge);
-        print("총의 장전된 탄알 수 : " + _gunBulletCount);
-        print("총의 새로 장전될 탄알 수 : " + newBulletCount);
+        Debug.Log("총의 장전된 탄알 수 : " + _gunBulletCount);
+        Debug.Log("총의 새로 장전될 탄알 수 : " + newBulletCount);
     }
 
 

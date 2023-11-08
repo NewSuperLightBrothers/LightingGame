@@ -15,4 +15,12 @@ public abstract class LongDistanceWeaponManager : MainWeaponManager
     protected Ray _weaponRay;
     protected RaycastHit _weaponRayHit;
 
+    public void SetLongDistanceWeapon()
+    {
+       // Camera.main.
+        //_weaponShotEndPoint
+    }
+
+
+
 }

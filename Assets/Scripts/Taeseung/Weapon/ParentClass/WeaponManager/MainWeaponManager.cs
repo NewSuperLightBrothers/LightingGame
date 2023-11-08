@@ -15,8 +15,8 @@ public class MainWeaponManager : WeaponSystem
     [Space]
     [Header("WEAPON SFX INFO")]
     [SerializeField] protected List<MeshRenderer> l_weaponMeshRenderer;
-    [SerializeField] protected List<AudioSource> l_weaponSound;
     [SerializeField] protected List<LaserParticleSystem> l_weaponParticleSystem;
+    [SerializeField] protected SerializeDictionary<string, AudioSource> SD_weaponSound;
     [SerializeField] protected SerializeDictionary<string, Animator> SD_weaponAttackAnimation;
     [SerializeField] protected SerializeDictionary<string, LineRenderer> SD_weaponLineRenderer;
 
@@ -50,6 +50,7 @@ public class MainWeaponManager : WeaponSystem
 
     private void SDictionaryInitialize()
     {
+        SD_weaponSound.InitializeList();
         SD_weaponAttackAnimation.InitializeList();
         SD_weaponLineRenderer.InitializeList();
     }

@@ -41,7 +41,7 @@ public class SerializeDictionary<T1, T2>
 
     public T2 GetValue(T1 key) => _dict[key];
 
-    public bool TryGetValues(T1 key, T2 value) => _dict.TryGetValue(key, out value);
+    public bool TryGetValues(T1 key, out T2 value) => _dict.TryGetValue(key, out value);
 
     public List<T2> Getvalues() => l_value;
 

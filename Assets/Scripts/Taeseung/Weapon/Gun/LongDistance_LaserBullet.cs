@@ -26,10 +26,11 @@ public class LongDistance_LaserBullet : MonoBehaviour
         if (_bulletPathPoints != null || _bulletPathPoints.Length != 0) LaserBulletFire();
         _bulletRay.direction = this.transform.forward;
         _bulletRay.origin = this.transform.position;
-        if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance))
-        {
+        
+        if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance)){
             print(_bulletHit.collider.GetInstanceID());
         }
+
     }
 
     void OnTriggerEnter(Collider other)

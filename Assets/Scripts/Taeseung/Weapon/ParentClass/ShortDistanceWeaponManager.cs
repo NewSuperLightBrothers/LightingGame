@@ -5,4 +5,5 @@ using UnityEngine;
 public class ShortDistanceWeaponManager : MainWeaponManager
 {
     [SerializeField] protected float _weaponAttackReach;
+
 }
