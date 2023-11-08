@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.17721075, g: 0.22184807, b: 0.30409658, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -368,7 +368,6 @@ MonoBehaviour:
   _objectTeamColor1: 0
   _objectTeamColor2: 2
   _objectEmissionStrength: 5
-  dictionkey: 
 --- !u!4 &145125621
 Transform:
   m_ObjectHideFlags: 0
@@ -2163,21 +2162,14 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717487166}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 53d5dc00ef8a52a41b38b1dead5d7515, type: 3}
+  m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 09b087769efe6424f94e86aa82e64252, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
-    'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'Idle'\n\tFrom animation
-    clip 'Standard Run'\n\tFrom animation clip 'Gunplay'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -2542,4 +2534,5 @@ PrefabInstance:
       objectReference: {fileID: 145125620}
     m_RemovedComponents:
     - {fileID: 773791661162762987, guid: df1ab1aae1ed06841b9f943241583fbf, type: 3}
+    - {fileID: 4950790877365043300, guid: df1ab1aae1ed06841b9f943241583fbf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: df1ab1aae1ed06841b9f943241583fbf, type: 3}

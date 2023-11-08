@@ -83,13 +83,23 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
 
         if (Physics.Raycast(ray, out hit, _lightTakeDistance) && _lightCurrentGauge < _lightMaxGauge)
         {
-            int hitInstanceID = hit.collider.gameObject.transform.GetInstanceID();
+            ObjectEmissionManager oem = hit.transform.GetComponent<ObjectEmissionManager>();
 
-            if (_objectEmissionSystem.TakeObjectLight(hitInstanceID, _team))
+            if(oem != null)
+            {
+                if (oem.takeLightEnergy(_team))
+                {
+                    TakeLightEnergy(1);
+                    _laserGunManager.enabled = false;
+                }
+            }
+
+            /*
+            if (_objectEmissionSystem.TakeObjectLight(hit.collider.gameObject, _team))
             {
                 TakeLightEnergy(1);
                 _laserGunManager.enabled = false;
-            }
+            }*/
         }
         else
         {
