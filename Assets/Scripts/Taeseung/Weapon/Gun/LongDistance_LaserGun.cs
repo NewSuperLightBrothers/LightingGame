@@ -31,11 +31,10 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     void Update()
     {
         if (Input.GetMouseButtonDown(1)) Reloading();
+        
         _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
         //총알 궤적 계산
         CheckAttackRange();
-        //발사 함수
-       // StartAttack();
     }
 
     void FixedUpdate()
@@ -164,8 +163,11 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
 
     private void FireEffect()
     {
-        SD_weaponAttackAnimation.GetValue("GunFire").Play(0);
-        l_weaponSound[0].Play();
+        if(SD_weaponSound.TryGetValues("FireSound", out AudioSource audio))
+            audio.Play();
+
+        if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
+            animator.Play(0);
     }
 
     private void updateGauge(int enterGauge)
