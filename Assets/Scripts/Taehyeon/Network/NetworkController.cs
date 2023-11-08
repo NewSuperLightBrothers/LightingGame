@@ -41,14 +41,16 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
                 int pos = 0;
                 int dx = 100;
                 var playerList = NetworkManager.Singleton.ConnectedClientsList;
-                
-                foreach (NetworkClient client in playerList)
+
+                for (int i = 0; i < playerList.Count; i++)
                 {
-                    client.PlayerObject.transform.position = new Vector3(0, 0, pos * dx);
-                    dx++;
-                    Logger.Log("player pos set");
+                    if (i % 2 == 0)
+                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Red;
+                    else
+                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Blue;
                 }
 
+                
                 
                 NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
             }

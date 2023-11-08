@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WoojinKim.unity
     guid: 9453e8ca3f1f79b42b755c06b5b3751e
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 2c075f9001989462cba0739eeab2bb54
   - enabled: 1
     path: Assets/Scenes/NetworkTestScene.unity
     guid: e179c439f8e344fe799e799a678ffc7a
   - enabled: 1
-    path: Assets/Scenes/BattleScene.unity
-    guid: 2c075f9001989462cba0739eeab2bb54
+    path: Assets/Scenes/BattleScene/BattleUI.unity
+    guid: 49f0208e3f439744994989a9de8ed651
   m_configObjects: {}
