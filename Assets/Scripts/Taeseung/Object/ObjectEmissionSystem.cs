@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ObjectEmissionSystem : MonoBehaviour
@@ -9,6 +10,8 @@ public class ObjectEmissionSystem : MonoBehaviour
     [SerializeField] private float _objectEmissionStrength;
 
     public List<int> dictionkey;
+
+
 
     struct ObjectEmissionData
     {
@@ -31,6 +34,9 @@ public class ObjectEmissionSystem : MonoBehaviour
         InitializeLightObjectProcess("LightObject1", _objectTeamColor1, _objectTeamColor2, true);
         InitializeLightObjectProcess("LightObject2", _objectTeamColor2, _objectTeamColor1, true);
         InitializeLightObjectProcess("LightObject3", _mixChoiceTeamColor, _notChoiceTeamColor, false);
+
+        //NetworkObject c = new();
+       // ulong k = c.NetworkObjectId;
     }
 
 
