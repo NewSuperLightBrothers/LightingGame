@@ -38,23 +38,17 @@ public class NetworkController : SingletonNetworkPersistent<NetworkController>
             // Move to next scene when all players are connected
             if (GameData.currentConnectedPlayerNum == GameData.playerNumPerTeam * 2)
             {
-                int pos = 0;
-                int dx = 100;
-                var playerList = NetworkManager.Singleton.ConnectedClientsList;
-
-                for (int i = 0; i < playerList.Count; i++)
-                {
-                    if (i % 2 == 0)
-                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Red;
-                    else
-                        playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Blue;
-                }
-
-                
-                
                 NetworkManager.Singleton.SceneManager.LoadScene("BattleScene", LoadSceneMode.Single);
+                Invoke(nameof(LoadBattleBGScene), 1f);
+                
             }
         }
+    }
+
+    public void LoadBattleBGScene()
+    {
+        Debug.Log("LoadBattleBGScene");
+        NetworkManager.Singleton.SceneManager.LoadScene("BattleBG", LoadSceneMode.Additive);
     }
     
     private void OnClientDisConnected(ulong clientId)
