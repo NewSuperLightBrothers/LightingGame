@@ -32,9 +32,9 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     {
         if (Input.GetMouseButtonDown(1)) Reloading();
         
-        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
-        //총알 궤적 계산
-        CheckAttackRange();
+        // _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
+        // //총알 궤적 계산
+        // CheckAttackRange();
     }
 
     void FixedUpdate()
@@ -138,9 +138,13 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     public void StartAttack(Vector3 endPoint)
     {
         _weaponShotEndPoint.position = endPoint;
+        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
+        //총알 궤적 계산
+        CheckAttackRange();
+        
         if (_isShoot && _gunBulletCount > 0)
         {
-            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
+            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, Camera.main.transform.rotation, _gunFrameDirection.normalized);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
             FireEffect();
             AttackReset();
@@ -183,11 +187,11 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     }
 
 
-    private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation)
+    private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation, Vector3 dir)
     {
         GameObject newBullet = Instantiate(bulletObject);
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
-        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor);
+        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor, dir);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
     }
 

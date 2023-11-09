@@ -272,11 +272,12 @@ MonoBehaviour:
   _weaponObject: {fileID: 0}
   _weaponObjectTakingManager: {fileID: 0}
   l_weaponMeshRenderer: []
-  l_weaponSound:
-  - {fileID: 3666025443288946325, guid: f43d03aed4679f94098454b5b8533c0f, type: 3}
   l_weaponParticleSystem:
   - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
   - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
+  SD_weaponSound:
+    l_key: []
+    l_value: []
   SD_weaponAttackAnimation:
     l_key:
     - GunFire
@@ -291,7 +292,8 @@ MonoBehaviour:
     type: 3}
   _weaponShotPoint: {fileID: 3958608431132614604}
   _weaponShotEndPoint: {fileID: 3958608429014407583}
-  _weaponBulletSpeed: 4
+  _weaponBulletSpeed: 400
   _weaponDistance: 50
   _gunFirePath: {fileID: 1772341468873502461}
   _gunReflectCount: 3
+  _gunBulletCount: 100

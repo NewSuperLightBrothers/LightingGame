@@ -21,16 +21,19 @@ public class LongDistance_LaserBullet : MonoBehaviour
     private Ray _bulletRay = new();
     private RaycastHit _bulletHit;
 
+    private Vector3 dir;
+    
     void FixedUpdate()
     {
-        if (_bulletPathPoints != null || _bulletPathPoints.Length != 0) LaserBulletFire();
-        _bulletRay.direction = this.transform.forward;
-        _bulletRay.origin = this.transform.position;
-        
-        if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance)){
-            print(_bulletHit.collider.GetInstanceID());
-        }
+        // if (_bulletPathPoints != null || _bulletPathPoints.Length != 0) LaserBulletFire();
+        // _bulletRay.direction = this.transform.forward;
+        // _bulletRay.origin = this.transform.position;
+        //
+        // if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance)){
+        //     print(_bulletHit.collider.GetInstanceID());
+        // }
 
+        transform.position += dir * (_bulletSpeed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
@@ -59,7 +62,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType, Vector3 dir)
     {
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;
@@ -67,7 +70,8 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletDistance = bulletDistance;
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
-
+        this.dir = dir;
+        
         foreach(LaserParticleSystem i in l_bulletParticle)
         {
             i.ParticleColorSetting(bulletColor);
