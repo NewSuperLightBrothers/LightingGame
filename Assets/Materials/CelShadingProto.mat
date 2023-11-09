@@ -114,15 +114,15 @@ Material:
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _Metallic: 0
-    - _NormalMultiplier: 0.1
+    - _NormalMultiplier: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rim: 0.393
+    - _Rim: 0.75
     - _RimOffset: 0.01
-    - _RimThreshold: 0.268
+    - _RimThreshold: 0.01
     - _SHADOWS_SOFT: 1
     - _ShadowAttenuation: 1
     - _Smoothness: 0.5
@@ -132,12 +132,13 @@ Material:
     - _SpecularOffset: 0.3
     - _SrcBlend: 1
     - _Surface: 0
-    - _Temperature: 6500
-    - _TemperatureMultiplier: 0.1
+    - _TemperatueMultiplier: 1
+    - _Temperature: -50
+    - _TemperatureMultiplier: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _Albedo: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 0}
+    - _Albedo: {r: 0.66489387, g: 0.7264151, b: 0.3529281, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
