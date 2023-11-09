@@ -934,7 +934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints:
   - {fileID: 1929951033}
-  targetPrefab: {fileID: 2852364844035532438, guid: 229323c6e88074ad48803f27ad45f53d,
+  targetPrefab: {fileID: 4645811231158546623, guid: 82ca8ce34096d4fbc9507623524385f9,
     type: 3}
   isSpawned: 0
 --- !u!4 &792910182
