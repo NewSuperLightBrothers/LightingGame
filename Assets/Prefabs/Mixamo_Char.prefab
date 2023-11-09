@@ -1458,6 +1458,7 @@ MonoBehaviour:
     m_InternalValue: 0
   jumpBtn: {fileID: 0}
   fireBtn: {fileID: 0}
+  controller: {fileID: 0}
   mainCamera: {fileID: 0}
   jumpForce: 10
   isMoving: 0
@@ -2468,21 +2469,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3559378733711124712, guid: 6a898d410598c4c278ca14aaa653f319,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559378733711124712, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559378733711124712, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 3559378733711124712, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0729
       objectReference: {fileID: 0}
@@ -2531,40 +2517,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 115.1
       objectReference: {fileID: 0}
-    - target: {fileID: 3559378733711124712, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3958608429014407582, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 3958608430844022558, guid: 6a898d410598c4c278ca14aaa653f319,
         type: 3}
       propertyPath: _weaponObjectTakingManager
       value: 
       objectReference: {fileID: 5254739093221397148}
-    - target: {fileID: 3958608431132614579, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4192469400581714514, guid: 6a898d410598c4c278ca14aaa653f319,
         type: 3}
       propertyPath: m_Name
       value: gun
-      objectReference: {fileID: 0}
-    - target: {fileID: 4192469400581714514, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4192469400581714514, guid: 6a898d410598c4c278ca14aaa653f319,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a898d410598c4c278ca14aaa653f319, type: 3}

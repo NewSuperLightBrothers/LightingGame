@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3958608429014407583}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: end point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3958608431132614604}
   - component: {fileID: 1772341468873502461}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: start point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 489396528941721421}
   - component: {fileID: 2390946056384910215}
   - component: {fileID: 3958608430844022558}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,10 +188,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4192469400581714514}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.61, y: 0.61, z: 0.61}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3958608431132614604}
   - {fileID: 3958608429014407583}
@@ -296,4 +296,6 @@ MonoBehaviour:
   _weaponDistance: 50
   _gunFirePath: {fileID: 1772341468873502461}
   _gunReflectCount: 3
+  teamColor:
+    m_InternalValue: 7
   _gunBulletCount: 100

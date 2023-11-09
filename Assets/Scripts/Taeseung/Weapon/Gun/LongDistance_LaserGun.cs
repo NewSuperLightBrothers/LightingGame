@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface, MainWeaponInterface
@@ -9,6 +10,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     [SerializeField] private LineRenderer _gunFirePath;
     [SerializeField] private int _gunReflectCount;
 
+    public NetworkVariable<EObjectColorType> teamColor;
+    
     //총알 갯수
     public int _gunBulletCount = 100;
 
@@ -191,7 +194,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     {
         GameObject newBullet = Instantiate(bulletObject);
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
-        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor, dir);
+        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, dir, teamColor.Value);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
     }
 

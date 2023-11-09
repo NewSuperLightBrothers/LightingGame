@@ -22,6 +22,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
     private RaycastHit _bulletHit;
 
     private Vector3 dir;
+    public EObjectColorType teamColor;
     
     void FixedUpdate()
     {
@@ -62,7 +63,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType, Vector3 dir)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, Vector3 dir, EObjectColorType teamColor)
     {
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;
@@ -71,6 +72,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
         this.dir = dir;
+        this.teamColor = teamColor;
         
         foreach(LaserParticleSystem i in l_bulletParticle)
         {

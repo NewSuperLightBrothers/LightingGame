@@ -38,12 +38,14 @@ public class BattleManager : SingletonNetwork<BattleManager>
             {
                 // host team
                 playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Red;
+                playerList[i].PlayerObject.GetComponent<NCharacter>().gun.teamColor.Value = EObjectColorType.Red;
                 playerList[i].PlayerObject.GetComponent<NCharacter>().SetPosClientRPC(mapData.respawnPoints_host[i / 2].position);
             }
             else
             {
                 // client team
                 playerList[i].PlayerObject.GetComponent<NCharacter>().teamColor.Value = EObjectColorType.Blue;
+                playerList[i].PlayerObject.GetComponent<NCharacter>().gun.teamColor.Value = EObjectColorType.Blue;
                 playerList[i].PlayerObject.GetComponent<NCharacter>().SetPosClientRPC(mapData.respawnPoints_client[i / 2].position);
             }
 
