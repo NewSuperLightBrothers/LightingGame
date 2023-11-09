@@ -26,6 +26,7 @@ public class BattleManager : SingletonNetwork<BattleManager>
         foreach (GameObject playerObject in playerObjects)
         {
             playerObject.GetComponent<ObjectEmissionTakeManager>()._objectEmissionSystem = mapData.objectEmissionSystem;
+            playerObject.GetComponent<NCharacter>().controller.enabled = true;
         }
         
         if(!IsServer) return;

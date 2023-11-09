@@ -18,7 +18,7 @@ public class NCharacter : NetworkBehaviour
     
     // Components
     private Animator animator;
-    private CharacterController _controller;
+    public CharacterController controller;
     [HideInInspector] public GameObject mainCamera;
     
     // player
@@ -127,7 +127,7 @@ public class NCharacter : NetworkBehaviour
         _cinemachineTargetYaw = cinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
         animator = GetComponent<Animator>();
-        _controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
         
         AssignAnimationIDs();
         
@@ -164,7 +164,7 @@ public class NCharacter : NetworkBehaviour
     
     private void Update()
     {
-        if (joystick == null || !IsOwner) return;
+        if (joystick == null || !controller.enabled || !IsOwner) return;
 
         move = joystick.Direction;
 
@@ -199,7 +199,7 @@ public class NCharacter : NetworkBehaviour
     [ClientRpc]
     public void SetPosClientRPC(Vector3 pos)
     {
-        Logger.Log("SetPosClientRPC called");
+        Logger.Log("SetPosClientRPC called(client ID : " + NetworkObjectId + ") : " + pos);
         transform.position = pos;
     }
 
@@ -286,7 +286,7 @@ public class NCharacter : NetworkBehaviour
         if (move == Vector2.zero) targetSpeed = 0.0f;
 
         // a reference to the players current horizontal velocity
-        float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
+        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
 
         float speedOffset = 0.1f;
         // float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
@@ -332,7 +332,7 @@ public class NCharacter : NetworkBehaviour
         Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
         // move the player
-        _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+        controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                          new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
         AnimationServerRPC(_animIDSpeed, _animationBlend);
