@@ -49,6 +49,33 @@ public static class ObjectData
 
     private static Dictionary<EObjectColorType, Color> _objectColor;
 
+
+
+    public static Dictionary<Color, EObjectColorType> d_objectColorType
+    {
+        get
+        {
+            if (_objectColorType == null)
+            {
+                _objectColorType = new();
+                _objectColorType.Add(Color.red, EObjectColorType.Red);
+                _objectColorType.Add(Color.green, EObjectColorType.Green);
+                _objectColorType.Add(Color.blue, EObjectColorType.Blue);
+                _objectColorType.Add(Color.yellow,EObjectColorType.Yellow);
+                _objectColorType.Add(Color.magenta, EObjectColorType.Magenta);
+                _objectColorType.Add(Color.cyan, EObjectColorType.Cyan);
+                _objectColorType.Add(Color.white, EObjectColorType.White);
+                _objectColorType.Add(Color.black, EObjectColorType.Black);
+            }
+
+            return _objectColorType;
+        }
+        private set { }
+    }
+
+    private static Dictionary<Color, EObjectColorType> _objectColorType;
+
+
     public static bool IsAssociationLightColor(EObjectColorType colorType, EObjectColorType compareColorType)
     {
         HashSet<EObjectColorType> hs_tempColorSet = new();

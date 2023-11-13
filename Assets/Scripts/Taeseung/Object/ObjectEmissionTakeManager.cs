@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Logger = Utils.Logger;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInterface
 {
@@ -24,6 +26,13 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
     private float _readyEndTime = 0;
     private bool _isTouch = false;
     private ObjectEmissionManager _emissionManager;
+
+    private void Start()
+    {
+
+
+       //ObjectEmissionTakeManager
+    }
 
 
     private void Update()
@@ -83,6 +92,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
 
         if (Physics.Raycast(ray, out hit, _lightTakeDistance) && _lightCurrentGauge < _lightMaxGauge)
         {
+            /*
             ObjectEmissionManager oem = hit.transform.GetComponent<ObjectEmissionManager>();
 
             if(oem != null)
@@ -92,18 +102,18 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
                     TakeLightEnergy(1);
                     _laserGunManager.enabled = false;
                 }
-            }
+            }*/
 
-            /*
             if (_objectEmissionSystem.TakeObjectLight(hit.collider.gameObject, _team))
             {
+                Logger.Log("Light taking");
                 TakeLightEnergy(1);
                 _laserGunManager.enabled = false;
-            }*/
+            }
         }
         else
         {
-            print("없어요 그냥");
+            Logger.Log("Fail taking");
         }
     }
 
@@ -111,8 +121,7 @@ public class ObjectEmissionTakeManager : MonoBehaviour, CharacterLightGaugeInter
     private void TakeLightEnergy(int k)
     {
          _lightCurrentGauge += k;
-
-        print("플레이어 현재 빛 잔량: " + _lightCurrentGauge);
+        Logger.Log("Remain Player Light Energy" + _lightCurrentGauge);
     }
 
     public void SetPlayerLightGauge(int newGauge) => _lightCurrentGauge += newGauge;

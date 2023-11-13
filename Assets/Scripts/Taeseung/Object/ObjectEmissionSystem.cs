@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ObjectEmissionSystem : MonoBehaviour
+public class ObjectEmissionSystem : NetworkBehaviour
 {
     [SerializeField] private EObjectColorType _objectTeamColor1;
     [SerializeField] private EObjectColorType _objectTeamColor2;
     [SerializeField] private float _objectEmissionStrength;
-
 
     private GameObject[] _gameObjects;
     private EObjectColorType _notChoiceTeamColor;
@@ -21,11 +20,12 @@ public class ObjectEmissionSystem : MonoBehaviour
         InitializeLightObjectProcess("LightObject1", _objectTeamColor1, _objectTeamColor2, true);
         InitializeLightObjectProcess("LightObject2", _objectTeamColor2, _objectTeamColor1, true);
         InitializeLightObjectProcess("LightObject3", _mixChoiceTeamColor, _notChoiceTeamColor, false);
-
-        //NetworkObject c = new();
-       // ulong k = c.NetworkObjectId;
     }
 
+    private void Start()
+    {
+        
+    }
 
 
     public bool TakeObjectLight(GameObject gObject, EObjectColorType colortype)
@@ -34,13 +34,19 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         if(gObject.TryGetComponent<ObjectEmission>(out searchObjData))
         {
-            short gauge = -1;
-
-            if (searchObjData.gauge.TryGetValue(colortype, out gauge) && gauge > 0 && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType.Value))
+            if (searchObjData.gauges[((short)colortype)] > 0  && ObjectData.IsAssociationLightColor(colortype,searchObjData.objectColorType.Value))
             {
-                //searchObjData.color -= ObjectData.d_objectColor[searchObjData.objectColorType.Value] / 100f;
-                searchObjData.gauge[colortype] -= 1;
-                //searchObjData.meshRenderer.material.SetColor("_EmissionColor", searchObjData.color * Mathf.Pow(2, _objectEmissionStrength));
+                Color color1 = new Color(searchObjData.r.Value, searchObjData.g.Value, searchObjData.b.Value, 1);
+                Color color2 = ObjectData.d_objectColor[searchObjData.objectColorType.Value] / 100f;
+                color1 -= color2;
+
+                searchObjData.r.Value -= color1.r;
+                searchObjData.g.Value -= color1.g;
+                searchObjData.b.Value -= color1.b;
+
+                searchObjData.gauges[(short)(colortype)] -= 1;
+
+                gObject.GetComponentInChildren<MeshRenderer>(true).material.SetColor("_EmissionColor", color1 * Mathf.Pow(2, _objectEmissionStrength));
                 return true;
             }
 
@@ -68,7 +74,10 @@ public class ObjectEmissionSystem : MonoBehaviour
 
         if (Assoication)
         {
-            Color MixColor = ObjectData.d_objectColor[teamColor] + ObjectData.d_objectColor[_notChoiceTeamColor];
+            //  Color MixColor = ObjectData.d_objectColor[teamColor] + ObjectData.d_objectColor[_notChoiceTeamColor];
+            EObjectColorType colortype = (EObjectColorType)(((short)teamColor) + ((short)_notChoiceTeamColor) + 2);
+            Color MixColor = ObjectData.d_objectColor[colortype];
+
             MakeAvailableColor(ObjectData.d_objectColor[teamColor], MixColor, ref l_colors, 2,1);
         }
         else
@@ -98,16 +107,24 @@ public class ObjectEmissionSystem : MonoBehaviour
         for (int i = 0; i < _gameObjects.Length; i++)
         {
             ObjectEmission objData = _gameObjects[i].AddComponent<ObjectEmission>();
+            for (int j = 0; j < 8; j++) objData.gauges.Add(0);
 
-            //objData.color = l_colors[Random.Range(0, l_colors.Count)];
-            //objData.maxgauge = 100;
-            objData.gauge = new();
-            //foreach(EObjectColorType j in ObjectData.DivideColorList(colorType))  objData.gauge[j] = objData.maxgauge;
+            //N color 정보 주입 
+            Color color = l_colors[Random.Range(0, l_colors.Count)];
+            objData.r = new(color.r);
+            objData.g = new(color.g);
+            objData.b = new(color.b);
 
-            //objData.objectColorType = colorType;
- 
-           // objData.meshRenderer = _gameObjects[i].GetComponentInChildren<MeshRenderer>(true);
-           // objData.meshRenderer.material.SetColor("_EmissionColor", objData.color * Mathf.Pow(2, _objectEmissionStrength));
+            //N color 타입 정보 주입
+            objData.objectColorType = new(ObjectData.d_objectColorType[color]);
+
+            //N maxgauge정보 주입
+            objData.maxgauge = 100;
+
+            foreach (EObjectColorType j in ObjectData.DivideColorList(objData.objectColorType.Value)) objData.gauges[((short)j)] = objData.maxgauge;
+    
+
+            _gameObjects[i].GetComponentInChildren<MeshRenderer>(true).material.SetColor("_EmissionColor", color * Mathf.Pow(2, _objectEmissionStrength));
 
 
         }
