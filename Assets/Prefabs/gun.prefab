@@ -292,7 +292,7 @@ MonoBehaviour:
     type: 3}
   _weaponShotPoint: {fileID: 3958608431132614604}
   _weaponShotEndPoint: {fileID: 3958608429014407583}
-  _weaponBulletSpeed: 400
+  _weaponBulletSpeed: 150
   _weaponDistance: 50
   _gunFirePath: {fileID: 1772341468873502461}
   _gunReflectCount: 3
