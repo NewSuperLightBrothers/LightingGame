@@ -197,9 +197,9 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         GameObject newBullet = Instantiate(bulletObject);
         
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
+        newBulletManager.GetComponent<NetworkObject>().Spawn();
         newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, dir, teamColor.Value);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
-        newBulletManager.GetComponent<NetworkObject>().Spawn();
     }
 
     private void SetWeaponUIGaugeBar()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Logger = Utils.Logger;
 
 public class LongDistance_LaserBullet : NetworkBehaviour
 {
@@ -50,6 +51,14 @@ public class LongDistance_LaserBullet : NetworkBehaviour
         Debug.Log(_bulletColor);
         //LaserBulletReflection();
 
+        if (other.gameObject.TryGetComponent(out Target t))
+        {
+            Logger.Log("Hit target");
+            t.SetScore(teamColor.Value == EObjectColorType.Red ? 1 : -1);
+            NetworkObject.Despawn();
+            return;
+        }
+        
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
             //LaserBulletToPlayer(other);

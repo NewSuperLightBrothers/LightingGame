@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2721229288839731102}
   - component: {fileID: 2721229288838494780}
   - component: {fileID: 2721229288837512240}
-  - component: {fileID: 8282806975509411787}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -62,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e06b6d0c696f9544b327c597d334766, type: 2}
+  - {fileID: 2100000, guid: a2ec8cc19adac467ea34be3b53e3cbb9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,20 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8282806975509411787
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2721229288839460064}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.04336429
-  m_Height: 0.03466208
-  m_Direction: 2
-  m_Center: {x: 0, y: -0.005271948, z: 0.065882176}
 --- !u!1 &4645811231158546623
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,6 +94,8 @@ GameObject:
   - component: {fileID: 4645811231158546617}
   - component: {fileID: 4645811231158546622}
   - component: {fileID: -4913526683605724587}
+  - component: {fileID: -3525284549171115621}
+  - component: {fileID: 2942004082038568117}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -183,6 +170,40 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &-3525284549171115621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645811231158546623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7319b49558374606b3943a5f49c70d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score:
+    m_InternalValue: 0
+  threshold: 3
+  particleSystem: {fileID: 278819575082400415}
+  meshRenderer: {fileID: 2721229288837512240}
+  redMat: {fileID: 2100000, guid: 96455d4e8c26e48abaa1862d2f94f5d9, type: 2}
+  blueMat: {fileID: 2100000, guid: 6e06b6d0c696f9544b327c597d334766, type: 2}
+  defaultMat: {fileID: 2100000, guid: a2ec8cc19adac467ea34be3b53e3cbb9, type: 2}
+--- !u!136 &2942004082038568117
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4645811231158546623}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.4382095
+  m_Height: 4.0397997
+  m_Direction: 1
+  m_Center: {x: -0.00000023841858, y: 3.659019, z: 0.03752911}
 --- !u!1001 &8502008565431619594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,22 +249,42 @@ PrefabInstance:
     - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
       propertyPath: InitialModule.startSizeY.scalar
-      value: 80
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
       propertyPath: InitialModule.startSizeZ.scalar
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 48.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.7176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.36078432
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8512827299752064883, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
@@ -328,13 +369,19 @@ PrefabInstance:
     - target: {fileID: 8512827299752559927, guid: e198a15c4bca0a340978ba921289bb35,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.39
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e198a15c4bca0a340978ba921289bb35, type: 3}
 --- !u!4 &278819575064067503 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8512827299752521125, guid: e198a15c4bca0a340978ba921289bb35,
+    type: 3}
+  m_PrefabInstance: {fileID: 8502008565431619594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &278819575082400415 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8512827299733138069, guid: e198a15c4bca0a340978ba921289bb35,
     type: 3}
   m_PrefabInstance: {fileID: 8502008565431619594}
   m_PrefabAsset: {fileID: 0}
