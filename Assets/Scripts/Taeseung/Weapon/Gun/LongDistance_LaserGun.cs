@@ -25,6 +25,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     private float _gunDelayInterval;
     private bool _isShoot = true;
 
+    // Add by taehyeon
+    [SerializeField] private GameObject _bulletPrefab;
 
     new void Start()
     {
@@ -193,9 +195,11 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation, Vector3 dir)
     {
         GameObject newBullet = Instantiate(bulletObject);
+        
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
         newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, dir, teamColor.Value);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
+        newBulletManager.GetComponent<NetworkObject>().Spawn();
     }
 
     private void SetWeaponUIGaugeBar()

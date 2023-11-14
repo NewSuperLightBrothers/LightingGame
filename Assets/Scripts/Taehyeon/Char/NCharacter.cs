@@ -149,12 +149,18 @@ public class NCharacter : NetworkBehaviour
         {
             Logger.Log("Fire");
             Vector3 endPoint = CalcBulletEndPoint();
-            gun.StartAttack(endPoint);
+            FireServerRPC(endPoint);
             AnimationServerRPC(_animIDFire);
         });
     }
 
-    
+    [ServerRpc]
+    private void FireServerRPC(Vector3 endPoint, ServerRpcParams rpcParams = default)
+    {
+        gun.StartAttack(endPoint);
+    }
+
+
     private void AssignAnimationIDs()
     {
         _animIDSpeed = Animator.StringToHash("Speed");

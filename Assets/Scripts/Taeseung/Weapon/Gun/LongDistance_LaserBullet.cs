@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class LongDistance_LaserBullet : MonoBehaviour
+public class LongDistance_LaserBullet : NetworkBehaviour
 {
     [SerializeField] private List<SoundManager> l_bulletSound;
     [SerializeField] private List<LaserParticleSystem> l_bulletParticle;
@@ -22,7 +24,9 @@ public class LongDistance_LaserBullet : MonoBehaviour
     private RaycastHit _bulletHit;
 
     private Vector3 dir;
-    public EObjectColorType teamColor;
+    public NetworkVariable<EObjectColorType> teamColor;
+    
+    public GameObject bulletPrefabSelf;
     
     void FixedUpdate()
     {
@@ -34,11 +38,15 @@ public class LongDistance_LaserBullet : MonoBehaviour
         //     print(_bulletHit.collider.GetInstanceID());
         // }
 
+        if(!IsServer) return;
+        
         transform.position += dir * (_bulletSpeed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if(!IsServer) return;
+        
         Debug.Log(_bulletColor);
         //LaserBulletReflection();
 
@@ -72,7 +80,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
         this.dir = dir;
-        this.teamColor = teamColor;
+        this.teamColor.Value = teamColor;
         
         foreach(LaserParticleSystem i in l_bulletParticle)
         {
@@ -130,8 +138,10 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _afterImage.transform.position = this.transform.position;
         _afterImage.transform.rotation = this.transform.rotation;
         
-        Destroy(this.gameObject);
+        NetworkObject.Despawn();
+        // Destroy(this.gameObject);
     }
+
 
 
 

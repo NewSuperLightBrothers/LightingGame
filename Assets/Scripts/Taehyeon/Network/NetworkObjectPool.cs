@@ -102,6 +102,7 @@ public class NetworkObjectPool : NetworkBehaviour
     /// </summary>
     public void ReturnNetworkObject(NetworkObject networkObject, GameObject prefab)
     {
+        networkObject.gameObject.SetActive(false);
         _pooledObjects[prefab].Release(networkObject);
     }
 
