@@ -121,6 +121,7 @@ public class NCharacter : NetworkBehaviour
     private int _animIDJump;
     private int _animIDFreeFall;
     private int _animIDMotionSpeed;
+    private int _animIDFire;
     
     private void Awake()
     {
@@ -149,6 +150,7 @@ public class NCharacter : NetworkBehaviour
             Logger.Log("Fire");
             Vector3 endPoint = CalcBulletEndPoint();
             gun.StartAttack(endPoint);
+            AnimationServerRPC(_animIDFire);
         });
     }
 
@@ -160,6 +162,7 @@ public class NCharacter : NetworkBehaviour
         _animIDJump = Animator.StringToHash("Jump");
         _animIDFreeFall = Animator.StringToHash("FreeFall");
         _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+        _animIDFire = Animator.StringToHash("Fire");
     }
     
     private void Update()
@@ -195,6 +198,16 @@ public class NCharacter : NetworkBehaviour
             animator.SetBool(animationID, value);
         }
     }
+    
+    [ServerRpc]
+    private void AnimationServerRPC(int animationID)
+    {
+        if (animationID == _animIDFire)
+        {
+            animator.SetTrigger(animationID);
+        }
+    }
+    
     
     [ClientRpc]
     public void SetPosClientRPC(Vector3 pos)

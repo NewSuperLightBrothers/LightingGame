@@ -10,7 +10,7 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     [SerializeField] private LineRenderer _gunFirePath;
     [SerializeField] private int _gunReflectCount;
 
-    public NetworkVariable<EObjectColorType> teamColor;
+    public NetworkVariable<EObjectColorType> teamColor = new NetworkVariable<EObjectColorType>(EObjectColorType.Black);
     
     //총알 갯수
     public int _gunBulletCount = 100;
@@ -174,8 +174,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         if(SD_weaponSound.TryGetValues("FireSound", out AudioSource audio))
             audio.Play();
 
-        if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
-            animator.Play(0);
+        // if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
+        //     animator.Play(0);
     }
 
     private void updateGauge(int enterGauge)
