@@ -1630,8 +1630,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curPlayTime:
     m_InternalValue: 60
+  nextGenerateTargetListIndex: 0
   mapData: {fileID: 0}
   isMapDateLoaded: 0
+  targetPrefab: {fileID: 4645811231158546623, guid: 82ca8ce34096d4fbc9507623524385f9,
+    type: 3}
 --- !u!1 &1912664850
 GameObject:
   m_ObjectHideFlags: 0
