@@ -5741,6 +5741,18 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
+  skinnedMeshRenderers:
+  - {fileID: 8651477950271291031}
+  - {fileID: 4358614732932284524}
+  - {fileID: 8772016882315414412}
+  - {fileID: 8622828010933783154}
+  - {fileID: 3874708904165756950}
+  - {fileID: 4378048626895718055}
+  - {fileID: 2098335786606419027}
+  - {fileID: 6155050107681838727}
+  star: {fileID: 5934574516757549643}
+  ring: {fileID: 3305690369265788113}
+  wrist: {fileID: 4812803652473640070}
 --- !u!114 &447533231757440650
 MonoBehaviour:
   m_ObjectHideFlags: 0

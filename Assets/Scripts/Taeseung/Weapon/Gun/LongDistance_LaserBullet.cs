@@ -81,6 +81,8 @@ public class LongDistance_LaserBullet : NetworkBehaviour
         _bulletPathPoints = bulletPathPoints.ToArray();
         this.dir = dir;
         this.teamColor.Value = teamColor;
+        GetComponent<LineRenderer>().startColor = ObjectData.d_objectColor[teamColor];
+        GetComponent<LineRenderer>().endColor = ObjectData.d_objectColor[teamColor];
         
         foreach(LaserParticleSystem i in l_bulletParticle)
         {

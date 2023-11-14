@@ -123,6 +123,12 @@ public class NCharacter : NetworkBehaviour
     private int _animIDMotionSpeed;
     private int _animIDFire;
     
+    // Texture
+    public List<SkinnedMeshRenderer> skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+    public SkinnedMeshRenderer star;
+    public SkinnedMeshRenderer ring;
+    public SkinnedMeshRenderer wrist;
+    
     private void Awake()
     {
         _cinemachineTargetYaw = cinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -434,5 +440,17 @@ public class NCharacter : NetworkBehaviour
 
             return endPosition;
         }
+    }
+    
+    public void SetCharacterTexture(Material clothes, Material star, Material ring, Material wrist)
+    {
+        foreach (SkinnedMeshRenderer smr in skinnedMeshRenderers)
+        {
+            smr.material = clothes;
+        }
+
+        this.star.material = star;
+        this.ring.material = ring;
+        this.wrist.material = wrist;
     }
 }

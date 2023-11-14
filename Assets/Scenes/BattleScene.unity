@@ -1649,6 +1649,14 @@ MonoBehaviour:
   nextGenTime: 0
   nextGenNumber: 0
   curSpawnedTargetNum: 0
+  redCharMaterial: {fileID: 2100000, guid: b4a79e126de921346bf81b91de6963d8, type: 2}
+  blueCharMaterial: {fileID: 2100000, guid: ba498e0e57e854b9d9c9e2f4dcbe84fb, type: 2}
+  redStarMat: {fileID: 2100000, guid: 42818455626b051428b0a269c8c6506f, type: 2}
+  blueStarMat: {fileID: 2100000, guid: 598f8a45164c54e148401c2e20c1d554, type: 2}
+  redRingMat: {fileID: 2100000, guid: 25c804a6235b8a64eb10e8b976877f40, type: 2}
+  blueRingMat: {fileID: 2100000, guid: 1c8bec5c0df844f4e8eb44f505f89d80, type: 2}
+  redWristMat: {fileID: 2100000, guid: 8f4a99135e99bda469bd52a2fbecad62, type: 2}
+  blueWristMat: {fileID: 2100000, guid: 9dd8e74c0a2ba4bae95a01b0cc9ceb44, type: 2}
 --- !u!1 &1912664850
 GameObject:
   m_ObjectHideFlags: 0

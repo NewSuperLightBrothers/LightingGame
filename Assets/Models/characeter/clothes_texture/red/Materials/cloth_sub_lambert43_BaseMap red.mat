@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: cloth_sub_lambert43_BaseMap 1
+  m_Name: cloth_sub_lambert43_BaseMap red
   m_Shader: {fileID: -6465566751694194690, guid: 8480f35cbc445164dbeac5952b2eb14d,
     type: 3}
   m_ValidKeywords:
@@ -145,6 +145,7 @@ Material:
     - _SpecularOffset: 0
     - _SrcBlend: 1
     - _Surface: 0
+    - _TemperatueMultiplier: 1
     - _Temperature: 6500
     - _TemperatureMultiplier: 0.1
     - _WorkflowMode: 1

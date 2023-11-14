@@ -24,6 +24,18 @@ public class BattleManager : SingletonNetwork<BattleManager>
     
     public int curSpawnedTargetNum = 0;
     
+    public Material redCharMaterial;
+    public Material blueCharMaterial;
+
+    public Material redStarMat;
+    public Material blueStarMat;
+    
+    public Material redRingMat;
+    public Material blueRingMat;
+
+    public Material redWristMat;
+    public Material blueWristMat;
+    
     public override void Awake()
     {
         base.Awake();
@@ -82,10 +94,20 @@ public class BattleManager : SingletonNetwork<BattleManager>
     public void InitializeCharacterPos()
     {
         GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject playerObject in playerObjects)
+        for(int i = 0; i < playerObjects.Length; i++)
         {
-            playerObject.GetComponent<ObjectEmissionTakeManager>()._objectEmissionSystem = mapData.objectEmissionSystem;
-            playerObject.GetComponent<NCharacter>().controller.enabled = true;
+            playerObjects[i].GetComponent<ObjectEmissionTakeManager>()._objectEmissionSystem = mapData.objectEmissionSystem;
+            playerObjects[i].GetComponent<NCharacter>().controller.enabled = true;
+
+            if (i % 2 == 0)
+            {
+                playerObjects[i].GetComponent<NCharacter>().SetCharacterTexture(redCharMaterial, redStarMat, redRingMat, redWristMat);
+            }
+            else
+            {
+                playerObjects[i].GetComponent<NCharacter>().SetCharacterTexture(blueCharMaterial, blueStarMat, blueRingMat, blueWristMat);
+            }
+            
         }
         
         if(!IsServer) return;
