@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e462958ba51b3c24d907c84ce61224db, type: 3}
   m_Name: DepthNormalsFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4835ce7dcb092448972e80cd9dc0bce, type: 3}
   m_Name: MyBlitFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     IsEnabled: 1
     WhenToInsert: 1000
