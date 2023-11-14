@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Logger = Utils.Logger;
 
 public class BattleManager : SingletonNetwork<BattleManager>
 {
     public NetworkVariable<float> curPlayTime = new();
-    public int nextGenerateTargetListIndex = 0;
+    public int spawnTimingIdx = 0;
     public NetworkList<int> targetScoreList = new NetworkList<int>(default);
     public List<Pair<float, int>> targetGenerateTimeList = new List<Pair<float, int>>();
     
@@ -17,6 +18,11 @@ public class BattleManager : SingletonNetwork<BattleManager>
 
     public GameObject targetPrefab;
     public bool isAllTargetSpawned;
+
+    public float nextGenTime;
+    public int nextGenNumber;
+    
+    public int curSpawnedTargetNum = 0;
     
     public override void Awake()
     {
@@ -26,6 +32,9 @@ public class BattleManager : SingletonNetwork<BattleManager>
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 10.0f, 1));
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 15.0f, 2));
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 20.0f, 2));
+        
+        nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
+        nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
     }
 
     private void Update()
@@ -38,25 +47,36 @@ public class BattleManager : SingletonNetwork<BattleManager>
 
             if (!isAllTargetSpawned)
             {
-                if(curPlayTime.Value <= targetGenerateTimeList[nextGenerateTargetListIndex].First)
+                if(curPlayTime.Value <= nextGenTime)
                 {
-                    GenerateTarget();
-                    nextGenerateTargetListIndex++;
-                    if (targetGenerateTimeList.Count == nextGenerateTargetListIndex)
-                        isAllTargetSpawned = true;
+                    for (int i = 0; i < nextGenNumber; i++)
+                    {
+                        GenerateTarget(mapData.targetPosList[curSpawnedTargetNum++].position);
+
+                        if (curSpawnedTargetNum == mapData.targetPosList.Count)
+                        {
+                            isAllTargetSpawned = true;
+                            return;
+                        }
+                    }
+
+                    spawnTimingIdx++;
+
+                    nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
+                    nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
                 }
             }
             
         }
     }
 
-    private void GenerateTarget()
+    private void GenerateTarget(Vector3 spawnPos)
     {
         if(!IsServer || targetPrefab == null) return;
         
-        GameObject targetObj = Instantiate(targetPrefab, mapData.targetPosList[nextGenerateTargetListIndex].position, Quaternion.identity);
+        GameObject targetObj = Instantiate(targetPrefab, spawnPos, Quaternion.identity);
         targetObj.GetComponent<NetworkObject>().Spawn();
-        Logger.Log("targetObj spawned in " + mapData.targetPosList[nextGenerateTargetListIndex].position);
+        Logger.Log("targetObj spawned in " + spawnPos);
     }
 
     public void InitializeCharacterPos()
