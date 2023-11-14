@@ -18,7 +18,7 @@ public class NCharacter : NetworkBehaviour
     
     // Components
     private Animator animator;
-    public CharacterController controller;
+    [HideInInspector] public CharacterController controller;
     [HideInInspector] public GameObject mainCamera;
     
     // player
@@ -405,7 +405,15 @@ public class NCharacter : NetworkBehaviour
             // 총알 발사 로직을 추가하려면 hitPoint를 사용
             return hitPoint;
         }
+        else
+        {
+            Vector3 cameraPosition = Camera.main.transform.position;
+            Vector3 cameraForward = Camera.main.transform.forward;
 
-        return Vector3.zero;
+            float farDistance = 100f;
+            Vector3 endPosition = cameraPosition + (cameraForward * farDistance);
+
+            return endPosition;
+        }
     }
 }

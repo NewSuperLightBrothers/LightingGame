@@ -753,6 +753,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8,
+        type: 3}
+      propertyPath: m_Lens.FieldOfView
+      value: 70
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
 --- !u!114 &676420764 stripped
@@ -1219,6 +1224,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 8944336655422409496, guid: f6d148d888ffbf54b9afe9936dfaec1f,
+        type: 3}
       propertyPath: far clip plane
       value: 500
       objectReference: {fileID: 0}
@@ -1630,11 +1640,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curPlayTime:
     m_InternalValue: 60
-  nextGenerateTargetListIndex: 0
+  spawnTimingIdx: 0
   mapData: {fileID: 0}
   isMapDateLoaded: 0
   targetPrefab: {fileID: 4645811231158546623, guid: 82ca8ce34096d4fbc9507623524385f9,
     type: 3}
+  isAllTargetSpawned: 0
+  nextGenTime: 0
+  nextGenNumber: 0
+  curSpawnedTargetNum: 0
 --- !u!1 &1912664850
 GameObject:
   m_ObjectHideFlags: 0
