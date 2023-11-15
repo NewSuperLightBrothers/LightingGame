@@ -10,8 +10,11 @@ public class BattleManager : SingletonNetwork<BattleManager>
 {
     public NetworkVariable<float> curPlayTime = new();
     public int spawnTimingIdx = 0;
-    public NetworkList<int> targetScoreList = new NetworkList<int>(default);
+    public List<int> targetScoreList;
     public List<Pair<float, int>> targetGenerateTimeList = new List<Pair<float, int>>();
+    
+    public NetworkVariable<int> redTeamScore;
+    public NetworkVariable<int> blueTeamScore;
     
     [HideInInspector] public MapData mapData;
     public bool isMapDateLoaded;
@@ -87,6 +90,7 @@ public class BattleManager : SingletonNetwork<BattleManager>
         if(!IsServer || targetPrefab == null) return;
         
         GameObject targetObj = Instantiate(targetPrefab, spawnPos, Quaternion.identity);
+        targetObj.GetComponent<Target>().SetID(curSpawnedTargetNum);
         targetObj.GetComponent<NetworkObject>().Spawn();
         Logger.Log("targetObj spawned in " + spawnPos);
     }
@@ -134,6 +138,21 @@ public class BattleManager : SingletonNetwork<BattleManager>
                 playerList[i].PlayerObject.GetComponent<NCharacter>().SetPosClientRPC(mapData.respawnPoints_client[i / 2].position);
             }
 
+        }
+    }
+
+    public void UpdateScore()
+    {
+        foreach (int i in targetScoreList)
+        {
+            if (i > 0)
+            {
+                redTeamScore.Value += 1;
+            }
+            else if (i < 0)
+            {
+                blueTeamScore.Value += 1;
+            }
         }
     }
 }

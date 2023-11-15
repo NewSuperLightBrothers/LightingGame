@@ -11,6 +11,6 @@ public class BattleUIManager : MonoBehaviour
 
     private void Update()
     {
-        _curTimeText.text = BattleManager.Instance.curPlayTime.Value.ToString(CultureInfo.InvariantCulture);
+        _curTimeText.text = BattleManager.Instance.curPlayTime.Value.ToString("F1");
     }
 }

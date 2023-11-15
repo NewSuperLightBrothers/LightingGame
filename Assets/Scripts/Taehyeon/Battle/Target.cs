@@ -8,6 +8,7 @@ using Logger = Utils.Logger;
 public class Target : NetworkBehaviour
 {
     // host color will be plus score, client color will be minus score
+    public int id;
     public NetworkVariable<int> score;
     public int threshold = 3;
 
@@ -48,6 +49,12 @@ public class Target : NetworkBehaviour
         if(newvalue > 0) SetMatRed();
         else if(newvalue < 0) SetMatBlue();
         else SetMatDefault();
+
+        if (IsServer)
+        {
+            BattleManager.Instance.targetScoreList[id] = newvalue;
+            BattleManager.Instance.UpdateScore();
+        }
     }
 
     public void SetScore(int delta)
@@ -74,5 +81,10 @@ public class Target : NetworkBehaviour
     {
         mainModule.startColor = new Color(0.8784314f, 0.8784314f, 0.8784314f, 0.7176471f);
         meshRenderer.material = defaultMat;
+    }
+
+    public void SetID(int curSpawnedTargetNum)
+    {
+        id = curSpawnedTargetNum;
     }
 }
