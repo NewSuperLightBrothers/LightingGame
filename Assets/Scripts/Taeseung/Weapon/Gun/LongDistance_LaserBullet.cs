@@ -61,7 +61,7 @@ public class LongDistance_LaserBullet : NetworkBehaviour
         
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
-            //LaserBulletToPlayer(other);
+            //LaserBulletToPlayer(other);ㅜ
         }
         else if (other.transform.tag == "Mirror")
         {
@@ -143,11 +143,13 @@ public class LongDistance_LaserBullet : NetworkBehaviour
 
     private void LaserBulletDestroy()
     {
-        l_bulletParticle[0].ParticleInstantiate(this.transform.position, this.transform.rotation);
+        if(!IsServer) return;
+        
+        // l_bulletParticle[0].ParticleInstantiate(this.transform.position, this.transform.rotation);
 
-        GameObject _afterImage = Instantiate(_bulletAfterImage);
-        _afterImage.transform.position = this.transform.position;
-        _afterImage.transform.rotation = this.transform.rotation;
+        // GameObject _afterImage = Instantiate(_bulletAfterImage);
+        // _afterImage.transform.position = this.transform.position;
+        // _afterImage.transform.rotation = this.transform.rotation;
         
         NetworkObject.Despawn();
         // Destroy(this.gameObject);

@@ -59,16 +59,16 @@ public class BattleManager : SingletonNetwork<BattleManager>
             BattleUIManager.Instance.UpdateScore(redTeamScore.Value, blueTeamScore.Value);
         };
         
-        blueTeamScore.OnValueChanged += (prev, bnowlue) =>
+        blueTeamScore.OnValueChanged += (prev, now) =>
         {
             BattleUIManager.Instance.UpdateScore(redTeamScore.Value, blueTeamScore.Value);
         };
         
         // target will spawn after 60, 150, 240 seconds
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 5.0f, 2));
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 10.0f, 2));
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 15.0f, 3));
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 20.0f, 3));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 30.0f, 2));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 45.0f, 3));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 60.0f, 3));
         
         nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
         nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
