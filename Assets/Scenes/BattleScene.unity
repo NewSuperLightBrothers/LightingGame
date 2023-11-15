@@ -285,7 +285,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323101495}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2263,6 +2263,11 @@ MonoBehaviour:
   curPlayTime:
     m_InternalValue: 60
   spawnTimingIdx: 0
+  targetScoreList: 
+  redTeamScore:
+    m_InternalValue: 0
+  blueTeamScore:
+    m_InternalValue: 0
   mapData: {fileID: 0}
   isMapDateLoaded: 0
   targetPrefab: {fileID: 4645811231158546623, guid: 82ca8ce34096d4fbc9507623524385f9,
@@ -2600,6 +2605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curTimeText: {fileID: 2116890641}
+  redScore: {fileID: 2116890642}
+  blueScore: {fileID: 2116890643}
 --- !u!1001 &2116890639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2660,17 +2667,17 @@ PrefabInstance:
     - target: {fileID: 5265870475297341082, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.18
+      value: 1.66
       objectReference: {fileID: 0}
     - target: {fileID: 5265870475297341082, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.18
+      value: 1.66
       objectReference: {fileID: 0}
     - target: {fileID: 5265870475297341082, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.18
+      value: 1.66
       objectReference: {fileID: 0}
     - target: {fileID: 5265870475297341082, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
         type: 3}
@@ -2757,6 +2764,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2116890642 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6545199875871048823, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
+    type: 3}
+  m_PrefabInstance: {fileID: 2116890639}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2116890643 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6545199875068193584, guid: 72fc1dd1db7eb4fd799fb904fb8b0700,
+    type: 3}
+  m_PrefabInstance: {fileID: 2116890639}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3677766312062422590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2770,7 +2801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.18431373}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

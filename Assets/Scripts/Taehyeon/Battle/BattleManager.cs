@@ -43,6 +43,17 @@ public class BattleManager : SingletonNetwork<BattleManager>
     {
         base.Awake();
 
+
+        redTeamScore.OnValueChanged += (prev, now) =>
+        {
+            BattleUIManager.Instance.UpdateScore(redTeamScore.Value, blueTeamScore.Value);
+        };
+        
+        blueTeamScore.OnValueChanged += (prev, bnowlue) =>
+        {
+            BattleUIManager.Instance.UpdateScore(redTeamScore.Value, blueTeamScore.Value);
+        };
+        
         // target will spawn after 60, 150, 240 seconds
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 10.0f, 1));
         targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 15.0f, 2));
@@ -116,6 +127,14 @@ public class BattleManager : SingletonNetwork<BattleManager>
         
         if(!IsServer) return;
 
+        targetScoreList = new List<int>();
+
+        for (int i = 0; i < mapData.targetPosList.Count; i++)
+        {
+            targetScoreList.Add(0);
+        }
+        
+        
         // initialize curPlayTime
         curPlayTime.Value = GameData.initialPlayTime;
         Logger.Log("curPlayTime.Value = " + curPlayTime.Value);
@@ -143,6 +162,9 @@ public class BattleManager : SingletonNetwork<BattleManager>
 
     public void UpdateScore()
     {
+        redTeamScore.Value = 0;
+        blueTeamScore.Value = 0;
+        
         foreach (int i in targetScoreList)
         {
             if (i > 0)

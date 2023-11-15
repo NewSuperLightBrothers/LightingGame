@@ -71,6 +71,6 @@ public class NetworkUIManager : MonoBehaviour
         private void Update()
         {
             _joinCodeText.text = NetworkController.Instance.joinCode;
-            _curPlayerNumText.text = GameData.currentConnectedPlayerNum.ToString();
+            _curPlayerNumText.text = GameData.currentConnectedPlayerNum.ToString() + " / 2";
         }
     }
