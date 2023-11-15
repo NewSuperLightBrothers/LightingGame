@@ -19,6 +19,9 @@ public class BattleManager : SingletonNetwork<BattleManager>
     [HideInInspector] public MapData mapData;
     public bool isMapDateLoaded;
 
+    public EObjectColorType ownerTeamColor;
+    
+    // for target
     public GameObject targetPrefab;
     public bool isAllTargetSpawned;
 
@@ -27,6 +30,8 @@ public class BattleManager : SingletonNetwork<BattleManager>
     
     public int curSpawnedTargetNum = 0;
     
+    
+    // for character texture
     public Material redCharMaterial;
     public Material blueCharMaterial;
 
@@ -39,10 +44,15 @@ public class BattleManager : SingletonNetwork<BattleManager>
     public Material redWristMat;
     public Material blueWristMat;
     
+    // bgm
+    public AudioSource ingameBGM;
+    public AudioSource resultBGM;
+    
     public override void Awake()
     {
         base.Awake();
 
+        
 
         redTeamScore.OnValueChanged += (prev, now) =>
         {
@@ -55,9 +65,10 @@ public class BattleManager : SingletonNetwork<BattleManager>
         };
         
         // target will spawn after 60, 150, 240 seconds
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 10.0f, 1));
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 15.0f, 2));
-        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 20.0f, 2));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 5.0f, 2));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 10.0f, 2));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 15.0f, 3));
+        targetGenerateTimeList.Add(new Pair<float, int>(GameData.initialPlayTime - 20.0f, 3));
         
         nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
         nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
@@ -65,35 +76,56 @@ public class BattleManager : SingletonNetwork<BattleManager>
 
     private void Update()
     {
-        if (IsServer)
+        if (!IsServer) return;
+        
+        if (!isMapDateLoaded) return;
+        
+        if(Time.timeScale == 0) return;
+        
+        if (curPlayTime.Value <= 0)
         {
-            if (!isMapDateLoaded) return;
+            // game end
+            Logger.Log("game end");
+            GameOverClientRPC();
             
-            curPlayTime.Value -= Time.deltaTime;
-
-            if (!isAllTargetSpawned)
-            {
-                if(curPlayTime.Value <= nextGenTime)
-                {
-                    for (int i = 0; i < nextGenNumber; i++)
-                    {
-                        GenerateTarget(mapData.targetPosList[curSpawnedTargetNum++].position);
-
-                        if (curSpawnedTargetNum == mapData.targetPosList.Count)
-                        {
-                            isAllTargetSpawned = true;
-                            return;
-                        }
-                    }
-
-                    spawnTimingIdx++;
-
-                    nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
-                    nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
-                }
-            }
-            
+            return;
         }
+        curPlayTime.Value -= Time.deltaTime;
+
+        if (!isAllTargetSpawned)
+        {
+            if(curPlayTime.Value <= nextGenTime)
+            {
+                for (int i = 0; i < nextGenNumber; i++)
+                {
+                    GenerateTarget(mapData.targetPosList[curSpawnedTargetNum].position);
+                    curSpawnedTargetNum++;
+                    if (curSpawnedTargetNum == mapData.targetPosList.Count)
+                    {
+                        isAllTargetSpawned = true;
+                        return;
+                    }
+                }
+
+                spawnTimingIdx++;
+
+                nextGenTime = targetGenerateTimeList[spawnTimingIdx].First;
+                nextGenNumber = targetGenerateTimeList[spawnTimingIdx].Second;
+            }
+        }
+            
+        
+    }
+
+    [ClientRpc]
+    private void GameOverClientRPC()
+    {
+        Logger.Log("game over");
+        BattleUIManager.Instance.ShowResult();
+        Time.timeScale = 0;
+        
+        ingameBGM.Stop();
+        resultBGM.Play();
     }
 
     private void GenerateTarget(Vector3 spawnPos)

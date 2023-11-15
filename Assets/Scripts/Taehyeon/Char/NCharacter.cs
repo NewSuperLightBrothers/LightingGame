@@ -394,7 +394,7 @@ public class NCharacter : NetworkBehaviour
     
     private void OnFootstep(AnimationEvent animationEvent)
     {
-        Logger.Log("OnFootstep called");
+        // Logger.Log("OnFootstep called");
         // if (animationEvent.animatorClipInfo.weight > 0.5f)
         // {
         //     if (FootstepAudioClips.Length > 0)
@@ -407,7 +407,7 @@ public class NCharacter : NetworkBehaviour
 
     private void OnLand(AnimationEvent animationEvent)
     {
-        Logger.Log("OnLand called");
+        // Logger.Log("OnLand called");
         // if (animationEvent.animatorClipInfo.weight > 0.5f)
         // {
         //     AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
