@@ -29,7 +29,8 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && _weaponCount > 0){
-            StartAttack();
+            // taehyeon : 이후 이 부분에 bullet의 endpoint를 전달해야 함
+            StartAttack(Vector3.zero);
         }
     }
 
@@ -56,8 +57,10 @@ public class SubWeapon_BombManager: SubWeaponManager, WeaponInterface
     private void OnEnable() =>    _bombPrefabLineRenderer.enabled = true;
     private void OnDisable()=>    _bombPrefabLineRenderer.enabled = false;
 
-    public void StartAttack()
+    public void StartAttack(Vector3 endPoint)
     {
+        // taehyeon : 이후 endPoint에 bullet의 endpoint를 전달해야 함
+        
         SubWeapon_Bomb tempBomb = Instantiate(_bombPrefab).GetComponent<SubWeapon_Bomb>();
         l_weaponMeshRenderer.Add(tempBomb.GetBombMeshRenderer());
         ColorSetting(_weaponColor, _weaponEmissionStrength);

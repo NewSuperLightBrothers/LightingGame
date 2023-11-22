@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Logger = Utils.Logger;
 
-public class LongDistance_LaserBullet : MonoBehaviour
+public class LongDistance_LaserBullet : NetworkBehaviour
 {
     [SerializeField] private List<SoundManager> l_bulletSound;
     [SerializeField] private List<LaserParticleSystem> l_bulletParticle;
@@ -21,26 +24,44 @@ public class LongDistance_LaserBullet : MonoBehaviour
     private Ray _bulletRay = new();
     private RaycastHit _bulletHit;
 
+    private Vector3 dir;
+    public NetworkVariable<EObjectColorType> teamColor;
+    
+    public GameObject bulletPrefabSelf;
+    
     void FixedUpdate()
     {
-        if (_bulletPathPoints != null || _bulletPathPoints.Length != 0) LaserBulletFire();
-        _bulletRay.direction = this.transform.forward;
-        _bulletRay.origin = this.transform.position;
-        
-        if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance)){
-            print(_bulletHit.collider.GetInstanceID());
-        }
+        // if (_bulletPathPoints != null || _bulletPathPoints.Length != 0) LaserBulletFire();
+        // _bulletRay.direction = this.transform.forward;
+        // _bulletRay.origin = this.transform.position;
+        //
+        // if(Physics.Raycast(_bulletRay, out _bulletHit, _bulletDistance)){
+        //     print(_bulletHit.collider.GetInstanceID());
+        // }
 
+        if(!IsServer) return;
+        
+        transform.position += dir * (_bulletSpeed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if(!IsServer) return;
+        
         Debug.Log(_bulletColor);
         //LaserBulletReflection();
 
+        if (other.gameObject.TryGetComponent(out Target t))
+        {
+            Logger.Log("Hit target");
+            t.SetScore(teamColor.Value == EObjectColorType.Red ? 1 : -1);
+            NetworkObject.Despawn();
+            return;
+        }
+        
         if (Mathf.Pow(2, other.transform.gameObject.layer) == LayerMask.GetMask("Player")) //&& _bulletColor != other.GetComponentInChildren<PlayerManager>()._teamColor)
         {
-            //LaserBulletToPlayer(other);
+            //LaserBulletToPlayer(other);ㅜ
         }
         else if (other.transform.tag == "Mirror")
         {
@@ -59,7 +80,7 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
 
 
-    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, EObjectColorType bulletColortType)
+    public void SetBullet(float bulletSpeed, float bulletDmg, float bulletDistance, Color bulletColor, GameObject bulletAfterImage, List<Vector3> bulletPathPoints, Vector3 dir, EObjectColorType teamColor)
     {
         _bulletAfterImage = bulletAfterImage;
         _bulletSpeed = bulletSpeed;
@@ -67,7 +88,11 @@ public class LongDistance_LaserBullet : MonoBehaviour
         _bulletDistance = bulletDistance;
         _bulletColor = bulletColor;
         _bulletPathPoints = bulletPathPoints.ToArray();
-
+        this.dir = dir;
+        this.teamColor.Value = teamColor;
+        GetComponent<LineRenderer>().startColor = ObjectData.d_objectColor[teamColor];
+        GetComponent<LineRenderer>().endColor = ObjectData.d_objectColor[teamColor];
+        
         foreach(LaserParticleSystem i in l_bulletParticle)
         {
             i.ParticleColorSetting(bulletColor);
@@ -118,14 +143,18 @@ public class LongDistance_LaserBullet : MonoBehaviour
 
     private void LaserBulletDestroy()
     {
-        l_bulletParticle[0].ParticleInstantiate(this.transform.position, this.transform.rotation);
-
-        GameObject _afterImage = Instantiate(_bulletAfterImage);
-        _afterImage.transform.position = this.transform.position;
-        _afterImage.transform.rotation = this.transform.rotation;
+        if(!IsServer) return;
         
-        Destroy(this.gameObject);
+        // l_bulletParticle[0].ParticleInstantiate(this.transform.position, this.transform.rotation);
+
+        // GameObject _afterImage = Instantiate(_bulletAfterImage);
+        // _afterImage.transform.position = this.transform.position;
+        // _afterImage.transform.rotation = this.transform.rotation;
+        
+        NetworkObject.Despawn();
+        // Destroy(this.gameObject);
     }
+
 
 
 

@@ -17,7 +17,8 @@ public class ShortDistance_Blade : ShortDistanceWeaponManager, WeaponInterface
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) {
-                StartAttack();
+            // taehyeon : 이후 이 부분에 bullet의 endpoint를 전달해야 함
+                StartAttack(Vector3.zero);
         }
     }
 
@@ -28,8 +29,10 @@ public class ShortDistance_Blade : ShortDistanceWeaponManager, WeaponInterface
 
 
 
-    public void StartAttack()
+    public void StartAttack(Vector3 endPoint)
     {
+        // taehyeon : 동적으로 카메라가 바라보고 있는 중앙 위치에 endPoint를 계산하여 동적으로 전달해야 함
+        
         count++;
         if (count == _bladeAniMotionCount)
             count = 1;

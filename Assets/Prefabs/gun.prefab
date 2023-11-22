@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3958608429014407583}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: end point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3958608431132614604}
   - component: {fileID: 1772341468873502461}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: start point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 489396528941721421}
   - component: {fileID: 2390946056384910215}
   - component: {fileID: 3958608430844022558}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,10 +188,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4192469400581714514}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3958608431132614604}
   - {fileID: 3958608429014407583}
@@ -272,11 +272,12 @@ MonoBehaviour:
   _weaponObject: {fileID: 0}
   _weaponObjectTakingManager: {fileID: 0}
   l_weaponMeshRenderer: []
-  l_weaponSound:
-  - {fileID: 3666025443288946325, guid: f43d03aed4679f94098454b5b8533c0f, type: 3}
   l_weaponParticleSystem:
   - {fileID: 3858565777216842866, guid: aaf2f92bb2f419c42a5b5b8e3e0fe2d3, type: 3}
   - {fileID: 2324401884463517707, guid: 65779a23f7454f64b8fb0b1b0519fd82, type: 3}
+  SD_weaponSound:
+    l_key: []
+    l_value: []
   SD_weaponAttackAnimation:
     l_key:
     - GunFire
@@ -291,7 +292,10 @@ MonoBehaviour:
     type: 3}
   _weaponShotPoint: {fileID: 3958608431132614604}
   _weaponShotEndPoint: {fileID: 3958608429014407583}
-  _weaponBulletSpeed: 4
+  _weaponBulletSpeed: 150
   _weaponDistance: 50
   _gunFirePath: {fileID: 1772341468873502461}
   _gunReflectCount: 3
+  teamColor:
+    m_InternalValue: 7
+  _gunBulletCount: 100

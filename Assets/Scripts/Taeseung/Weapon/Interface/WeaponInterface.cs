@@ -12,6 +12,6 @@ public interface WeaponInterface
     /// <summary>
     /// 총알 발사, 베기 등 공격을 시작할려고 할 때 쓰는 함수
     /// </summary>
-    public void StartAttack();
+    public void StartAttack(Vector3 endPoint);
 
 }

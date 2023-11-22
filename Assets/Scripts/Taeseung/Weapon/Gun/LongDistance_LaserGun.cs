@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface, MainWeaponInterface
@@ -9,8 +10,10 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     [SerializeField] private LineRenderer _gunFirePath;
     [SerializeField] private int _gunReflectCount;
 
+    public NetworkVariable<EObjectColorType> teamColor = new NetworkVariable<EObjectColorType>(EObjectColorType.Black);
+    
     //총알 갯수
-    private int _gunBulletCount = 0;
+    public int _gunBulletCount = 100;
 
     //총알 궤적 포인트 리스트
     private List<Vector3> l_gunPathPoints = new();
@@ -22,6 +25,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     private float _gunDelayInterval;
     private bool _isShoot = true;
 
+    // Add by taehyeon
+    [SerializeField] private GameObject _bulletPrefab;
 
     new void Start()
     {
@@ -32,9 +37,9 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     {
         if (Input.GetMouseButtonDown(1)) Reloading();
         
-        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
-        //총알 궤적 계산
-        CheckAttackRange();
+        // _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
+        // //총알 궤적 계산
+        // CheckAttackRange();
     }
 
     void FixedUpdate()
@@ -135,11 +140,16 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
 
     }
 
-    public void StartAttack()
+    public void StartAttack(Vector3 endPoint)
     {
+        _weaponShotEndPoint.position = endPoint;
+        _gunFrameDirection = _weaponShotEndPoint.position - _weaponShotPoint.position;
+        //총알 궤적 계산
+        CheckAttackRange();
+        
         if (_isShoot && _gunBulletCount > 0)
         {
-            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, _weaponShotPoint.rotation);
+            MakeNewBullet(_weaponUsingBullet, _weaponShotPoint.position, Camera.main.transform.rotation, _gunFrameDirection.normalized);
             SetWeaponGauge(-_weaponAttackConsumeGauge);
             FireEffect();
             AttackReset();
@@ -166,8 +176,8 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
         if(SD_weaponSound.TryGetValues("FireSound", out AudioSource audio))
             audio.Play();
 
-        if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
-            animator.Play(0);
+        // if(SD_weaponAttackAnimation.TryGetValues("GunFire", out Animator animator))
+        //     animator.Play(0);
     }
 
     private void updateGauge(int enterGauge)
@@ -182,11 +192,13 @@ public class LongDistance_LaserGun : LongDistanceWeaponManager, WeaponInterface,
     }
 
 
-    private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation)
+    private void MakeNewBullet(GameObject bulletObject, Vector3 bulletPosition, Quaternion bulletRotation, Vector3 dir)
     {
         GameObject newBullet = Instantiate(bulletObject);
+        
         LongDistance_LaserBullet newBulletManager = newBullet.GetComponent<LongDistance_LaserBullet>();
-        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, _teamColor);
+        newBulletManager.GetComponent<NetworkObject>().Spawn();
+        newBulletManager.SetBullet(_weaponBulletSpeed, _weaponDamage, _weaponDistance, _weaponColor, _weaponAfterImage, l_gunPathPoints, dir, teamColor.Value);
         newBulletManager.SetBulletStartTransform(bulletPosition, bulletRotation);
     }
 

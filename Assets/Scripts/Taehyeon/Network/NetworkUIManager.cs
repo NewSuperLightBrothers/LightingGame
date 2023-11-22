@@ -14,6 +14,8 @@ public class NetworkUIManager : MonoBehaviour
         [SerializeField] private TMP_Text _curPlayerNumText;
         [SerializeField] private TMP_InputField _joinCodeInput;
         
+        private bool isAlreadyHostBtnClicked = false;
+        
         private void Awake()
         {
             Cursor.visible = true;
@@ -25,6 +27,10 @@ public class NetworkUIManager : MonoBehaviour
             // Start host
             _hostBtn.onClick.AddListener(async () =>
             {
+                if(isAlreadyHostBtnClicked) return;
+
+                isAlreadyHostBtnClicked = true;
+                
                 if (RelayManager.Instance.isRelayEnabled)
                 {
                     await RelayManager.Instance.SetupRelay();
@@ -71,6 +77,6 @@ public class NetworkUIManager : MonoBehaviour
         private void Update()
         {
             _joinCodeText.text = NetworkController.Instance.joinCode;
-            _curPlayerNumText.text = GameData.currentConnectedPlayerNum.ToString();
+            _curPlayerNumText.text = GameData.currentConnectedPlayerNum.ToString() + " / 2";
         }
     }
