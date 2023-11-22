@@ -3,15 +3,29 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mirror
+  - Red
+  - Green
+  - Blue
+  - AfterImage
+  - LightObject1
+  - LightObject2
+  - LightObject3
+  - Enemy
+  - Ally
+  - LightObject1
+  - LightObject2
+  - LightObject3
+  - DeadZone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Invisiable
   - 
   - 
   - 
